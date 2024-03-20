@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_03_20_145027) do
+ActiveRecord::Schema[7.0].define(version: 2024_03_20_152657) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -63,16 +63,23 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_20_145027) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "students_tasks", force: :cascade do |t|
+    t.bigint "student_id", null: false
+    t.bigint "task_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["student_id"], name: "index_students_tasks_on_student_id"
+    t.index ["task_id"], name: "index_students_tasks_on_task_id"
+  end
+
   create_table "tasks", force: :cascade do |t|
     t.integer "teacher_user_id", null: false
-    t.integer "student_user_ids", default: [], array: true
     t.string "name", null: false
     t.text "description"
     t.datetime "time_set", null: false
     t.datetime "deadline", null: false
     t.integer "base_experience_points", null: false
     t.integer "status", default: 0, null: false
-    t.integer "subtask_ids", default: [], array: true
     t.string "attachment_paths", default: [], array: true
     t.boolean "recording_boolean", default: false, null: false
     t.datetime "created_at", null: false
@@ -105,4 +112,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_20_145027) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  add_foreign_key "students_tasks", "students"
+  add_foreign_key "students_tasks", "tasks"
 end

@@ -18,4 +18,7 @@
 #  background_id        :integer
 #
 class Student < ApplicationRecord
-end
+    has_many :students_tasks
+    has_many :tasks, through: :students_tasks
+  end
+  

@@ -1,0 +1,31 @@
+!!! 5
+%html
+  %head
+    %title Teacher Dashboard
+    %meta{charset: "utf-8"}
+    / Include your CSS files here using stylesheet_link_tag
+  %body
+    #container
+      %header
+        %nav
+          %ul.nav
+            %li= link_to 'Home', root_path
+            %li= link_to 'Set Task', new_add_task_path
+            %li= link_to 'Logout', root_path
+      %main
+        .teacher-dashboard
+          %section.student-list
+            - 7.times do |i|
+              %div{class: "student student-#{i+1}"}
+                %span= "Student #{i+1}"
+                %ul
+                  %li Task 1
+                  %li Task 2
+          %section.student-details
+            %h2 Student1
+            .progress-chart
+              / You can use a gem or a front-end library to create the actual chart
+              %p 14% Uncompleted
+              %p 86% Completed
+      %footer
+        Footer

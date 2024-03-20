@@ -72,6 +72,8 @@ gem 'sanitize_email'
 gem 'sentry-ruby'
 gem 'sentry-rails'
 
+gem 'haml', '~> 5.2'
+
 group :development do
   gem 'letter_opener'
   gem 'annotate'

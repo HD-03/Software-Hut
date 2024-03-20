@@ -15,12 +15,12 @@
       %main
         .teacher-dashboard
           %section.student-list
-            - 7.times do |i|
-              %div{class: "student student-#{i+1}"}
-                %span= "Student #{i+1}"
+            - @students.each do |student|
+              %div{class: "student student-#{student.username}"}
+                %span= student.username
                 %ul
-                  %li Task 1
-                  %li Task 2
+                  %li= "Task 1"
+                  %li= "Task 2"
           %section.student-details
             %h2 Student1
             .progress-chart

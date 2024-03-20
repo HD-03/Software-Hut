@@ -10,12 +10,12 @@
         popupContent.textContent = 'Details for ' + taskName + ' (ID: ' + taskId + ')';
         popup.style.display = 'block';
       }
-      
+
       function closeTaskPopup() {
         const popup = document.getElementById('taskPopup');
         popup.style.display = 'none';
       }
-      
+
       window.onclick = function(event) {
         const popup = document.getElementById('taskPopup');
         if (event.target == popup) {
@@ -34,20 +34,18 @@
         .teacher-dashboard
           %section.student-list
             - @students.each do |student|
-              %div{class: "student student-#{student.username}"}
-                %span= student.username
+              %div
+                %h3= student.username
                 %ul
                   - student.tasks.each do |task|
                     %li= link_to task.name, '#', onclick: "openTaskPopup('#{task.name}', '#{task.id}')"
-          %section.student-details
-            %h2 Student1
-            .progress-chart
-              %p 14% Uncompleted
-              %p 86% Completed
-        #taskPopup.modal
-          .modal-content
-            %span.close-button{ onclick: "closeTaskPopup()" } &times;
-            %p#taskPopupContent Details for the task will go here
+      %footer
+        Footer
+
+    #taskPopup.modal
+      .modal-content
+        %span.close-button{ onclick: "closeTaskPopup()" } &times;
+        %p#taskPopupContent Details for the task will
       %footer
         Footer
 

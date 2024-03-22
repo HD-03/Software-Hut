@@ -1,53 +1,47 @@
 !!! 5
-%html
-  %head
-    %title Teacher Dashboard
-    %meta{charset: "utf-8"}
-    :javascript
-      function openTaskPopup(taskName, taskId) {
-        const popup = document.getElementById('taskPopup');
-        const popupContent = document.getElementById('taskPopupContent');
-        popupContent.textContent = 'Details for ' + taskName + ' (ID: ' + taskId + ')';
-        popup.style.display = 'block';
-      }
+:javascript
+  function openTaskPopup(taskName, taskId) {
+    const popup = document.getElementById('taskPopup');
+    const popupContent = document.getElementById('taskPopupContent');
+    popupContent.textContent = 'Details for ' + taskName + ' (ID: ' + taskId + ')';
+    popup.style.display = 'block';
+  }
 
-      function closeTaskPopup() {
-        const popup = document.getElementById('taskPopup');
-        popup.style.display = 'none';
-      }
+  function closeTaskPopup() {
+    const popup = document.getElementById('taskPopup');
+    popup.style.display = 'none';
+  }
 
-      window.onclick = function(event) {
-        const popup = document.getElementById('taskPopup');
-        if (event.target == popup) {
-          popup.style.display = 'none';
-        }
-      }
-  %body
-    #container
-      %header
-        %nav
-          %ul.nav
-            %li= link_to 'Home', root_path
-            %li= link_to 'Set Task', new_add_task_path
-            %li= link_to 'Logout', root_path
-      %main
-        .teacher-dashboard
-          %section.student-list
-            - @students.each do |student|
-              %div
-                %h3= student.username
-                %ul
-                  - student.tasks.each do |task|
-                    %li= link_to task.name, '#', onclick: "openTaskPopup('#{task.name}', '#{task.id}')"
-      %footer
-        Footer
+  window.onclick = function(event) {
+    const popup = document.getElementById('taskPopup');
+    if (event.target == popup) {
+      popup.style.display = 'none';
+    }
+  }
 
-    #taskPopup.modal
-      .modal-content
-        %span.close-button{ onclick: "closeTaskPopup()" } &times;
-        %p#taskPopupContent Details for the task will
-      %footer
-        Footer
+#container
+  %header
+    %nav
+      %ul.nav
+        %li= link_to 'Home', root_path
+        %li= link_to 'Set Task', new_add_task_path
+        %li= link_to 'Logout', root_path
+  %main
+    .teacher-dashboard
+      %section.student-list
+        - @students.each do |student|
+          %div
+            %h3= student.username
+            %ul
+              - student.tasks.each do |task|
+                %li= link_to task.name, '#', onclick: "openTaskPopup('#{task.name}', '#{task.id}')"
+
+#taskPopup.modal
+  .modal-content
+    %span.close-button{ onclick: "closeTaskPopup()" } &times;
+    %p#taskPopupContent Details for the task will
+  %footer
+    Footer
 
 
 :css

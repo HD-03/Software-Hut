@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_03_20_152657) do
+ActiveRecord::Schema[7.0].define(version: 2024_03_20_152234) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -94,22 +94,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_20_152657) do
     t.integer "student_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "users", force: :cascade do |t|
-    t.string "username", null: false
-    t.string "hashed_pw", null: false
-    t.string "name"
-    t.integer "role", default: 0, null: false
-    t.integer "unlocked_avatar_ids", default: [], array: true
-    t.integer "unlocked_background_ids", default: [], array: true
-    t.integer "level", default: 1, null: false
-    t.integer "current_experience_points", default: 0, null: false
-    t.integer "level_up_required_points", default: 0, null: false
-    t.boolean "mature", default: false, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["username"], name: "index_users_on_username", unique: true
   end
 
   add_foreign_key "students_tasks", "students"

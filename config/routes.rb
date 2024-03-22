@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   # Example route for adding a new task. Adjust according to your actual controller and action names.
   get 'teachers/add_new_task', to: 'teachers#add_new_task', as: 'new_add_task'
 
+  get 'students/index', to: 'students#index'
+
   # Defines the root path route ("/")
   root "pages#home"
 end

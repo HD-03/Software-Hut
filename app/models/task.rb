@@ -13,6 +13,7 @@
 #  time_set               :datetime         not null
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
+#  student_user_id        :integer          not null
 #  teacher_user_id        :integer          not null
 #
 class Task < ApplicationRecord

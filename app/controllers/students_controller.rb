@@ -1,5 +1,5 @@
 class StudentsController < ApplicationController
   # GET /students
-  def index
+  def dashboard
   end
 end

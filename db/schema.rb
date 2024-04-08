@@ -14,9 +14,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_06_183920) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "admins", id: false, force: :cascade do |t|
-  end
-
   create_table "delayed_jobs", force: :cascade do |t|
     t.integer "priority", default: 0, null: false
     t.integer "attempts", default: 0, null: false
@@ -41,12 +38,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_06_183920) do
     t.index ["updated_at"], name: "index_sessions_on_updated_at"
   end
 
-  create_table "students", id: false, force: :cascade do |t|
-  end
-
-  create_table "students_tasks", id: false, force: :cascade do |t|
-  end
-
   create_table "tasks", force: :cascade do |t|
     t.integer "teacher_user_id", null: false
     t.integer "student_user_id", null: false
@@ -60,9 +51,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_06_183920) do
     t.boolean "recording_boolean", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "teachers", id: false, force: :cascade do |t|
   end
 
   create_table "users", force: :cascade do |t|

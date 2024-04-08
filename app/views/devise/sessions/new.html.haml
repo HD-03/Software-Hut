@@ -2,14 +2,15 @@
 
 .row.justify-content-center
   .col-sm-6.col-lg-4
-    .card.card-light
+    .card.card-light.border-0.rounded-5.shadow-lg.px-3
       = simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
-        .card-header
-          Log In
-        .card-body
+        .card-header.border-0.bg-transparent.text-center.pt-3.pb-0
+          %h5 Log In
+        .card-body.border-0.bg-transparent.pt-0
           = f.input :email, autofocus: true, required: true
-          = f.input :password, required: true
-        .card-footer
-          %button.btn.btn-primary{ type: :submit }
+          .mt-2
+            = f.input :password, required: true
+        .card-footer.border-0.bg-transparent.pt-0
+          %button.btn.btn-primary.border-0.rounded-5.shadow-lg.py-2.px-3{ type: :submit }
             Log in
-          .mt-3= render "devise/shared/links"
+          .pt-2= render "devise/shared/links"

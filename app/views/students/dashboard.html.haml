@@ -7,6 +7,7 @@
           %h3.accordion-header
             %button.accordion-button.collapsed{type: "button", data: { bs_toggle: "collapse", bs_target: "#collapse-#{day}", aria_expanded: "false", aria_controls: "collapse-#{day}" }}
               = day
+
           .accordion-collapse.collapse{id: "collapse-#{day}", data: { bs_parent: "#{day}" }}
             .accordion-body
               .accordion{id: "tasks-#{day}"}
@@ -14,6 +15,7 @@
                   %h4.accordion-header
                     %button.accordion-button.collapsed{type: "button", data: { bs_toggle: "collapse", bs_target: "#task1-#{day}", aria_expanded: "false", aria_controls: "task1-#{day}" }}
                       Task 1
+
                   .accordion-collapse.collapse{id: "task1-#{day}", data: { bs_parent: "#tasks-#{day}" }}
                     .accordion-body
                       %ul.list-unstyled
@@ -23,11 +25,14 @@
                           %a.text-decoration-none{href: "#"} Subtask 2
                         %li
                           %a.text-decoration-none{href: "#"} Subtask 3
+
   .col-sm.p-4.text-white.d-flex.align-items-center
-    .card.border-0.rounded-5.shadow-lg.text-center.h-100.mx-auto
-      .my-auto
+    .card.border-0.rounded-5.shadow-lg.text-center.mx-auto.mb-auto
+      .my-auto.p-3
         .mb-3
           %img.p-4.rounded-circle.img-fluid{src: "https://via.placeholder.com/300x300"}
+
         .progress.m-3
           .progress-bar{role: "progressbar", style: "width: 70%;", aria_valuenow: "70", aria_valuemin: "0", aria_valuemax: "100"} 70%
-        %a.pb-3.text-black{href: "#"} Link
+          
+        %a.text-black{href: "#"} Link

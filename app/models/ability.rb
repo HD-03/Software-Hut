@@ -28,5 +28,14 @@ class Ability
     #
     # See the wiki for details:
     # https://github.com/CanCanCommunity/cancancan/blob/develop/docs/define_check_abilities.md
+
+    user ||= User.new
+
+    if user.role == 2
+      can :manage, Task
+      can :manage, User
+    elsif user.persisted?
+      can [:read, :update], Task
+    end
   end
 end

@@ -28,6 +28,10 @@
 #
 FactoryBot.define do
   factory :user do
-    
+    email { 'student_test@test.com' }
+    username { 'student_test1' }
+    password { 'Password1234' }
+    full_name { 'Student Student' }
+    role { 0 }
   end
 end

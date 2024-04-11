@@ -3,6 +3,6 @@ class TeachersController < ApplicationController
   end
 
   def dashboard
-    @students = Student.all # Suggestion: `@students = User.where(role: :student)`
+    @students = User.where(role: :student)
   end  
 end

@@ -1,0 +1,29 @@
+%h1 All Users
+
+%table
+  %thead
+    %tr
+      %th Name
+      %th Email
+      %th Role
+      %th Actions
+  %tbody
+    - @users.each do |user|
+      %tr
+        %td= user.name
+        %td= user.email
+        %td= user.role.capitalize
+        %td
+
+#container
+  %header
+    %nav
+      %ul.nav
+        %li= link_to 'Home', root_path
+        %li= link_to 'Add User', new_user_path
+        %li= link_to 'Edit User', edit_user_path
+        %li= link_to 'Logout', root_path
+  %main
+    .admin-dashboard
+      %section.user-list
+        - @users.each do |user|

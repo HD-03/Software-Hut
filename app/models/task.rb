@@ -10,16 +10,16 @@
 #  recording_paths  :string
 #  reward_xp        :integer          not null
 #  status           :integer          default("todo"), not null
-#  student          :integer          not null
-#  teacher          :integer          not null
 #  time_set         :datetime         not null
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
+#  student_id       :integer          not null
+#  teacher_id       :integer          not null
 #
 # Foreign Keys
 #
-#  fk_rails_...  (student => users.id)
-#  fk_rails_...  (teacher => users.id)
+#  fk_rails_...  (student_id => users.id)
+#  fk_rails_...  (teacher_id => users.id)
 #
 
 class Task < ApplicationRecord

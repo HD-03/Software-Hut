@@ -41,7 +41,11 @@
         .mb-3
           %img.p-4.rounded-circle.img-fluid{src: "https://via.placeholder.com/300x300"}
 
+        .h3
+          Level
+          = current_user.level
+
         .progress.m-3
-          .progress-bar{role: "progressbar", style: "width: 70%;", aria_valuenow: "70", aria_valuemin: "0", aria_valuemax: "100"} 70%
+          .progress-bar{role: "progressbar", style: "width: 70%;", aria_valuenow: "#{current_user.get_current_level_progress}", aria_valuemin: "0", aria_valuemax: "100"} 70%
           
         %a.text-black{href: "#"} Link

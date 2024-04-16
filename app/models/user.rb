@@ -42,5 +42,26 @@ class User < ApplicationRecord
   #     user = User.find_by(email: 'student@example.com')
   #     puts user.role # Outputs 'student'
 
+  before_save :set_xp_needed_for_next_level_value
+  
+  def set_xp_needed_for_next_level_value
+    max = 600   # max xp threshold which is reached at level 20
+    xp = null   # xp_needed_for_next_level
+
+    if level >= 0 && level <= 20
+      xp = 30 * level
+    elsif level > 20
+      xp = MAX
+    else
+      raise RangeError, "Level can't be below 0"
+    end
+
+    self.xp_needed_for_next_level = xp
+  end
+
+  def get_current_level_progress
+    #returns a percentage
+    (xp_points/xp_needed_for_next_level).round
+  end
 
 end

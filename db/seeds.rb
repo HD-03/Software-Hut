@@ -1,5 +1,6 @@
 # seeds.rb
 
+# User
 # Create an admin user
 User.where(email: 'admin@example.com').first_or_create(
   password: 'Password1234',
@@ -35,3 +36,41 @@ end
     full_name: "Teacher Full Name #{n + 1}"
   )
 end
+
+# Tasks
+students = User.where(role: 'student')
+teachers = User.where(role: 'teacher')
+
+students.each do |student|
+  teachers.each do |teacher|
+    Task.create!(
+      name: 'Practice scales and arpeggios',
+      reward_xp: 30,
+      deadline: 1.week.from_now,
+      description: 'Practice the C major scale and arpeggio patterns for 30 minutes.',
+      time_set: Time.now,
+      teacher: teacher,
+      student: student
+    )
+
+    Task.create!(
+      name: 'Learn a new song',
+      reward_xp: 80,
+      deadline: 1.days.from_now,
+      description: 'Learn to play the song "Imagine" by John Lennon on your instrument.',
+      time_set: Time.now,
+      teacher: teacher,
+      student: student
+    )
+
+    Task.create!(
+      name: 'Prepare for recital',
+      reward_xp: 100,
+      deadline: 2.days.from_now,
+      description: 'Practice and memorize your pieces for the upcoming recital performance.',
+      time_set: Time.now,
+      teacher: teacher,
+      student: student
+    )
+  end
+end  

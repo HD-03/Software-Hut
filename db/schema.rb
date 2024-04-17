@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_04_16_214742) do
+ActiveRecord::Schema[7.0].define(version: 2024_04_16_225207) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -67,7 +67,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_16_214742) do
     t.boolean "unchecked_background"
     t.integer "level", default: 1, null: false
     t.integer "xp_points", default: 0, null: false
-    t.integer "xp_needed_for_next_level", default: 0, null: false
+    t.integer "xp_needed_for_next_level", default: 30, null: false
     t.boolean "old_enough_for_cooler_avatars", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

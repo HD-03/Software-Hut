@@ -19,9 +19,8 @@ User.where(email: 'admin@example.com').first_or_create(
     username: "student_username#{n + 1}",
     full_name: "Student Full Name #{n + 1}",
     avatar_id: 1,
-    level: 1,
-    xp_points: 0,
-    xp_needed_for_next_level: 0,
+    level: rand(10..20),
+    xp_points: rand(30..200),
     old_enough_for_cooler_avatars: false
   )
 end

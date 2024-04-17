@@ -40,12 +40,15 @@
       .my-auto.p-3
         .mb-3
           %img.p-4.rounded-circle.img-fluid{src: "https://via.placeholder.com/300x300"}
-
         .h3
           Level
           = current_user.level
-
-        .progress.m-3
-          .progress-bar{role: "progressbar", style: "width: 70%;", aria_valuenow: "#{current_user.get_current_level_progress}", aria_valuemin: "0", aria_valuemax: "100"} 70%
-          
-        %a.text-black{href: "#"} Link
+        .progress.mt-3.mx-3
+          .progress-bar{role: "progressbar", style: "width: #{current_user.get_current_level_progress}%", aria_valuenow: "#{current_user.get_current_level_progress}", aria_valuemin: "0", aria_valuemax: "100"}
+        .--bs-success-text-emphasis.pb-4  
+          = current_user.xp_points  
+          \/
+          = current_user.xp_needed_for_next_level
+          xp
+    
+        %a.text-black{href: "#"} Change Avatar

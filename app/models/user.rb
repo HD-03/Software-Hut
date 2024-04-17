@@ -14,7 +14,7 @@
 #  role                          :integer          not null
 #  unchecked_background          :boolean
 #  username                      :string           not null
-#  xp_needed_for_next_level      :integer          default(0), not null
+#  xp_needed_for_next_level      :integer          default(30), not null
 #  xp_points                     :integer          default(0), not null
 #  created_at                    :datetime         not null
 #  updated_at                    :datetime         not null
@@ -27,6 +27,8 @@
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE
 #
 class User < ApplicationRecord
+  after_initialize :set_xp_needed_for_next_level_value
+  before_validation :set_xp_needed_for_next_level_value
   has_many :taught_tasks, class_name: 'Task', foreign_key: :teacher
   has_many :studied_tasks, class_name: 'Task', foreign_key: :student
 
@@ -41,12 +43,11 @@ class User < ApplicationRecord
   # Example of how to retrieve a user role:
   #     user = User.find_by(email: 'student@example.com')
   #     puts user.role # Outputs 'student'
-
-  before_save :set_xp_needed_for_next_level_value
+  
   
   def set_xp_needed_for_next_level_value
     max = 600   # max xp threshold which is reached at level 20
-    xp = null   # xp_needed_for_next_level
+    xp = nil   # xp_needed_for_next_level
 
     if level >= 0 && level <= 20
       xp = 30 * level
@@ -61,7 +62,7 @@ class User < ApplicationRecord
 
   def get_current_level_progress
     #returns a percentage
-    (xp_points/xp_needed_for_next_level).round
+    return (xp_points/xp_needed_for_next_level.to_f * 100).round
   end
 
 end

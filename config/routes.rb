@@ -10,6 +10,10 @@ Rails.application.routes.draw do
 
   get 'students/dashboard', to: 'students#dashboard', as: 'students_dashboard'
 
+  resources :tasks do
+    post :search, on: :collection
+  end
+
   # Defines the root path route ("/")
   root "pages#home"
 end

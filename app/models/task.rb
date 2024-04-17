@@ -28,8 +28,19 @@ class Task < ApplicationRecord
 
   enum status: { todo: 0, pending: 1, completed: 2 }
 
-  def deadline_day
-    deadline.strftime('%A')
+  # Returns the day of the week for the deadline if it falls within the current week,
+  # or nil if the deadline is not within the current week.
+  #
+  # @return [String, nil]
+  def deadline_day_this_week
+    current_week_start = Date.current.beginning_of_week
+    current_week_end = Date.current.end_of_week
+  
+    if deadline.between?(current_week_start, current_week_end)
+      deadline.strftime('%A')
+    else
+      nil
+    end
   end
 end
   

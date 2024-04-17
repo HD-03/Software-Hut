@@ -42,8 +42,31 @@ class User < ApplicationRecord
   #     user.save
   # Example of how to retrieve a user role:
   #     user = User.find_by(email: 'student@example.com')
-  #     puts user.role # Outputs 'student'
-  
+  #     puts user.role  >>>  outputs 'student'
+
+  def give_student_xp_points(xp_points_given)
+    new_xp_points_count = self.xp_points + xp_points_given
+    user_leveled_up = false
+
+    if new_xp_points_count < xp_needed_for_next_level
+      self.xp_points = new_xp_points_count
+    elsif new_xp_points_count == xp_needed_for_next_level
+      # level up student and set xp points to zero
+      self.level += 1
+      user_leveled_up = true
+      self.xp_points = 0
+    else
+      # if new_xp_points_count > xp_needed_for_next_level
+      # level up student and set xp points to how much more xp they got than
+      # they needed to level up
+      self.level += 1
+      user_leveled_up = true
+      self.xp_points = new_xp_points_count - xp_needed_for_next_level
+    end
+
+    return user_leveled_up
+
+  end
   
   def set_xp_needed_for_next_level_value
     max = 600   # max xp threshold which is reached at level 20

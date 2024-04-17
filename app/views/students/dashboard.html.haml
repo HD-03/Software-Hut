@@ -12,28 +12,31 @@
 
           .accordion-collapse.collapse{id: "collapse-#{day}", data: { bs_parent: "#{day}" }}
             .accordion-body
-              %table.table
-                %thead
-                  %tr
-                    %th Task
-                    %th Reward XP
-                    %th Teacher
-                    %th
-                %tbody
-                  - @tasks.select { |task| task.deadline_day == day }.each do |task|
-                    %tr{ class: status_class_mapping[task.status.to_s] }
-                      %td.align-middle
-                        = task.name
-                      %td.align-middle
-                        = task.reward_xp
-                      %td.align-middle
-                        = task.teacher.full_name
-                      %td
-                        .btn-toolbar.float-end
-                          - if task.status.to_s == "todo"
-                            = link_to 'Do', '#', class: 'btn btn-outline-secondary btn-sm'
-                          - else
-                            = link_to 'View', '#', class: 'btn btn-outline-secondary btn-sm'
+              - if @tasks.select { |task| task.deadline_day == day }.empty?
+                No tasks for today
+              - else
+                %table.table
+                  %thead
+                    %tr
+                      %th Task
+                      %th Reward XP
+                      %th Teacher
+                      %th
+                  %tbody
+                    - @tasks.select { |task| task.deadline_day == day }.each do |task|
+                      %tr{ class: status_class_mapping[task.status.to_s] }
+                        %td.align-middle
+                          = task.name
+                        %td.align-middle
+                          = task.reward_xp
+                        %td.align-middle
+                          = task.teacher.full_name
+                        %td
+                          .btn-toolbar.float-end
+                            - if task.status.to_s == "todo"
+                              = link_to 'Do', '#', class: 'btn btn-outline-secondary btn-sm'
+                            - else
+                              = link_to 'View', '#', class: 'btn btn-outline-secondary btn-sm'
 
   .col-sm.p-4.text-white.d-flex.align-items-center
     .card.border-0.rounded-5.shadow-lg.text-center.mx-auto.mb-auto

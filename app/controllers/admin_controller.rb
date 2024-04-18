@@ -1,10 +1,13 @@
 class AdminController < ApplicationController
-    #dashboard
+    # before_action :authenticate_admin
+
+    # GET /dashboard
     def dashboard
-        @users = User.all
+        @students = Student.all
+        @teachers = Teacher.all
     end
     
-    # create new users
+    # POST create new users
     def create
     end
 
@@ -14,5 +17,9 @@ class AdminController < ApplicationController
 
     #edit users
     def edit
+    end
+
+    def user_params
+        params.require()
     end
 end

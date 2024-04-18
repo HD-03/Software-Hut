@@ -7,6 +7,19 @@ Rails.application.routes.draw do
   # Example route for adding a new task. Adjust according to your actual controller and action names.
   get 'teachers/add_new_task', to: 'teachers#add_new_task', as: 'new_add_task'
 
+  # route for viewing the admin dashboard
+  get 'admin/dashboard', to: 'admin#dashboard', as: 'admin_dashboard'
+
+  # get route for adding a new user.
+  get 'admin/add_new_user', to: 'admin#add_new_user', as: 'new_add_user'
+
+  # post route to submit the new user form
+
+  #  get route for editing user details
+  get 'admin/edit_user_info', to: 'admin#edit_user_info', as: 'edit_user'
+
+  # route to submit the edit user form
+
   # Defines the root path route ("/")
   root "pages#home"
 end

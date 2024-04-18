@@ -1,0 +1,22 @@
+#container
+  %header
+    %nav
+      %ul.nav
+        %li= link_to 'Home', admin_dashboard_path
+        %li= link_to 'Add User', new_add_user_path
+        %li= link_to 'Edit User', edit_user_path
+        %li= link_to 'Logout', root_path
+  %main
+    .admin-new_user
+      %h1 Add New User
+      -# frozen_string_literal: true
+      = simple_form_for :user do |f|
+        = f.input :full_name, wrapper_html: { class: 'mb-3' }
+        = f.input :email, wrapper_html: { class: 'mb-3' }
+        = f.input :username, wrapper_html: { class: 'mb-3' }
+        = f.input :password, wrapper_html: { class: 'mb-3' }
+        = f.input :type, collection: [['Teacher', 'Teacher'], ['Student', 'Student']], wrapper_html: { class: 'mb-3' }
+
+        %button.btn.btn-primary{ type: 'submit' }
+          Add User
+        = link_to 'Cancel', admin_dashboard_path, class: 'btn btn-link ms-auto'

@@ -10,7 +10,7 @@
             %div
               %h3.accordion-header
                 %button.accordion-button.collapsed{type: "button", data: { bs_toggle: "collapse", bs_target: "#collapse-#{student.username}", aria_expanded: "false", aria_controls: "collapse-#{student.username}" }}
-                  = student.username
+                  = student.full_name
 
             - if @tasks.where(student_user_id: student.id).empty?
               .accordion-collapse.collapse{id: "collapse-#{student.username}", data: { bs_parent: "#{student.username}" }}

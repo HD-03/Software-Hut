@@ -14,7 +14,7 @@
 #  role                          :integer          not null
 #  unchecked_background          :boolean
 #  username                      :string           not null
-#  xp_needed_for_next_level      :integer          default(0), not null
+#  xp_needed_for_next_level      :integer          default(30), not null
 #  xp_points                     :integer          default(0), not null
 #  created_at                    :datetime         not null
 #  updated_at                    :datetime         not null

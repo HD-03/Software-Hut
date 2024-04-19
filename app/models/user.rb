@@ -14,7 +14,7 @@
 #  role                          :integer          not null
 #  unchecked_background          :boolean
 #  username                      :string           not null
-#  xp_needed_for_next_level      :integer          default(0), not null
+#  xp_needed_for_next_level      :integer          default(30), not null
 #  xp_points                     :integer          default(0), not null
 #  created_at                    :datetime         not null
 #  updated_at                    :datetime         not null
@@ -27,6 +27,11 @@
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE
 #
 class User < ApplicationRecord
+  after_initialize :set_xp_needed_for_next_level_value
+  before_validation :set_xp_needed_for_next_level_value
+  has_many :taught_tasks, class_name: 'Task', foreign_key: :teacher
+  has_many :studied_tasks, class_name: 'Task', foreign_key: :student
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :recoverable, :rememberable, :validatable
@@ -38,7 +43,61 @@ class User < ApplicationRecord
   #     user.save
   # Example of how to retrieve a user role:
   #     user = User.find_by(email: 'student@example.com')
-  #     puts user.role # Outputs 'student'
+  #     puts user.role  >>>  outputs 'student'
 
+  def give_student_xp_points(xp_points_given)
+    new_xp_points_count = self.xp_points + xp_points_given
+    user_leveled_up = false
+
+    if new_xp_points_count < xp_needed_for_next_level
+      self.xp_points = new_xp_points_count
+    elsif new_xp_points_count == xp_needed_for_next_level
+      # level up student and set xp points to zero
+      self.level += 1
+      user_leveled_up = true
+      self.xp_points = 0
+    else
+      # if new_xp_points_count > xp_needed_for_next_level
+      # level up student and set xp points to how much more xp they got than
+      # they needed to level up
+      self.level += 1
+      user_leveled_up = true
+      self.xp_points = new_xp_points_count - xp_needed_for_next_level
+    end
+
+    return user_leveled_up
+
+  end
+  
+  # This method is run after user object initialisation, and before_validation, which
+  # includes every time before the user is updated and saved.
+  # Esentially it updates the 'xp_needed_for_next_level' value every time the user
+  # levels up. This is the amount of xp required to reach the next level from the
+  # current one. This is determined using a function y = 30x, where x is level, and
+  # y is 'xp_needed_for_next_level', this reaches a maximum of 600xp needed to level
+  # up, from level 20, and then it stays constant for any higher levels
+  # @params: n/a
+  # @returns: n/a
+  def set_xp_needed_for_next_level_value
+    
+    max = 600   # max xp threshold which is reached at level 20
+    xp = nil   # xp_needed_for_next_level
+
+    if level >= 0 && level <= 20
+      xp = 30 * level
+    elsif level > 20
+      xp = MAX
+    else
+      raise RangeError, "Level can't be below 0"
+    end
+
+    self.xp_needed_for_next_level = xp
+  end
+
+  # @params: n/a
+  # @returns [integer] users xp point progress for the level they're currently on
+  def get_current_level_progress
+    return (xp_points/xp_needed_for_next_level.to_f * 100).round
+  end
 
 end

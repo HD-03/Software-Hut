@@ -27,7 +27,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[7.0]
       t.boolean :unchecked_background
       t.integer :level,                         null: false, default: 1
       t.integer :xp_points,                     null: false, default: 0
-      t.integer :xp_needed_for_next_level,      null: false, default: 0
+      t.integer :xp_needed_for_next_level,      null: false, default: 30
       t.boolean :old_enough_for_cooler_avatars, null: false, default: false
 
       ## Trackable

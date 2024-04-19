@@ -4,7 +4,7 @@ class TasksController < ApplicationController
 
   def create
     @task = Task.new(task_params)
-    @task.teacher_user_id = current_user.id
+    @task.teacher_id = current_user.id
     @task.time_set = Time.current # or another appropriate time value
 
 
@@ -47,7 +47,7 @@ class TasksController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def task_params
-      # Ensure you permit student_user_id and not user_id if that's what the Task model expects
+      # Ensure you permit student__id and not user_id if that's what the Task model expects
       params.require(:task).permit(:name, :student_id, :teacher_id, :description, :deadline, :recording_boolean,:reward_xp)
     end
 end

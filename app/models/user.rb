@@ -37,7 +37,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :recoverable, :rememberable, :validatable
 
   enum role: { student: 0, teacher: 1, admin: 2 }
-  has_many :tasks, foreign_key: "student_user_id"
+  has_many :tasks, foreign_key: "student_id"
   # Example of how to set the role when creating a user:
   #     user = User.new(email: 'student@example.com', password: 'password', role: :student)
   #     user.save

@@ -3,8 +3,8 @@
     .col-md-6
       = form_for @task, url: create_task_path, html: {class: "form-inline"} do |f|
         .form-group.mb-3
-          = f.label :student_user_id, "Student's Full Name", class: 'form-label'
-          = f.collection_select :student_user_id, @students, :id, :full_name, {prompt: "Choose a Student"}, {class: "form-select"}
+          = f.label :student_id, "Student's Full Name", class: 'form-label'
+          = f.collection_select :student_id, @students, :id, :full_name, {prompt: "Choose a Student"}, {class: "form-select"}
 
         .form-group.mb-3
           = f.label :name, "Task Name", class: 'form-label'
@@ -15,8 +15,8 @@
           = f.text_field :description, class: "form-control", placeholder: "Task Description"
 
         .form-group.mb-3
-          = f.label :base_experience_points, "Experience Points", class: 'form-label'
-          = f.number_field :base_experience_points, class: "form-control", placeholder: "0"
+          = f.label :reward_xp, "Experience Points", class: 'form-label'
+          = f.number_field :reward_xp, class: "form-control", placeholder: "0"
 
         .form-group.mb-3
           = f.label :deadline, 'Deadline', class: 'form-label'

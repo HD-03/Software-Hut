@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_04_16_225207) do
+ActiveRecord::Schema[7.0].define(version: 2024_04_06_183920) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -45,7 +45,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_16_225207) do
     t.text "description"
     t.datetime "time_set", null: false
     t.datetime "deadline", null: false
-    t.integer "base_experience_points", null: false
+    t.integer "reward_xp", null: false
     t.integer "status", default: 0, null: false
     t.string "attachment_paths", default: [], array: true
     t.boolean "recording_boolean", default: false, null: false

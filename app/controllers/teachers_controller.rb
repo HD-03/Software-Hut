@@ -8,6 +8,7 @@ class TeachersController < ApplicationController
 
   def dashboard
     @students = User.where(role: :student)  # Assuming you have a role attribute
+    @tasks = Task.all
   end
 
   private

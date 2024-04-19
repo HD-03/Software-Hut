@@ -12,16 +12,16 @@
                 %button.accordion-button.collapsed{type: "button", data: { bs_toggle: "collapse", bs_target: "#collapse-#{student.username}", aria_expanded: "false", aria_controls: "collapse-#{student.username}" }}
                   = student.username
 
-            - 3.times do |t|
+            - @tasks.where(student_user_id: student.id).each do |t|
               .accordion-collapse.collapse{id: "collapse-#{student.username}", data: { bs_parent: "#{student.username}" }}
                 .accordion-body
                   .accordion{id: "tasks-#{student.username}"}
                     .accordion-item
                       %h4.accordion-header
-                        %button.accordion-button.collapsed{type: "button", data: { bs_toggle: "collapse", bs_target: "#task#{t+1}-#{student.username}", aria_expanded: "false", aria_controls: "task#{t+1}-#{student.username}" }}
-                          Task #{t+1}
+                        %button.accordion-button.collapsed{type: "button", data: { bs_toggle: "collapse", bs_target: "#task#{t.name}-#{student.username}", aria_expanded: "false", aria_controls: "task#{t.name}-#{student.username}" }}
+                          #{t.name}
 
-                      .accordion-collapse.collapse{id: "task#{t+1}-#{student.username}", data: { bs_parent: "tasks-#{student.username}" }}
+                      .accordion-collapse.collapse{id: "task#{t.name}-#{student.username}", data: { bs_parent: "tasks-#{student.username}" }}
                         .accordion-body
                           .text-start 
-                            Details for task #{t+1}
+                            #{t.description}

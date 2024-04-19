@@ -12,6 +12,13 @@
                 %button.accordion-button.collapsed{type: "button", data: { bs_toggle: "collapse", bs_target: "#collapse-#{student.username}", aria_expanded: "false", aria_controls: "collapse-#{student.username}" }}
                   = student.username
 
+            - if @tasks.where(student_user_id: student.id).empty?
+              .accordion-collapse.collapse{id: "collapse-#{student.username}", data: { bs_parent: "#{student.username}" }}
+                .accordion-body 
+                  .accordion{id: "tasks-#{student.username}"}
+                    .accordion-item
+                      No tasks available for this student
+
             - @tasks.where(student_user_id: student.id).each do |t|
               .accordion-collapse.collapse{id: "collapse-#{student.username}", data: { bs_parent: "#{student.username}" }}
                 .accordion-body

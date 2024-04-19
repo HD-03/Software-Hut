@@ -4,16 +4,25 @@ class TasksController < ApplicationController
   # GET /tasks
   def index
     @tasks = Task.all
+    @tasks = @tasks.where(student_id: current_user.id) if current_user.role == 'student'
   end
 
   # POST /tasks/search
   def search
-    @tasks = Task.all
+    if current_user.role == 'student'
+      @tasks = Task.where(student_id: current_user.id)
+    else
+      @tasks = Task.where(teacher_id: current_user.id)
+    end
+    
+    # @tasks = @tasks.where(teacher_id: params[:search][:teacher_id]) if params[:search][:teacher_id].present?
+    # @tasks = @tasks.where(student_id: params[:search][:student_id]) if params[:search][:student_id].present?
+    # @tasks = @tasks.where(name: params[:search][:name]) if params[:search][:name].present?
+
     @tasks = @tasks.where(teacher_id: params[:search][:teacher_id]) if params[:search][:teacher_id].present?
-    @tasks = @tasks.where(student_id: params[:search][:student_id]) if params[:search][:student_id].present?
-    @tasks = @tasks.where(name: params[:search][:name]) if params[:search][:name].present?
-      
-    render :tasks
+    @tasks = @tasks.where('name LIKE ?', "%#{params[:search][:name]}%") if params[:search][:name].present?
+
+    render :index
   end
 
   private

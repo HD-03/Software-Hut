@@ -1,0 +1,40 @@
+- status_class_mapping = {"completed" => "table-success", "todo" => "table-danger", "pending" => "table-warning"}
+.card
+  .card-header.text-center
+    %h2 Tasks
+    %h5 There are #{@tasks.select { |task| task.status == 'todo' }.size} tasks to do
+
+    -# - if can?(:create, Product)
+    -#   = link_to 'New Product', new_product_path, class: 'btn btn-outline-secondary ms-auto'
+  = simple_form_for :search, url: search_tasks_path, method: :post do |f|
+    .row.p-3
+      .col-md-4
+        = f.input :name
+      .col-md-4
+        = f.input :teacher_id, as: :select, collection: @tasks.map { |task| [task.teacher.full_name, task.teacher.id] }
+      .col-md-2.mt-auto
+        = f.submit 'Search', class: 'btn btn-outline-secondary'
+        = link_to 'Reset', tasks_path, class: 'btn btn-outline-secondary'
+  %table.table
+    %thead
+      %tr
+        %th Task
+        %th Description
+        %th Reward XP
+        %th Deadline
+        %th Teacher
+        %th
+    %tbody
+      - @tasks.each do |task|
+        %tr{ class: status_class_mapping[task.status.to_s] }
+          %td= task.name
+          %td= task.description
+          %td= task.reward_xp
+          %td= task.deadline_readable
+          %td= task.teacher.full_name
+          %td
+            .btn-toolbar.float-end
+              - if task.status.to_s == "todo"
+                = link_to 'Do', '#', class: 'btn btn-outline-secondary btn-sm'
+              - else
+                = link_to 'View', '#', class: 'btn btn-outline-secondary btn-sm'

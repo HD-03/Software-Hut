@@ -42,5 +42,13 @@ class Task < ApplicationRecord
       nil
     end
   end
+
+  def deadline_readable
+    day = deadline.strftime('%d') + 'th'
+    month = deadline.strftime('%B')
+    year = deadline.strftime('%Y')
+
+    "#{day} #{month} #{year}"
+  end
 end
   

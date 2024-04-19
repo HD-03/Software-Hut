@@ -68,7 +68,17 @@ class User < ApplicationRecord
 
   end
   
+  # This method is run after user object initialisation, and before_validation, which
+  # includes every time before the user is updated and saved.
+  # Esentially it updates the 'xp_needed_for_next_level' value every time the user
+  # levels up. This is the amount of xp required to reach the next level from the
+  # current one. This is determined using a function y = 30x, where x is level, and
+  # y is 'xp_needed_for_next_level', this reaches a maximum of 600xp needed to level
+  # up, from level 20, and then it stays constant for any higher levels
+  # @params: n/a
+  # @returns: n/a
   def set_xp_needed_for_next_level_value
+    
     max = 600   # max xp threshold which is reached at level 20
     xp = nil   # xp_needed_for_next_level
 
@@ -83,8 +93,9 @@ class User < ApplicationRecord
     self.xp_needed_for_next_level = xp
   end
 
+  # @params: n/a
+  # @returns [integer] users xp point progress for the level they're currently on
   def get_current_level_progress
-    #returns a percentage
     return (xp_points/xp_needed_for_next_level.to_f * 100).round
   end
 

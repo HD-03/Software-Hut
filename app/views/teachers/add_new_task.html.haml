@@ -1,26 +1,34 @@
-.row.h-100.justify-content-center.text-center.p-3
-  .btn.btn-danger.border-0.rounded-5.shadow-lg.py-2.px-3.d-inline-block{style: "width: auto !important;"}
-    = link_to 'Back', teachers_dashboard_path, class: 'nav-link'
-  .break
+.container.mt-5
+  .row.justify-content-center
+    .col-md-6
+      = form_for @task, url: create_task_path, html: {class: "form-inline"} do |f|
+        .form-group.mb-3
+          = f.label :student_user_id, "Student's Full Name", class: 'form-label'
+          = f.collection_select :student_user_id, @students, :id, :full_name, {prompt: "Choose a Student"}, {class: "form-select"}
 
-  .form.mt-3.d-inline-block{style: "width: auto !important;"}
-    = form_tag(teachers_dashboard_path, method: "post", class: "form-inline") do 
-      .form-group.mx-2.my-3 
-        = text_field_tag :student_name, nil, class: "form-control", placeholder: "Student's Full Name"
-      .form-group.mx-2.my-3 
-        = text_field_tag :task_name, nil, class: "form-control", placeholder: "Task Name"
-      .form-group-mx-2.my-3
-        = text_field_tag :task_description, nil, class: "form-control", placeholder: "Task Description"
-      .form-group.mx-2.my-3 
-        = label_tag 'Deadline'
-        = date_field_tag :deadline, nil, class: "form-control"
-      .form-group.mx-2.my-3 
-        = label_tag 'Allow Recording?'
-        = select_tag :recording, options_for_select([['No', false], ['Yes', true]], nil), class: "form-control"
-      .form-group.mx-2.my-3 
-        = label_tag 'Attach MP3 file?'
-        = file_field_tag :mp3_file, accept: 'audio/mp3', class: "form-control"
-  .break
+        .form-group.mb-3
+          = f.label :name, "Task Name", class: 'form-label'
+          = f.text_field :name, class: "form-control", placeholder: "Task Name"
 
-  .btn.btn-success.border-0.rounded-5.shadow-lg.py-2.px-3.my-3.d-inline-block{style: "width: auto !important;"}
-    = link_to 'Add Task', teachers_dashboard_path, class: 'nav-link'
+        .form-group.mb-3
+          = f.label :description, "Task Description", class: 'form-label'
+          = f.text_field :description, class: "form-control", placeholder: "Task Description"
+
+        .form-group.mb-3
+          = f.label :base_experience_points, "Experience Points", class: 'form-label'
+          = f.number_field :base_experience_points, class: "form-control", placeholder: "0"
+
+        .form-group.mb-3
+          = f.label :deadline, 'Deadline', class: 'form-label'
+          = f.date_select :deadline, {}, class: "form-control"
+
+        .form-group.mb-3
+          = f.label :recording_boolean, 'Allow Recording?', class: 'form-label'
+          = f.select :recording_boolean, [['No', false], ['Yes', true]], {}, class: "form-select"
+
+        -# .form-group.mb-3
+        -#   = f.label :mp3_file, 'Attach MP3 file?', class: 'form-label'
+        -#   = f.file_field :mp3_file, accept: 'audio/mp3', class: "form-control"
+
+        .form-group.text-center
+          = f.submit 'Add Task', class: 'btn btn-success border-0 rounded-5 shadow-lg py-2 px-3'

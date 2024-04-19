@@ -15,9 +15,7 @@
             - if @tasks.where(student_user_id: student.id).empty?
               .accordion-collapse.collapse{id: "collapse-#{student.username}", data: { bs_parent: "#{student.username}" }}
                 .accordion-body 
-                  .accordion{id: "tasks-#{student.username}"}
-                    .accordion-item
-                      No tasks available for this student
+                  No tasks available for this student
 
             - @tasks.where(student_user_id: student.id).each do |t|
               .accordion-collapse.collapse{id: "collapse-#{student.username}", data: { bs_parent: "#{student.username}" }}

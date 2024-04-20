@@ -17,8 +17,11 @@ class TasksController < ApplicationController
 
   # GET /tasks
   def index
-    @tasks = Task.all
-    @tasks = @tasks.where(student_id: current_user.id) if current_user.role == 'student'
+    if current_user.role == 'teacher'
+      @tasks = Task.where(teacher_id: current_user.id)
+    elsif current_user.role == 'student'
+      @tasks = Task.where(student_id: current_user.id)
+    end
   end
 
   # POST /tasks/search

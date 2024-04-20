@@ -10,36 +10,31 @@
             %div
               %h3.accordion-header
                 %button.accordion-button.collapsed{type: "button", data: { bs_toggle: "collapse", bs_target: "#collapse-#{student.username}", aria_expanded: "false", aria_controls: "collapse-#{student.username}" }}
-                  = student.full_name
+                  = student.username
 
             - if @tasks.where(student_id: student.id).empty?
               .accordion-collapse.collapse{id: "collapse-#{student.username}", data: { bs_parent: "#{student.username}" }}
                 .accordion-body 
                   No tasks available for this student
-
-            - @tasks.where(student_id: student.id).each do |t|
+            - else
               .accordion-collapse.collapse{id: "collapse-#{student.username}", data: { bs_parent: "#{student.username}" }}
                 .accordion-body
-                  .accordion{id: "tasks-#{student.username}"}
-                    .accordion-item
-                      %h4.accordion-header
-                        %button.accordion-button.collapsed{type: "button", data: { bs_toggle: "collapse", bs_target: "#task#{t.id}-#{student.username}", aria_expanded: "false", aria_controls: "task#{t.id}-#{student.username}" }}
-                          Task Name : #{t.name}
-
-                      .accordion-collapse.collapse{id: "task#{t.id}-#{student.username}", data: { bs_parent: "tasks-#{student.username}" }}
-                        .accordion-body
-                          .row
-                            .col
-                              %p.text-start Task Description: #{t.description}
-                          .row
-                            .col
-                              %p.text-start Time Set: #{t.time_set.strftime("%Y-%m-%d %H:%M")}
-                          .row
-                            .col
-                              %p.text-start Deadline: #{t.deadline.strftime("%Y-%m-%d %H:%M")}
-                          .row
-                            .col
-                              %p.text-start Reward XP: #{t.reward_xp}
-                          .row
-                            .col
-                              %p.text-start Status: #{t.status}
+                  %table.table
+                    %thead
+                      %tr
+                        %th Task
+                        %th Description
+                        %th Reward XP
+                        %th Deadline
+                        %th Teacher
+                        %th
+                    %tbody
+                      - @tasks.where(student_id: student.id).each do |task|
+                        %tr{ class: status_class_mapping[task.status] }
+                          %td= task.name
+                          %td= task.description
+                          %td= task.reward_xp
+                          %td= task.deadline.strftime("%e %b %Y")
+                          %td= task.teacher.full_name
+                          %td
+                            = link_to 'View', view_task_path(task), class: 'btn btn-outline-secondary btn-sm'

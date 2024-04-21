@@ -1,5 +1,19 @@
 class TasksController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_task, only: %i[ show edit update destroy ]
+
+  def create
+    @task = Task.new(task_params)
+    @task.teacher_id = current_user.id
+    @task.time_set = Time.current # or another appropriate time value
+
+
+    if @task.save
+      redirect_to teachers_dashboard_path, notice: 'Task was successfully created.'
+    else
+      render 'teachers/add_new_task'
+    end
+  end
 
   # GET /tasks
   def index
@@ -32,7 +46,8 @@ class TasksController < ApplicationController
     end
 
     # Only allow a list of trusted parameters through.
-    def tasks_params
-      params.require(:task).permit(:name, :teacher_id, :student_id)
+    def task_params
+      # Ensure you permit student__id and not user_id if that's what the Task model expects
+      params.require(:task).permit(:name, :student_id, :teacher_id, :description, :deadline, :recording_boolean,:reward_xp)
     end
 end

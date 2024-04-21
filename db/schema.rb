@@ -39,13 +39,13 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_19_111056) do
   end
 
   create_table "tasks", force: :cascade do |t|
-    t.integer "teacher_user_id", null: false
-    t.integer "student_user_id", null: false
+    t.integer "teacher_id", null: false
+    t.integer "student_id", null: false
     t.string "name", null: false
     t.text "description"
     t.datetime "time_set", null: false
     t.datetime "deadline", null: false
-    t.integer "base_experience_points", null: false
+    t.integer "reward_xp", null: false
     t.integer "status", default: 0, null: false
     t.string "attachment_paths", default: [], array: true
     t.boolean "recording_boolean", default: false, null: false
@@ -67,7 +67,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_19_111056) do
     t.boolean "unchecked_background"
     t.integer "level", default: 1, null: false
     t.integer "xp_points", default: 0, null: false
-    t.integer "xp_needed_for_next_level", default: 0, null: false
+    t.integer "xp_needed_for_next_level", default: 30, null: false
     t.boolean "old_enough_for_cooler_avatars", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

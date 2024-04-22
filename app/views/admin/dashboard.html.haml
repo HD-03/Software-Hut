@@ -1,45 +1,44 @@
 #container
   %header
-    %nav
-      %ul.nav
-        %li= link_to 'Home', admin_dashboard_path
-        %li= link_to 'Add User', new_add_user_path
-        %li= link_to 'Edit User', edit_user_path
-        %li= link_to 'Logout', root_path
-
     .row.justify-content-center
       .col-sm-12.col-lg-12
         .card
-          .card-header
-            Dashboard
           .card-body
             %h3 Students
             %table.table.table-striped
               %thead
                 %tr
                   %th Name
+                  %th Username
                   %th Email
-                  %th Level
               %tbody
                 - @students.each do |student|
-                  %tr
+                  %tr{id: "user_#{student.id}"}
                     %td= student.full_name
+                    %td= student.username
                     %td= student.email
-                    %td= student.level
+                    %td
+                      = link_to 'Edit', edit_user_path(student.id), class: 'btn btn-sm btn-primary'
+                      = link_to 'Delete', delete_user_path(student.id), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger'
 
             %h3 Teachers
             %table.table.table-striped
               %thead
                 %tr
                   %th Name
+                  %th Username
                   %th Email
               %tbody
                 - @teachers.each do |teacher|
-                  %tr
+                  %tr{id: "user_#{teacher.id}"}
                     %td= teacher.full_name
+                    %td= teacher.username
                     %td= teacher.email
+                    %td
+                      = link_to 'Edit', edit_user_path(teacher.id), class: 'btn btn-sm btn-primary'
+                      = link_to 'Delete', delete_user_path(teacher.id), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger'
+
 
           .card-footer.d-flex.justify-content-between
             = link_to 'Add User', new_add_user_path, class: 'btn btn-primary'
-            = link_to 'Logout', root_path, class: 'btn btn-secondary'
       

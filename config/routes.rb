@@ -10,27 +10,28 @@ Rails.application.routes.draw do
 
   get 'students/dashboard', to: 'students#dashboard', as: 'students_dashboard'
 
+  get 'admin/dashboard', to: 'admin#dashboard', as: 'admin_dashboard'
+
   # -------------------------------------------------------------------
   #       check merge issues here !!!!!!!!!!!!!!!!!!!!!!!!!!
+  # get route for adding a new user.
+  get 'admin/add_new_user', to: 'admin#add_new_user', as: 'new_add_user'
+
+  # post route to submit the new user form
+  post 'admin/add_new_user', to: 'admin#create', as: 'create_new_user'
+
+  delete 'admin/delete_user/:id', to: 'admin#delete_user', as: 'delete_user'
+
   post 'teachers/tasks', to: 'tasks#create', as: 'create_task'
 
   resources :tasks do
     post :search, on: :collection
   end
+
+  resources :users do
+    post :search, on: :collection
+  end
   # -------------------------------------------------------------------
-
-  # route for viewing the admin dashboard
-  get 'admin/dashboard', to: 'admin#dashboard', as: 'admin_dashboard'
-
-  # get route for adding a new user.
-  get 'admin/add_new_user', to: 'admin#add_new_user', as: 'new_add_user'
-
-  # post route to submit the new user form
-
-  #  get route for editing user details
-  get 'admin/edit_user_info', to: 'admin#edit_user_info', as: 'edit_user'
-
-  # route to submit the edit user form
 
   # Defines the root path route ("/")
   root "pages#home"

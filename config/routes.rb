@@ -21,4 +21,8 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root "pages#home"
+
+  post 'students/give_student_xp', to: 'students#give_student_xp'
+
+  get 'students/leveled_up', to: 'students#display_level_up_modal'
 end

@@ -57,3 +57,25 @@
         .btn.btn-primary.border-0.rounded-5.shadow-lg.py-2.px-3.ms-auto.my-4
           = link_to 'Change Avatar', '#', class: 'text-light link-underline link-underline-opacity-0'
         -# %a.text-black{href: "#"} Change Avatar
+        .btn.btn-primary.border-0.rounded-5.shadow-lg.py-2.px-3.ms-auto.my-4
+          = link_to 'Gain 300 xp (for testing)', 'give_student_xp', class: 'text-light link-underline link-underline-opacity-0', method: :post
+  
+  - if @show_level_up_modal
+    - puts "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    :javascript
+      //$('#levelUpModal').modal('show');
+      jQuery.noConflict();
+      jQuery('#levelUpModal').modal('show');
+    - current_user.update(recently_leveled_up: false)
+
+  .modal.fade#levelUpModal(tabindex="-1" role="dialog" aria-labelledby="levelUpModalLabel" aria-hidden="true")
+    .modal-dialog.modal-dialog-centered
+      .modal-content
+        .modal-header
+          %h5.modal-title#levelUpModalLabel Congratulations!
+          %button.close(type="button" data-dismiss="modal" aria-label="Close")
+            %span(aria-hidden="true") ×
+        .modal-body
+          %p You've reached a new level!
+        .modal-footer
+          %button.btn.btn-secondary(type="button" data-dismiss="modal") Close

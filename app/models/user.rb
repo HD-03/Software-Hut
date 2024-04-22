@@ -8,6 +8,7 @@
 #  full_name                     :string           not null
 #  level                         :integer          default(1), not null
 #  old_enough_for_cooler_avatars :boolean          default(FALSE), not null
+#  recently_leveled_up           :boolean          default(FALSE), not null
 #  remember_created_at           :datetime
 #  reset_password_sent_at        :datetime
 #  reset_password_token          :string
@@ -65,7 +66,8 @@ class User < ApplicationRecord
       self.xp_points = new_xp_points_count - xp_needed_for_next_level
     end
 
-    return user_leveled_up
+    self.recently_leveled_up = user_leveled_up
+    self.save
 
   end
   
@@ -86,7 +88,7 @@ class User < ApplicationRecord
     if level >= 0 && level <= 20
       xp = 30 * level
     elsif level > 20
-      xp = MAX
+      xp = max
     else
       raise RangeError, "Level can't be below 0"
     end

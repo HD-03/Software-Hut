@@ -11,4 +11,3 @@ class StudentDecorator < ApplicationDecorator
   #   end
 
 end
-

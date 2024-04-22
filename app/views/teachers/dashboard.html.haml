@@ -1,79 +1,38 @@
-!!! 5
-:javascript
-  function openTaskPopup(taskName, taskId) {
-    const popup = document.getElementById('taskPopup');
-    const popupContent = document.getElementById('taskPopupContent');
-    popupContent.textContent = 'Details for ' + taskName + ' (ID: ' + taskId + ')';
-    popup.style.display = 'block';
-  }
+- status_class_mapping = {"completed" => "table-success", "todo" => "table-danger", "pending" => "table-warning"}
+.row.justify-content-center.p-3
+  %header.pb-3
+    .d-flex.justify-content-between.align-items-center
+      %h1 My Students
+      = link_to 'Set a Task', new_add_task_path, class: 'btn btn-primary'
 
-  function closeTaskPopup() {
-    const popup = document.getElementById('taskPopup');
-    popup.style.display = 'none';
-  }
-
-  window.onclick = function(event) {
-    const popup = document.getElementById('taskPopup');
-    if (event.target == popup) {
-      popup.style.display = 'none';
-    }
-  }
-
-#container
-  %header
-    %nav
-      %ul.nav
-        %li= link_to 'Home', root_path
-        %li= link_to 'Set Task', new_add_task_path
-        %li= link_to 'Logout', root_path
   %main
-    .teacher-dashboard
-      %section.student-list
-        - @students.each do |student|
-          %div
-            %h3= student.username
-            %ul
-              - student.tasks.each do |task|
-                %li= link_to task.name, '#', onclick: "openTaskPopup('#{task.name}', '#{task.id}')"
+    - @students.each do |student|
+      .card.mb-4{id: "#{student.full_name}"}
+        .card-header
+          %h5.card-title= student.full_name
 
-#taskPopup.modal
-  .modal-content
-    %span.close-button{ onclick: "closeTaskPopup()" } &times;
-    %p#taskPopupContent Details for the task will
-  %footer
-    Footer
-
-
-:css
-  .modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgb(0,0,0);
-    background-color: rgba(0,0,0,0.4);
-    padding-top: 60px;
-  }
-  .modal-content {
-    background-color: #fefefe;
-    margin: 5% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-  }
-  .close-button {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-  }
-  .close-button:hover,
-  .close-button:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-  }
+        - if @tasks.where(student_id: student.id).empty?
+          .card-body
+            %p No tasks available for this student
+        - else
+          .table-responsive
+            %table.table.table-hover
+              %thead.thead-light
+                %tr
+                  %th Task
+                  %th Description
+                  %th Reward XP
+                  %th Deadline
+                  %th Status
+                  %th
+              %tbody
+                - @tasks.where(student_id: student.id).each do |task|
+                  %tr{ class: status_class_mapping[task.status] }
+                    %td= task.name
+                    %td= task.description
+                    %td= task.reward_xp
+                    %td= task.deadline.strftime("%e %b %Y")
+                    %td
+                      %span.badge{ class: "badge-#{status_class_mapping[task.status]}" }= task.status.capitalize
+                    %td
+                      %button.btn.btn-outline-secondary.btn-sm.disabled View

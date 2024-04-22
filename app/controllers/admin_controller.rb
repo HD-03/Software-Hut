@@ -3,8 +3,8 @@ class AdminController < ApplicationController
 
     # GET /dashboard
     def dashboard
-        @students = Student.all
-        @teachers = Teacher.all
+        @students = User.where(role: :student)
+        @teachers = User.where(role: :teacher)
     end
     
     # POST create new users

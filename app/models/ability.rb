@@ -35,7 +35,7 @@ class Ability
       can :manage, Task
       can :manage, User
     elsif user.role == 'teacher'
-      can :manage, Task
+      can [:create, :update, :destroy], Task
       can :read, User
     elsif user.persisted?
       can :read, Task

@@ -9,6 +9,8 @@ class TasksController < ApplicationController
   def index
     @tasks = Task.all
     @tasks = @tasks.where(student_id: current_user.id) if current_user.role == 'student'
+
+    authorize! :read, @tasks
   end
 
   # GET /tasks/1

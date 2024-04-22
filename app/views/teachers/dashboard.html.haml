@@ -1,43 +1,50 @@
 - status_class_mapping = {"completed" => "table-success", "todo" => "table-danger", "pending" => "table-warning"}
 .row.justify-content-center.p-3
-  %header.pb-3
+  .pb-3
     .d-flex.justify-content-between.align-items-center
       %h1 My Students
       = link_to 'Set a Task', new_add_task_path, class: 'btn btn-primary'
 
-  %main
+  %section
     - @students.each do |student|
-      .card.mb-4{id: "#{student.full_name}"}
-        .card-header
-          %h5.card-title= student.full_name
-
-        - if @tasks.where(student_id: student.id).empty?
-          .card-body
-            %p No tasks available for this student
-        - else
-          .table-responsive
-            %table.table.table-hover
-              %thead.thead-light
-                %tr
-                  %th Task
-                  %th Description
-                  %th Reward XP
-                  %th Deadline
-                  %th Status
-                  %th
-              %tbody
-                - @tasks.where(student_id: student.id).each do |task|
-                  %tr{ class: status_class_mapping[task.status] }
-                    %td= task.name
-                    %td= task.description
-                    %td= task.reward_xp
-                    %td= task.deadline.strftime("%e %b %Y")
-                    %td.align-middle.fs-4
-                      - if task.status.to_s == "completed"
-                        %i.bi.bi-check2-all
-                      - elsif task.status.to_s == "pending"
-                        %i.bi.bi-check2
-                      - else
-                        %i.bi.bi-clock-history
-                    %td
-                      %button.btn.btn-outline-secondary.btn-sm.disabled View
+      -# .card.mb-4{id: "#{student.full_name}"}
+      -#   .card-header
+      -#     %h5.card-title= student.full_name
+      - username = student.username
+      .pb-2.accordion{id: "#{username}"}
+        .accordion-item
+          %h3.accordion-header
+            %button.accordion-button{ class: 'collapsed', type: "button", data: { bs_toggle: "collapse", bs_target: "#collapse-#{username}", aria_expanded: 'false', aria_controls: "collapse-#{username}" } }
+              = student.full_name
+          .accordion-collapse.collapse{ id: "collapse-#{username}", data: { bs_parent: "#{username}" } }
+            .accordion-body
+              - if @tasks.where(student_id: student.id).empty?
+                .card-body
+                  %p No tasks available for this student
+              - else
+                .table-responsive
+                  %table.table.table-hover
+                    %thead.thead-light
+                      %tr
+                        %th Task
+                        %th Description
+                        %th Reward XP
+                        %th Deadline
+                        %th Status
+                        %th
+                    %tbody
+                      - @tasks.where(student_id: student.id).each do |task|
+                        %tr{ class: status_class_mapping[task.status] }
+                          %td= task.name
+                          %td= task.description
+                          %td= task.reward_xp
+                          %td= task.deadline.strftime("%e %b %Y")
+                          %td.align-middle.fs-4
+                            - if task.status.to_s == "completed"
+                              %i.bi.bi-check2-all
+                            - elsif task.status.to_s == "pending"
+                              %i.bi.bi-check2
+                            - else
+                              %i.bi.bi-clock-history
+                          %td
+                            %button.btn.btn-outline-secondary.btn-sm.disabled View

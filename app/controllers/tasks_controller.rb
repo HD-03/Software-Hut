@@ -2,14 +2,28 @@ class TasksController < ApplicationController
   before_action :authenticate_user!
   before_action :set_task, only: %i[ show edit update destroy ]
 
+
+  def new
+    @task = Task.new
+  end
+
   def create
-    @task = Task.new(task_params)
-    @task.teacher_id = current_user.id
-    @task.time_set = Time.current # or another appropriate time value
+    student_ids = params[:task].delete(:student_id).reject(&:empty?) # Remove empty elements
 
+    # Iterate over each student ID and create a new task
+    @tasks = student_ids.map do |student_id|
+      current_task = Task.new(task_params)
+      current_task.student_id = student_id
+      current_task.teacher_id = current_user.id
+      current_task.time_set = Time.current
 
-    if @task.save
-      redirect_to teachers_dashboard_path, notice: 'Task was successfully created.'
+      # You can handle each save individually or collect errors
+      current_task.save
+      current_task
+    end
+
+    if @tasks.all?(&:persisted?)
+      redirect_to teachers_dashboard_path, notice: 'Tasks were successfully created.'
     else
       render 'teachers/add_new_task'
     end
@@ -17,8 +31,11 @@ class TasksController < ApplicationController
 
   # GET /tasks
   def index
-    @tasks = Task.all
-    @tasks = @tasks.where(student_id: current_user.id) if current_user.role == 'student'
+    if current_user.role == 'teacher'
+      @tasks = Task.where(teacher_id: current_user.id)
+    elsif current_user.role == 'student'
+      @tasks = Task.where(student_id: current_user.id)
+    end
   end
 
   # POST /tasks/search
@@ -28,7 +45,7 @@ class TasksController < ApplicationController
     else
       @tasks = Task.where(teacher_id: current_user.id)
     end
-    
+
     # @tasks = @tasks.where(teacher_id: params[:search][:teacher_id]) if params[:search][:teacher_id].present?
     # @tasks = @tasks.where(student_id: params[:search][:student_id]) if params[:search][:student_id].present?
     # @tasks = @tasks.where(name: params[:search][:name]) if params[:search][:name].present?

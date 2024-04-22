@@ -9,8 +9,6 @@ class TasksController < ApplicationController
   def index
     @tasks = Task.all
     @tasks = @tasks.where(student_id: current_user.id) if current_user.role == 'student'
-
-    authorize! :read, @tasks
   end
 
   # GET /tasks/1
@@ -89,7 +87,7 @@ class TasksController < ApplicationController
     end
 
     def set_students
-      @students = User.where(role: :student)
+      @students =  User.find(session[:student_ids])
     end
 
     # Only allow a list of trusted parameters through.

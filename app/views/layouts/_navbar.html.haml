@@ -10,7 +10,7 @@
         %ul.navbar-nav.me-auto.mb-2.mb-lg-0
           %li.nav-item.ps-3
             - if current_user.role == 'admin' 
-              = link_to 'Home', admin_dashboard_path, class: 'nav-link active', aria_current: 'page'
+              -# = link_to 'Home', admin_dashboard_path, class: 'nav-link active', aria_current: 'page'
             - elsif current_user.role == 'teacher'
               = link_to 'Home', teachers_dashboard_path, class: 'nav-link active', aria_current: 'page'
             - else 

@@ -32,7 +32,12 @@
                     %td= task.description
                     %td= task.reward_xp
                     %td= task.deadline.strftime("%e %b %Y")
-                    %td
-                      %span.badge{ class: "badge-#{status_class_mapping[task.status]}" }= task.status.capitalize
+                    %td.align-middle.fs-4
+                      - if task.status.to_s == "completed"
+                        %i.bi.bi-check2-all
+                      - elsif task.status.to_s == "pending"
+                        %i.bi.bi-check2
+                      - else
+                        %i.bi.bi-clock-history
                     %td
                       %button.btn.btn-outline-secondary.btn-sm.disabled View

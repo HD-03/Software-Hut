@@ -34,7 +34,13 @@
           %td= task.reward_xp
           %td= task.deadline_readable
           %td= task.teacher.full_name
-          %td= task.status
+          %td.align-middle.fs-4
+            - if task.status.to_s == "completed"
+              %i.bi.bi-check2-all
+            - elsif task.status.to_s == "pending"
+              %i.bi.bi-check2
+            - else
+              %i.bi.bi-clock-history
           %td
             .btn-toolbar.float-end
               - if task.status.to_s == "todo"

@@ -1,7 +1,7 @@
 = form_for @task, url: tasks_path, html: {class: "form-inline"} do |f|
   .form-group.mb-3
     = f.label :student_id, "Student's Full Name", class: 'form-label'
-    = f.collection_select :student_id, @students, :id, :full_name, {prompt: "Choose a Student"}, {class: "form-select"}
+    = f.collection_select :student_id, @students, :id, :full_name, {include_blank: "Select Student(s)"}, {multiple: true, class: "form-select"}
 
   .form-group.mb-3
     = f.label :name, "Task Name", class: 'form-label'

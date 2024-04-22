@@ -28,13 +28,22 @@ class TasksController < ApplicationController
 
   # POST /tasks
   def create
-    @task = Task.new(task_params)
-    @task.teacher_id = current_user.id
-    @task.time_set = Time.current # or another appropriate time value
+    student_ids = params[:task].delete(:student_id).reject(&:empty?) # Remove empty elements
 
+    # Iterate over each student ID and create a new task
+    @tasks = student_ids.map do |student_id|
+      current_task = Task.new(task_params)
+      current_task.student_id = student_id
+      current_task.teacher_id = current_user.id
+      current_task.time_set = Time.current
 
-    if @task.save
-      redirect_to teachers_dashboard_path, notice: 'Task was successfully created.'
+      # You can handle each save individually or collect errors
+      current_task.save
+      current_task
+    end
+
+    if @tasks.all?(&:persisted?)
+      redirect_to teachers_dashboard_path, notice: 'Tasks were successfully created.'
     else
       render :new, status: :unprocessable_entity
     end
@@ -62,7 +71,7 @@ class TasksController < ApplicationController
     else
       @tasks = Task.where(teacher_id: current_user.id)
     end
-    
+
     # @tasks = @tasks.where(teacher_id: params[:search][:teacher_id]) if params[:search][:teacher_id].present?
     # @tasks = @tasks.where(student_id: params[:search][:student_id]) if params[:search][:student_id].present?
     # @tasks = @tasks.where(name: params[:search][:name]) if params[:search][:name].present?

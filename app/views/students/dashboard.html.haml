@@ -22,6 +22,7 @@
                         %th Task
                         %th Reward XP
                         %th Teacher
+                        %th Status
                         %th
                     %tbody
                       - @tasks.select { |task| task.deadline_day_this_week == day }.each do |task|
@@ -32,6 +33,14 @@
                             = task.reward_xp
                           %td.align-middle
                             = task.teacher.full_name
+                          %td.align-middle.fs-4
+                            - if task.status.to_s == "completed"
+                              %i.bi.bi-check2-all
+                            - elsif task.status.to_s == "pending"
+                              %i.bi.bi-check2
+                            - else
+                              %i.bi.bi-clock-history
+
                           %td
                             .btn-toolbar.float-end
                               - if task.status.to_s == "todo"

@@ -3,7 +3,8 @@
   .card-header.text-center
     %h2 Tasks
     %h5 There are #{@tasks.select { |task| task.status == 'todo' }.size} tasks to do
-
+  
+  
     -# - if can?(:create, Product)
     -#   = link_to 'New Product', new_product_path, class: 'btn btn-outline-secondary ms-auto'
   = simple_form_for :search, url: search_tasks_path, method: :post do |f|

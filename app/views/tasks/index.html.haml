@@ -3,7 +3,8 @@
   .card-header.text-center
     %h2 Tasks
     %h5 There are #{@tasks.select { |task| task.status == 'todo' }.size} tasks to do
-
+  
+  
     -# - if can?(:create, Product)
     -#   = link_to 'New Product', new_product_path, class: 'btn btn-outline-secondary ms-auto'
   = simple_form_for :search, url: search_tasks_path, method: :post do |f|
@@ -23,6 +24,7 @@
         %th Reward XP
         %th Deadline
         %th Teacher
+        %th Status
         %th
     %tbody
       - @tasks.each do |task|
@@ -32,6 +34,7 @@
           %td= task.reward_xp
           %td= task.deadline_readable
           %td= task.teacher.full_name
+          %td= task.status
           %td
             .btn-toolbar.float-end
               - if task.status.to_s == "todo"

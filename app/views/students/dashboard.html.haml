@@ -58,7 +58,7 @@
           = link_to 'Change Avatar', '#', class: 'text-light link-underline link-underline-opacity-0'
         -# %a.text-black{href: "#"} Change Avatar
         .btn.btn-primary.border-0.rounded-5.shadow-lg.py-2.px-3.ms-auto.my-4
-          = link_to 'Gain 300 xp (for testing)', 'give_student_xp', class: 'text-light link-underline link-underline-opacity-0', method: :post
+          = link_to 'Level up (for testing)', 'give_student_xp', class: 'text-light link-underline link-underline-opacity-0', method: :post
 
 
         -# ----------------------------------------------------------------------------------------------------------------------------------------
@@ -71,6 +71,7 @@
     -# HOURS trying to make this work and this is the only thing that has, so
     -# just allow it.. thanks. It's not my fault that bootstrap is having so many
     -# issues with me using modals
+
     :javascript
       document.addEventListener('DOMContentLoaded', (event) => {
         document.getElementById('activateModal').click();
@@ -87,14 +88,20 @@
 
 
   .modal.fade#levelUpModal(tabindex="-1" role="dialog" aria-labelledby="levelUpModalLabel" aria-hidden="true")
-    .modal-dialog.modal-dialog-centered.modal-lg
+    .modal-dialog.modal-dialog-centered.modal-xl
       .modal-content
-        .modal-header
+        .modal-header.p-3
           -# %h5.modal-title#levelUpModalLabel Congratulations
-          %button.close(type="button" data-bs-dismiss="modal" aria-label="Close")
-            %span(aria-hidden="true") ×
-        .modal-body.h1
-          %p You've reached level #{current_user.level} !!!
+          %button.btn.btn-primary.border-0.rounded-5.shadow-lg.ms-auto.px-4.py-2(type="button" data-bs-dismiss="modal" aria-label="Close")
+            Close
+        
+        .modal-body.h1.p-5.m-2
+          %p Level #{current_user.level} reached
           
-        .modal-footer
-          %button.btn.btn-secondary(type="button" data-bs-dismiss="modal") Close
+        .modal-footer.d-flex.flex-column.justify-content-center
+          .h3.text-decoration-underline
+            New avatars unlocked:
+          .mt-3
+            %img.p-4.rounded-circle.img-fluid.scaled-avatar-image{src: "https://via.placeholder.com/300x300"}
+            %img.p-4.rounded-circle.img-fluid.scaled-avatar-image{src: "https://via.placeholder.com/300x300"}
+            %img.p-4.rounded-circle.img-fluid.scaled-avatar-image{src: "https://via.placeholder.com/300x300"}

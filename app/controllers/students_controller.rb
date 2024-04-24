@@ -6,7 +6,7 @@ class StudentsController < ApplicationController
   end
 
   def give_student_xp
-    current_user.give_student_xp_points(300)
+    current_user.give_student_xp_points(600)
   end
 
   def check_level_up

@@ -24,6 +24,7 @@
                   %th Reward XP
                   %th Deadline
                   %th Status
+                  %th Template
                   %th
               %tbody
                 - @tasks.where(student_id: student.id).each do |task|
@@ -34,5 +35,8 @@
                     %td= task.deadline.strftime("%e %b %Y")
                     %td
                       %span.badge{ class: "badge-#{status_class_mapping[task.status]}" }= task.status.capitalize
+                    %td
+                      .btn-toolbar.float-end
+                        = link_to 'Use as template', new_task_path(task_id: task.id), class: 'btn btn-outline-secondary btn-sm'
                     %td
                       %button.btn.btn-outline-secondary.btn-sm.disabled View

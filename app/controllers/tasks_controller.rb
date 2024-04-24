@@ -84,13 +84,15 @@ class TasksController < ApplicationController
   end
 
   # PATCH/PUT /tasks/1
-  def update
-    if @task.update(task_params)
-      redirect_to teachers_dashboard_path, notice: "Task was successfully updated.", status: :see_other
-    else
-      render :edit, status: :unprocessable_entity
-    end
-  end
+  # PATCH/PUT /tasks/1
+  # def update
+  #   if @task.update(task_params)
+  #     redirect_to teachers_dashboard_path, notice: "Task was successfully updated."
+  #   else
+  #     render :edit, status: :unprocessable_entity
+  #   end
+  # end
+
 
   # DELETE /tasks/1
   def destroy
@@ -129,6 +131,6 @@ class TasksController < ApplicationController
     # Only allow a list of trusted parameters through.
     def task_params
       # Ensure you permit student__id and not user_id if that's what the Task model expects
-      params.require(:task).permit(:name, :student_id, :teacher_id, :description, :deadline, :recording_boolean,:reward_xp)
+      params.require(:task).permit(:name, :teacher_id, :description, :deadline, :recording_boolean, :reward_xp, student_id: [])
     end
 end

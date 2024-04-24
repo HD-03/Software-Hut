@@ -29,6 +29,7 @@
 
 -#   .form-group.text-center
 -#     = f.submit 'Save', class: 'btn btn-success border-0 rounded-5 shadow-lg py-2 px-3'
+
 - content_for :title, 'Set Task'
 .container-fluid
   .row.justify-content-center
@@ -37,7 +38,7 @@
         .card-header.border-0.bg-transparent.text-center.pt-3.pb-0
           %h5 Set task
         .card-body.border-0.bg-transparent.pt-0
-          = simple_form_for :search, url: search_students_path, method: :post do |search_form|
+          = simple_form_for :search_students, url: search_students_tasks_path, method: :post do |search_form|
             .row.p-3
               .col-md-12
                 = search_form.input :full_name

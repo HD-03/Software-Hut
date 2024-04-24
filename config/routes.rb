@@ -8,15 +8,11 @@ Rails.application.routes.draw do
   # Example route for adding a new task. Adjust according to your actual controller and action names.
   #get 'teachers/add_new_task', to: 'teachers#add_new_task', as: 'new_add_task'
 
-  #get 'students/dashboard', to: 'students#dashboard', as: 'students_dashboard'
-
-  resources :students do
-    get :dashboard, on: :collection
-    post :search, on: :collection
-  end
+  get 'students/dashboard', to: 'students#dashboard', as: 'students_dashboard'
 
   resources :tasks do
     post :search, on: :collection
+    post :search_students, on: :collection
   end
 
   # Defines the root path route ("/")

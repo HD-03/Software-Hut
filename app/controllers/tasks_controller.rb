@@ -24,6 +24,12 @@ class TasksController < ApplicationController
     @task = Task.new
   end
 
+  # POST /tasks/search_students
+  def search_students
+    @students = User.where(role: 'student')
+    @students = @students.where('full_name LIKE ?', "%#{params[:search_students][:full_name]}%") if params[:search_students][:full_name].present?
+  end
+
   # POST /tasks
   def create
     student_ids = params[:task].delete(:student_id).reject(&:empty?) # Remove empty elements
@@ -87,7 +93,7 @@ class TasksController < ApplicationController
     end
 
     def set_students
-      @students =  User.find(session[:student_ids])
+      @students =  User.where(role: :student)
     end
 
     # Only allow a list of trusted parameters through.

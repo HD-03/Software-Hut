@@ -1,6 +1,9 @@
 class TasksController < ApplicationController
   before_action :authenticate_user!
   before_action :set_task, only: %i[ show edit update destroy ]
+
+
+  # TasksController
   before_action :set_students, only: %i[ edit new ]
 
   authorize_resource
@@ -21,8 +24,35 @@ class TasksController < ApplicationController
 
   # GET /tasks/new
   def new
-    @task = Task.new
+    @students = User.where(role: :student)
+    @task = params[:task_id] ? Task.find(params[:task_id]) : Task.new
+    render 'teachers/add_new_task' # Make sure this matches the actual path to your template
   end
+
+  
+  def update
+    student_ids = params[:task].delete(:student_id).reject(&:empty?) # Remove empty elements
+
+    # Iterate over each student ID and create a new task
+    @tasks = student_ids.map do |student_id|
+      current_task = Task.new(task_params)
+      current_task.student_id = student_id
+      current_task.teacher_id = current_user.id
+      current_task.time_set = Time.current
+
+      # You can handle each save individually or collect errors
+      current_task.save
+      current_task
+    end
+
+    if @tasks.all?(&:persisted?)
+      redirect_to teachers_dashboard_path, notice: 'Tasks were successfully created.'
+    else
+      render 'teachers/add_new_task'
+    end
+  end
+  
+  
 
   # POST /tasks/search_students
   def search_students

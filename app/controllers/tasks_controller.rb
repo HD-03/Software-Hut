@@ -3,9 +3,16 @@ class TasksController < ApplicationController
   before_action :set_task, only: %i[ show edit update destroy ]
 
 
+  # TasksController
   def new
-    @task = Task.new
+    @students = User.where(role: :student)
+    @task = params[:task_id] ? Task.find(params[:task_id]) : Task.new
+    render 'teachers/add_new_task' # Make sure this matches the actual path to your template
   end
+
+  
+  
+  
 
   def create
     student_ids = params[:task].delete(:student_id).reject(&:empty?) # Remove empty elements

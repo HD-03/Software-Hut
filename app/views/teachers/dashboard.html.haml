@@ -3,7 +3,7 @@
   %header.pb-3
     .d-flex.justify-content-between.align-items-center
       %h1 My Students
-      = link_to 'Set a Task', new_add_task_path, class: 'btn btn-primary'
+      = link_to 'Set a Task', new_task_path, class: 'btn btn-primary'
 
   %main
     - @students.each do |student|

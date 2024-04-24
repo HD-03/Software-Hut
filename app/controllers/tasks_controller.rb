@@ -11,6 +11,27 @@ class TasksController < ApplicationController
   end
 
   
+  def update
+    student_ids = params[:task].delete(:student_id).reject(&:empty?) # Remove empty elements
+
+    # Iterate over each student ID and create a new task
+    @tasks = student_ids.map do |student_id|
+      current_task = Task.new(task_params)
+      current_task.student_id = student_id
+      current_task.teacher_id = current_user.id
+      current_task.time_set = Time.current
+
+      # You can handle each save individually or collect errors
+      current_task.save
+      current_task
+    end
+
+    if @tasks.all?(&:persisted?)
+      redirect_to teachers_dashboard_path, notice: 'Tasks were successfully created.'
+    else
+      render 'teachers/add_new_task'
+    end
+  end
   
   
 

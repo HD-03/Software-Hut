@@ -1,10 +1,10 @@
 .container.mt-5
   .row.justify-content-center
     .col-md-6
-      = form_with model: @task, url: tasks_path(@task), local: true do |f|
+      = form_with model: @task, local: true do |f|
         .form-group.mb-3
           = f.label :student_id, "Student's Full Name", class: 'form-label'
-          = f.collection_select :student_id, @students, :id, :full_name, { selected: @task.student_id, include_blank: "Select Student(s)" }, { multiple: true, class: "form-select" }
+          = f.collection_select :student_id, @students, :id, :full_name, { include_blank: "Select Student(s)" }, { multiple: true, class: "form-select" }
 
         .form-group.mb-3
           = f.label :name, "Task Name", class: 'form-label'
@@ -28,9 +28,3 @@
 
         .form-group.text-center
           = f.submit 'Add Task', class: 'btn btn-success border-0 rounded-5 shadow-lg py-2 px-3'
-        
-
-        -# Uncomment if you want to add MP3 file upload functionality
-        -# .form-group.mb-3
-        -#   = f.label :mp3_file, 'Attach MP3 file?', class: 'form-label'
-        -#   = f.file_field :mp3_file, accept: 'audio/mp3', class: "form-control"

@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
   # may be worth enabling caching for performance.
   before_action :update_headers_to_disable_caching
   before_action :authenticate_user!
+  before_action :configure_permitted_parameters, if: :devise_controller?
 
   #redirects user to their specific dashboard when they login successfully
   def after_sign_in_path_for(current_user)
@@ -20,9 +21,14 @@ class ApplicationController < ActionController::Base
     # when 'admin'
     #   admins_dashboard
     else
-      root
+      root_path
     end
   end
+
+  protected
+    def configure_permitted_parameters
+      devise_parameter_sanitizer.permit(:account_update, keys: [:email, :password, :password_confirmation, :current_password, :name])
+    end
 
   private
     def update_headers_to_disable_caching

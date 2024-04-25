@@ -1,8 +1,16 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: { registrations: 'users/registrations' }
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-  # Example route for a teacher's dashboard. Adjust according to your actual controller and action names.
+  #for user settings
+  #resources :users, only: [:show, :update], path_names: { edit: 'settings', update: 'settings', show: 'settings' }
+  resources :users, only: [:show, :edit], path_names: { update: 'settings' }
+
+
+  # Defines the root path route ("/")
+  root "pages#home"
+
+  # Teacher dashboard
   get 'teachers/dashboard', to: 'teachers#dashboard', as: 'teachers_dashboard'
 
   # Example route for adding a new task. Adjust according to your actual controller and action names.
@@ -19,10 +27,6 @@ Rails.application.routes.draw do
   end
   # -------------------------------------------------------------------
 
-  # Defines the root path route ("/")
-  root "pages#home"
-
+  #for testing level up modal (delete after development this is finished)
   post 'students/give_student_xp', to: 'students#give_student_xp'
-
-  get 'students/leveled_up', to: 'students#display_level_up_modal'
 end

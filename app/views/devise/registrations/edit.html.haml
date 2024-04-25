@@ -1,0 +1,29 @@
+.card
+  .card-header.text-center
+    %h2.ps-2
+      Settings
+  = simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f|
+    = f.error_notification
+    .form-inputs.p-3
+      .pb-4
+        = f.input :email, required: true, autofocus: true
+        - if devise_mapping.confirmable? && resource.pending_reconfirmation?
+          %p
+            Currently waiting confirmation for: #{resource.unconfirmed_email}
+      .pb-4
+        = f.input :password, 
+          hint: "leave blank if you don't want to change it", 
+          required: false,                                       
+          input_html: { autocomplete: "new-password" }
+      .pb-4
+        = f.input :password_confirmation,
+          required: false,                             
+          input_html: { autocomplete: "new-password" } 
+      .pb-4
+        = f.input :current_password,                                     
+          hint: "we need your current password to confirm your changes", 
+          required: true,                                                
+          input_html: { autocomplete: "current-password" }               
+    .form-actions.ps-2
+      .btn.btn-primary.border-0.rounded-3.shadow-lg.ms-auto.p-0
+        = f.button :submit, "Update", class: 'text-light link-underline link-underline-opacity-0'

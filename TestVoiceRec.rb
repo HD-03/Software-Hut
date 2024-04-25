@@ -1,19 +1,24 @@
-ruby require google/cloud/speech
+require "google/cloud/speech"
 
-speech = Google::cloud::speech.new
-audio = speech.audio "Audio source location here"
-stream = audio.stream encoding: :raw, sample_rate: 16000
+class VoiceRecognition
+  def initialize
+    @speech = Google::Cloud::Speech.new
+    
+    @stream = speech.stream encoding: :raw, sample_rate: 16000
+  end
 
-stream.on_result do |results|
-  result = results.first
-  puts result.transcript
+  
+
+
+  stream.on_result do |results|
+    result = results.first 
+    puts result.transcript
+  end
+
+  5.times.do stream.send MicrophoneInput.read(32000)
+
+  stream.stop
 end
-
-5.times.do
-  stream.send MicrophoneInput.read(32000)
-end
-
-stream.stop
 
 
 

@@ -23,4 +23,5 @@ class ApplicationController < ActionController::Base
         students_dashboard_path # Or some other path you want
       end
     end
+
 end

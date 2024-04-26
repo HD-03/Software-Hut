@@ -1,4 +1,5 @@
 - status_class_mapping = {"completed" => "table-success", "todo" => "table-danger", "pending" => "table-warning"}
+
 .card
   .card-header.text-center
     %h2 Tasks
@@ -25,6 +26,7 @@
         %th Deadline
         %th Teacher
         %th Status
+        %th Template
         %th
     %tbody
       - @tasks.each do |task|
@@ -34,7 +36,17 @@
           %td= task.reward_xp
           %td= task.deadline_readable
           %td= task.teacher.full_name
-          %td= task.status
+          %td.align-middle.fs-4
+            - if task.status.to_s == "completed"
+              %i.bi.bi-check2-all
+            - elsif task.status.to_s == "pending"
+              %i.bi.bi-check2
+            - else
+              %i.bi.bi-clock-history
+          %td
+            .btn-toolbar.float-end
+              = link_to 'Use as template', new_task_path(task_id: task.id), class: 'btn btn-outline-secondary btn-sm'
+
           %td
             .btn-toolbar.float-end
               - if task.status.to_s == "todo"

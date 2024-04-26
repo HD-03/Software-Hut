@@ -10,16 +10,14 @@
         %ul.navbar-nav.me-auto.mb-2.mb-lg-0
           %li.nav-item.ps-3
             - if current_user.role == 'admin' 
-              %a.nav-link.active{aria_current: "page", href: "/admin/dashboard"} Home
+              -# = link_to 'Home', admin_dashboard_path, class: 'nav-link active', aria_current: 'page'
             - elsif current_user.role == 'teacher'
-              %a.nav-link.active{aria_current: "page", href: "/teachers/dashboard"} Home
+              = link_to 'Home', teachers_dashboard_path, class: 'nav-link active', aria_current: 'page'
             - else 
               = link_to 'Home', students_dashboard_path, class: 'nav-link active', aria_current: 'page'
 
           %li.nav-item.ps-3
-            - if current_user.role == 2
-              %a.nav-link{href: "#"} Users
-            - else
+            - if current_user.role == 'student'
               = link_to tasks_path, class: 'nav-link' do
                 Tasks
           - if current_user.role == 'admin'

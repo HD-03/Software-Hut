@@ -31,11 +31,15 @@ class Ability
 
     user ||= User.new
 
-    if user.role == 2
+    if user.role == 'admin'
       can :manage, Task
       can :manage, User
-    elsif user.persisted?
-      can [:read, :update], Task
+    elsif user.role == 'teacher'
+      can [:create, :update, :destroy], Task
+      can :read, User
+    elsif user.role == 'student'
+      can :read, Task
+      can :read, User
     end
   end
 end

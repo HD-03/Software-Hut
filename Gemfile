@@ -103,3 +103,5 @@ group :test do
   gem 'launchy'
   gem 'simplecov'
 end
+
+gem "pagy", "~> 8.3"

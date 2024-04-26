@@ -4,8 +4,8 @@ class AdminController < ApplicationController
 
     # GET /dashboard
     def dashboard
-        @students = User.where(role: :student)
-        @teachers = User.where(role: :teacher)
+        @pagy_students, @students = pagy(User.where(role: :student))
+        @pagy_teachers, @teachers = pagy(User.where(role: :teacher))
     end
 
     def add_new_user
@@ -48,10 +48,21 @@ class AdminController < ApplicationController
 
     #PATCH
     def update_user
-
+        if @user.update(user_params)
+            redirect_to admin_dashboard_path, notice: 'User was successfully updated.'
+        else
+            render :edit_user, status: :unprocessable_entity
+        end
     end
 
     def search
+        @users = User.all
+        @users = @users.where(name: params[:search][:full_name]) if params[:search][:full_name].present?
+        @users = @users.where(name: params[:search][:email]) if params[:search][:email].present?
+        @users = @users.where(name: params[:search][:username]) if params[:search][:username].present?
+
+        render :dashboard
+
     end
 
     private

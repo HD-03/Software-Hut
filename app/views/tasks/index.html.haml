@@ -5,15 +5,18 @@
     %h2 Tasks
     %h5 There are #{@tasks.select { |task| task.status == 'todo' }.size} tasks to do
   
-  
-    -# - if can?(:create, Product)
-    -#   = link_to 'New Product', new_product_path, class: 'btn btn-outline-secondary ms-auto'
   = simple_form_for :search, url: search_tasks_path, method: :post do |f|
     .row.p-3
       .col-md-4
         = f.input :name
       .col-md-4
-        = f.input :teacher_id, as: :select, collection: @tasks.map { |task| [task.teacher.full_name, task.teacher.id] }
+        - if @user_is_student
+          = f.input :teacher_id, as: :select, collection: @tasks.map(&:teacher).uniq.map { |teacher| [teacher.full_name, teacher.id] }
+        - elsif @user_is_teacher
+          = f.input :student_id, as: :select, collection: @tasks.map(&:student).uniq.map { |student| [student.full_name, student.id] }
+        - else
+          = f.input :teacher_id, as: :select, collection: @tasks.map(&:teacher).uniq.map { |teacher| [teacher.full_name, teacher.id] }
+          = f.input :student_id, as: :select, collection: @tasks.map(&:student).uniq.map { |student| [student.full_name, student.id] }
       .col-md-2.mt-auto
         = f.submit 'Search', class: 'btn btn-outline-secondary'
         = link_to 'Reset', tasks_path, class: 'btn btn-outline-secondary'
@@ -24,7 +27,13 @@
         %th Description
         %th Reward XP
         %th Deadline
-        %th Teacher
+        - if @user_is_student
+          %th Teacher
+        - elsif @user_is_teacher
+          %th Student
+        - else
+          %th Teacher
+          %th Student
         %th Status
         %th Template
         %th
@@ -35,7 +44,13 @@
           %td= task.description
           %td= task.reward_xp
           %td= task.deadline_readable
-          %td= task.teacher.full_name
+          - if @user_is_student
+            %th= task.teacher.full_name
+          - elsif @user_is_teacher
+            %th= task.student.full_name
+          - else 
+            %th= task.teacher.full_name
+            %th= task.student.full_name
           %td.align-middle.fs-4
             - if task.status.to_s == "completed"
               %i.bi.bi-check2-all

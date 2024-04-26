@@ -13,6 +13,10 @@ Rails.application.routes.draw do
   # get route for adding a new user.
   get 'admin/add_new_user', to: 'admin#add_new_user', as: 'new_add_user'
 
+  get 'admin/edit_user/:id', to: 'admin#edit', as: 'edit_user'
+  patch 'admin/update_user/:id', to: 'admin#update', as:'update_user'
+
+
   # post route to submit the new user form
   post 'admin/add_new_user', to: 'admin#create', as: 'create_new_user'
   
@@ -34,7 +38,8 @@ Rails.application.routes.draw do
     post :search, on: :collection
   end
 
-  get 'tasks/add_new_task', to: 'tasks#add_new_task', as: 'add_new_task'
+
+  # -------------------------------------------------------------------
 
   # Defines the root path route ("/")
   root "pages#home"

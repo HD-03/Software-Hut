@@ -1,77 +1,62 @@
 class AdminController < ApplicationController
-    before_action :authenticate_user!, only: [:dashboard, :add_new_user, :edit_user, :delete_user]
-    before_action :set_user, only: [:edit_user_info, :update_user, :delete_user]
-
-    # GET /dashboard
+    before_action :authenticate_user!
+    before_action :check_admin
+    before_action :set_user, only: [:edit, :update, :destroy]
+  
     def dashboard
-        @pagy_students, @students = pagy(User.where(role: :student))
-        @pagy_teachers, @teachers = pagy(User.where(role: :teacher))
+      @students = User.where(role: :student)
+      @teachers = User.where(role: :teacher)
     end
-
-    def add_new_user
+  
+    def new
       @user = User.new
     end
-    
-    # POST create new users
+  
     def create
-        @user = User.new(user_params)
-
-        # For students there are additional fields need such as lvl and xp_points and these would be default 
-        if @user.role == :student
-            @user.level = 1
-            @user.xp_points = 0
-            @user.avatar_id = 1
-            @user.old_enough_for_cooler_avatars = params[:user][:old_enough_for_cooler_avatars] if params[:user][:old_enough_for_cooler_avatars]
-        end
-
-        if @user.save
-            redirect_to admin_dashboard_path, notice: 'User was successfully created'
-        else
-            render :add_new_user, status: :unprocessable_entity
-        end
+      @user = User.new(user_params)
+      set_default_student_attributes if @user.student?
+  
+      if @user.save
+        redirect_to admin_dashboard_path, notice: 'User was successfully created.'
+      else
+        render :new, status: :unprocessable_entity
+      end
     end
-
-    # delete users
-    def delete_user
-        @user.destroy
-        redirect_to admin_dashboard_path, notice:'User was successfully deleted.'
+  
+    def edit
     end
-
-    # GET /users/1
-    def show
+  
+    def update
+      if @user.update(user_params)
+        redirect_to admin_dashboard_path, notice: 'User was successfully updated.'
+      else
+        render :edit
+      end
     end
-
-
-    # GET /user/1/edit
-    def edit_user_info
+  
+    def destroy
+      @user.destroy
+      redirect_to admin_dashboard_path, notice: 'User was successfully deleted.'
     end
-
-    #PATCH
-    def update_user
-        if @user.update(user_params)
-            redirect_to admin_dashboard_path, notice: 'User was successfully updated.'
-        else
-            render :edit_user, status: :unprocessable_entity
-        end
-    end
-
-    def search
-        @users = User.all
-        @users = @users.where(name: params[:search][:full_name]) if params[:search][:full_name].present?
-        @users = @users.where(name: params[:search][:email]) if params[:search][:email].present?
-        @users = @users.where(name: params[:search][:username]) if params[:search][:username].present?
-
-        render :dashboard
-
-    end
-
+  
     private
-
-        def set_user
-          @user = User.find(params[:id])
-        end
-
-        def user_params
-          params.require(:user).permit(:full_name, :email, :username, :password, :role, :old_enough_for_cooler_avatars)
-        end
-end
+  
+    def set_user
+      @user = User.find(params[:id])
+    end
+  
+    def user_params
+      params.require(:user).permit(:full_name, :email, :username, :password, :role, :old_enough_for_cooler_avatars)
+    end
+  
+    def check_admin
+      redirect_to root_path, alert: 'Not authorized' unless current_user.admin?
+    end
+  
+    def set_default_student_attributes
+      @user.level = 1
+      @user.xp_points = 0
+      @user.avatar_id = 1
+      @user.old_enough_for_cooler_avatars = params[:user][:old_enough_for_cooler_avatars] if params[:user][:old_enough_for_cooler_avatars]
+    end
+  end  

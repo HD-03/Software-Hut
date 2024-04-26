@@ -104,4 +104,3 @@ group :test do
   gem 'simplecov'
 end
 
-gem "pagy", "~> 8.3"

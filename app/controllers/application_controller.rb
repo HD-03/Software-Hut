@@ -9,9 +9,6 @@ class ApplicationController < ActionController::Base
   before_action :update_headers_to_disable_caching
   before_action :authenticate_user!
 
-  # Include the pagy gem so that the user table can be paginated
-  include Pagy::Backend
-
   private
     def update_headers_to_disable_caching
       response.headers['Cache-Control'] = 'no-cache, no-cache="set-cookie", no-store, private, proxy-revalidate'

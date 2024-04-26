@@ -13,10 +13,6 @@ Rails.application.routes.draw do
   # get route for adding a new user.
   get 'admin/add_new_user', to: 'admin#add_new_user', as: 'new_add_user'
 
-  get 'admin/edit_user/:id', to: 'admin#edit', as: 'edit_user'
-  patch 'admin/update_user/:id', to: 'admin#update', as:'update_user'
-
-
   # post route to submit the new user form
   post 'admin/add_new_user', to: 'admin#create', as: 'create_new_user'
   
@@ -24,7 +20,7 @@ Rails.application.routes.draw do
   get 'admin/edit_user/:id', to: 'admin#edit_user_info', as: 'edit_user'
 
   # route to submit the edit user form
-  patch 'admin/update_user/:id', to: 'admin#update_user', as: 'update_user'
+  patch 'admin/update_user/:id', to: 'admin#update_user', as:'update_user'
 
   delete 'admin/delete_user/:id', to: 'admin#delete_user', as: 'delete_user'
 

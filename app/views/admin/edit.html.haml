@@ -1,0 +1,18 @@
+// app/views/admin/edit.html.haml
+%h1 Edit User
+
+= form_with(model: @user, url: update_user_path(@user), local: true) do |form|
+  .field
+    = form.label :name
+    = form.text_field :name
+
+  .field
+    = form.label :username
+    = form.text_field :username
+
+  .field
+    = form.label :role
+    = form.select :role, User.roles.keys.map { |role| [role.titleize, role] }, { include_blank: 'Select a role' }
+
+  .actions
+    = form.submit "Update User"

@@ -29,7 +29,7 @@ class TasksController < ApplicationController
     render 'teachers/add_new_task' # Make sure this matches the actual path to your template
   end
 
-  
+
   def update
     student_ids = params[:task].delete(:student_id).reject(&:empty?) # Remove empty elements
 
@@ -51,8 +51,8 @@ class TasksController < ApplicationController
       render 'teachers/add_new_task'
     end
   end
-  
-  
+
+
 
   # POST /tasks/search_students
   def search_students
@@ -96,8 +96,9 @@ class TasksController < ApplicationController
 
   # DELETE /tasks/1
   def destroy
+    @task = Task.find(params[:id])
     @task.destroy
-    redirect_to teachers_dashboard_path, notice: "task was successfully destroyed.", status: :see_other
+    redirect_to teachers_dashboard_path, notice: 'Task was successfully deleted.'
   end
 
   # POST /tasks/search

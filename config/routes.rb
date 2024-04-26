@@ -19,6 +19,12 @@ Rails.application.routes.draw do
 
   # post route to submit the new user form
   post 'admin/add_new_user', to: 'admin#create', as: 'create_new_user'
+  
+  #  get route for editing user details
+  get 'admin/edit_user/:id', to: 'admin#edit_user_info', as: 'edit_user'
+
+  # route to submit the edit user form
+  patch 'admin/update_user/:id', to: 'admin#update_user', as: 'update_user'
 
   delete 'admin/delete_user/:id', to: 'admin#delete_user', as: 'delete_user'
 

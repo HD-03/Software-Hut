@@ -1,0 +1,16 @@
+#container
+  %header
+
+  %main
+    .admin-edit_user
+    %h1 Edit User
+    -# frozen_string_literal: true
+    = simple_form_for @user, url: update_user_path(@user), method: :patch do |f|
+      = f.input :full_name, wrapper_html: { class: 'mb-3' }
+      = f.input :email, wrapper_html: { class: 'mb-3' }
+      = f.input :username, wrapper_html: { class: 'mb-3' }
+      = f.input :role, collection: [['Teacher', :teacher], ['Student', :student]], wrapper_html: { class: 'mb-3' }
+
+      .actions
+      = f.button :submit, 'Save Changes', class: 'btn btn-primary'
+      = link_to 'Cancel', admin_dashboard_path, class: 'btn btn-link ms-auto'

@@ -3,6 +3,17 @@
     .row.justify-content-center
       .col-sm-12.col-lg-12
         .card
+          .card-header.d-flex.align-items-center
+            %span All Users
+            - if can?(:create, User)
+              = link_to 'New User', add_new_user_path, class: 'btn btn-outline-secondary ms-auto'
+          = simple_form_for :search, url:search_users_path, method: :post do |f|
+            .row.p-3
+              .col-md-4
+                = f.input :name
+              .col-md-2.mt-auto
+                = f.submit 'Search', class: 'btn btn-outline-secondary'
+                = link_to 'Reset', admin_dashboard_path, class: 'btn btn-outline-secondary'
           .card-body
             %h3 Students
             %table.table.table-striped
@@ -20,6 +31,8 @@
                     %td
                       = link_to 'Edit', edit_user_path(student.id), class: 'btn btn-sm btn-primary'
                       = link_to 'Delete', delete_user_path(student.id), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger'
+            -# Pagination for students
+            %pagy_nav(@pagy_students)
 
             %h3 Teachers
             %table.table.table-striped
@@ -37,7 +50,8 @@
                     %td
                       = link_to 'Edit', edit_user_path(teacher.id), class: 'btn btn-sm btn-primary'
                       = link_to 'Delete', delete_user_path(teacher.id), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger'
-
+            -# Pagination for teachers
+            %pagy_nav(@pagy_teachers)
 
           .card-footer.d-flex.justify-content-between
             = link_to 'Add User', new_add_user_path, class: 'btn btn-primary'

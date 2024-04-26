@@ -20,6 +20,7 @@
       .col-md-2.mt-auto
         = f.submit 'Search', class: 'btn btn-outline-secondary'
         = link_to 'Reset', tasks_path, class: 'btn btn-outline-secondary'
+
   %table.table
     %thead
       %tr
@@ -35,8 +36,11 @@
           %th Teacher
           %th Student
         %th Status
-        %th Template
-        %th
+        - if @user_is_student
+          %th
+        - else
+          %th Tamplate
+          %th
     %tbody
       - @tasks.each do |task|
         %tr{ class: status_class_mapping[task.status.to_s] }
@@ -58,13 +62,18 @@
               %i.bi.bi-check2
             - else
               %i.bi.bi-clock-history
-          %td
-            .btn-toolbar.float-end
-              = link_to 'Use as template', new_task_path(task_id: task.id), class: 'btn btn-outline-secondary btn-sm'
-
-          %td
-            .btn-toolbar.float-end
-              - if task.status.to_s == "todo"
-                = link_to 'Do', '#', class: 'btn btn-outline-secondary btn-sm'
-              - else
+          - if @user_is_student
+            %td
+              .btn-toolbar.float-end
+                - if task.status.to_s == "todo"
+                  = link_to 'Do', '#', class: 'btn btn-outline-secondary btn-sm'
+                - else
+                  = link_to 'View', '#', class: 'btn btn-outline-secondary btn-sm'
+          - else
+            %td 
+              .btn-toolbar.float-end
+                = link_to 'Use as template', new_task_path(task_id: task.id), class: 'btn btn-outline-secondary btn-sm'
+            %td
+              .btn-toolbar.float-end
                 = link_to 'View', '#', class: 'btn btn-outline-secondary btn-sm'
+

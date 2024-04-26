@@ -1,7 +1,6 @@
 class TasksController < ApplicationController
   before_action :authenticate_user!
   before_action :set_task, only: %i[ show edit update destroy new ]
-  before_action :set_students, only: %i[ edit search_students]
   before_action :set_role
 
   authorize_resource
@@ -58,17 +57,17 @@ class TasksController < ApplicationController
   # and constructs a SQL condition to find students whose full name contains
   # all the words (case-insensitive).
   # Redirects to the new task page with the matching student IDs as query parameters.
-  def search_students
-    if params[:search_students][:full_name].present?
-      full_name_words = params[:search_students][:full_name].split
-      conditions = full_name_words.map { |word| "full_name ILIKE '%#{word}%'" }
+  # def search_students
+  #   if params[:search_students][:full_name].present?
+  #     full_name_words = params[:search_students][:full_name].split
+  #     conditions = full_name_words.map { |word| "full_name ILIKE '%#{word}%'" }
 
-      @students = @students.where(conditions.join(" AND "))
-    end
+  #     @students = @students.where(conditions.join(" AND "))
+  #   end
 
-    authorize! :search_students, Task
-    redirect_to new_task_path(student_ids: @students.map(&:id))
-  end
+  #   authorize! :search_students, Task
+  #   redirect_to new_task_path(student_ids: @students.map(&:id))
+  # end
 
   # POST /tasks
   def create
@@ -146,10 +145,6 @@ class TasksController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_task
       @task = params[:task_id] ? Task.find(params[:task_id]) : Task.new
-    end
-
-    def set_students
-      @students =  User.where(role: :student)
     end
 
     # Only allow a list of trusted parameters through.

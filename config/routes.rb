@@ -17,7 +17,6 @@ Rails.application.routes.draw do
 
   resources :tasks do
     post :search, on: :collection
-    post :search_students, on: :collection
   end
 
   #get 'tasks/add_new_task', to: 'tasks#add_new_task', as: 'add_new_task'

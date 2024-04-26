@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
     def after_sign_in_path_for(resource)
       if resource.is_a?(User) && resource.teacher?
         teachers_path
-      else
+      elsif resource.is_a?(User) && resource.student?
         students_path # Or some other path you want
       end
     end

@@ -1,26 +1,14 @@
 - content_for :title, 'Set Task'
+
 .row.justify-content-center
   .col-sm-6.col-lg-10
     .card.card-light.border-0.rounded-4.shadow-lg.px-3
       .card-header.border-0.bg-transparent.text-center.pt-3.pb-0
         %h5 Set task
       .card-body.border-0.bg-transparent.pt-0
-        = simple_form_for :search_students, url: search_students_tasks_path, method: :post do |search_form|
-          .row.p-3
-            .col-md-12
-              = search_form.input :full_name
-            .col-md-5.mt-3
-              = search_form.submit 'Search', class: 'btn btn-outline-secondary'
-              = link_to 'Reset', new_task_path, class: 'btn btn-outline-secondary'
-
         = simple_form_for @task, url: tasks_path do |f|
           .mt-2
-            = f.label :student_id, "Select Student(s)"
-            .overflow-scroll.border.border-dark-sublte.rounded-2.px-3.py-1{style: "max-height: 100px;"}
-              - @students.each do |student|
-                .pb-1
-                  = f.check_box :student_id, { multiple: true }, student.id, nil
-                  = student.full_name
+            = f.select :student_id, @students.map { |student| [student.full_name, student.id] }, {}, { multiple: true, class: 'js-example-basic-multiple', name: 'task[student_id][]' }
           .mt-2
             = f.input :name, label: false, input_html: { placeholder: 'Task Name' }
           .mt-2
@@ -32,3 +20,12 @@
           .mt-2
             = f.input :recording_boolean, label: "Allow Recording?", collection: [['Yes', true], ['No', false]], selected: 'Yes'
           = f.button :submit, "Save", class: 'btn btn-primary border-0 rounded-5 shadow-lg py-2 px-3 mt-2'
+
+:javascript
+  $(document).ready(function() {
+    $('.js-example-basic-multiple').select2({
+      placeholder: 'Select Student(s)',
+      width: '100%',
+      allowClear: true
+    });
+  });

@@ -68,6 +68,7 @@ class User < ApplicationRecord
 
     self.recently_leveled_up = user_leveled_up
     self.save
+    return self.recently_leveled_up
 
   end
   
@@ -85,12 +86,14 @@ class User < ApplicationRecord
     max = 600   # max xp threshold which is reached at level 20
     xp = nil   # xp_needed_for_next_level
 
-    if level >= 0 && level <= 20
+    if level >= 1 && level <= 20
       xp = 30 * level
     elsif level > 20
       xp = max
     else
-      raise RangeError, "Level can't be below 0"
+      #set it to the level 1 value, this can be changed cause idk what to best set it to
+      self.xp_needed_for_next_level = 30
+      raise RangeError, "Level can't be below 1"
     end
 
     self.xp_needed_for_next_level = xp

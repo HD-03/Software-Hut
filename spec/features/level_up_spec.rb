@@ -7,7 +7,7 @@ describe 'level_up.' do
   specify "I don't see a pop up in my student dashboard when I haven't leveled up" do
     student.recently_leveled_up = false
     login_as student
-    visit '/students/dashboard'
+    visit '/students'
     
     expect(page).to have_selector('#levelUpModal', visible: false)
   end
@@ -15,7 +15,7 @@ describe 'level_up.' do
   specify 'I see a pop up in my student dashboard when I level up' do
     student.recently_leveled_up = true
     login_as student
-    visit '/students/dashboard'
+    visit '/students'
 
     expect(page).to have_selector('#levelUpModal', visible: :visible)
   end
@@ -23,7 +23,7 @@ describe 'level_up.' do
   specify 'The pop up modal has the correct content (including my new level)' do
     student.recently_leveled_up = true
     login_as student
-    visit '/students/dashboard'
+    visit '/students'
 
     within('#levelUpModal') do
       expect(page).to have_content("Level #{student.level} reached")

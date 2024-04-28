@@ -41,4 +41,8 @@ Rails.application.routes.draw do
   end
 
   # -------------------------------------------------------------------
+
+  #for testing level up modal (delete after development this is finished)
+  post 'students/give_student_xp', to: 'students#give_student_xp'
+
 end

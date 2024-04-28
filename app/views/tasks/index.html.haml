@@ -5,51 +5,78 @@
     %h2 Tasks
     %h5 There are #{@tasks.select { |task| task.status == 'todo' }.size} tasks to do
   
-  
-    -# - if can?(:create, Product)
-    -#   = link_to 'New Product', new_product_path, class: 'btn btn-outline-secondary ms-auto'
   = simple_form_for :search, url: search_tasks_path, method: :post do |f|
     .row.p-3
       .col-md-4
         = f.input :name
       .col-md-4
-        = f.input :teacher_id, as: :select, collection: @tasks.map { |task| [task.teacher.full_name, task.teacher.id] }
+        - if @user_is_student
+          = f.input :teacher_id, as: :select, collection: @tasks.map(&:teacher).uniq.map { |teacher| [teacher.full_name, teacher.id] }
+        - elsif @user_is_teacher
+          = f.input :student_id, as: :select, collection: @tasks.map(&:student).uniq.map { |student| [student.full_name, student.id] }
+        - else
+          = f.input :teacher_id, as: :select, collection: @tasks.map(&:teacher).uniq.map { |teacher| [teacher.full_name, teacher.id] }
+          = f.input :student_id, as: :select, collection: @tasks.map(&:student).uniq.map { |student| [student.full_name, student.id] }
       .col-md-2.mt-auto
         = f.submit 'Search', class: 'btn btn-outline-secondary'
         = link_to 'Reset', tasks_path, class: 'btn btn-outline-secondary'
-  %table.table
-    %thead
-      %tr
-        %th Task
-        %th Description
-        %th Reward XP
-        %th Deadline
-        %th Teacher
-        %th Status
-        %th Template
-        %th
-    %tbody
-      - @tasks.each do |task|
-        %tr{ class: status_class_mapping[task.status.to_s] }
-          %td= task.name
-          %td= task.description
-          %td= task.reward_xp
-          %td= task.deadline_readable
-          %td= task.teacher.full_name
-          %td.align-middle.fs-4
-            - if task.status.to_s == "completed"
-              %i.bi.bi-check2-all
-            - elsif task.status.to_s == "pending"
-              %i.bi.bi-check2
-            - else
-              %i.bi.bi-clock-history
-          %td
-            .btn-toolbar.float-end
-              = link_to 'Use as template', new_task_path(task_id: task.id), class: 'btn btn-outline-secondary btn-sm'
-
-          %td
-            .btn-toolbar.float-end
-              - if task.status.to_s == "todo"
-                = link_to 'Do', task , class: 'btn btn-outline-secondary btn-sm'
+  .table-responsive.mx-3
+    %table.table
+      %thead
+        %tr
+          %th Task
+          %th Instrument
+          %th Description
+          %th Reward XP
+          %th Deadline
+          - if @user_is_student
+            %th Teacher
+          - elsif @user_is_teacher
+            %th Student
+          - else
+            %th Teacher
+            %th Student
+          %th Status
+          - if @user_is_student
+            %th
+          - else
+            %th Tamplate
+            %th
+            %th
+      %tbody
+        - @tasks.each do |task|
+          %tr{ class: status_class_mapping[task.status.to_s] }
+            %td.align-middle= task.name
+            %td.align-middle= task.instrument.name
+            %td.align-middle= task.description
+            %td.align-middle= task.reward_xp
+            %td.align-middle= task.deadline_readable
+            - if @user_is_student
+              %td.align-middle= task.teacher.full_name
+            - elsif @user_is_teacher
+              %td.align-middle= task.student.full_name
+            - else 
+              %td.align-middle= task.teacher.full_name
+              %td.align-middle= task.student.full_name
+            %td.align-middle.fs-4
+              - if task.status.to_s == "completed"
+                %i.bi.bi-check2-all
+              - elsif task.status.to_s == "pending"
+                %i.bi.bi-check2
               - else
-                = link_to 'View', '#', class: 'btn btn-outline-secondary btn-sm'
+                %i.bi.bi-clock-history
+            - if @user_is_student
+              %td.align-middle
+                .btn-toolbar.float-end
+                  - if task.status.to_s == "todo"
+                    = link_to 'Do', '#', class: 'btn btn-outline-secondary btn-sm'
+                  - else
+                    = link_to 'View', '#', class: 'btn btn-outline-secondary btn-sm'
+            - else
+              %td.align-middle 
+                .btn-toolbar.float-end
+                  = link_to 'Use as template', new_task_path(task_id: task.id), class: 'btn btn-outline-secondary btn-sm'
+              %td.align-middle
+                .btn-toolbar.float-end
+                  = link_to 'View', '#', class: 'btn btn-outline-secondary btn-sm'
+

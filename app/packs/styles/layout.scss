@@ -11,3 +11,9 @@ body {
     margin-top: auto;
   }
 }
+
+.scaled-avatar-image {
+  width: 250px;
+  height: 250px;
+  object-fit: cover;
+}

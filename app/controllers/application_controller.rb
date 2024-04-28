@@ -8,6 +8,26 @@ class ApplicationController < ActionController::Base
   # may be worth enabling caching for performance.
   before_action :update_headers_to_disable_caching
   before_action :authenticate_user!
+  before_action :configure_permitted_parameters, if: :devise_controller?
+
+  #redirects user to their specific dashboard when they login successfully
+  def after_sign_in_path_for(current_user)
+    case current_user.role
+    when 'student'
+      students_path
+    when 'teacher'
+      teachers_path
+    when 'admin'
+      admin_dashboard_path
+    else
+      root_path
+    end
+  end
+
+  protected
+    def configure_permitted_parameters
+      devise_parameter_sanitizer.permit(:account_update, keys: [:email, :password, :password_confirmation, :current_password, :name])
+    end
 
   private
     def update_headers_to_disable_caching
@@ -16,12 +36,12 @@ class ApplicationController < ActionController::Base
       response.headers['Expires'] = '-1'
     end
 
-    def after_sign_in_path_for(resource)
-      if resource.is_a?(User) && resource.teacher?
-        teachers_dashboard_path
-      else
-        students_dashboard_path # Or some other path you want
-      end
-    end
+    # def after_sign_in_path_for(resource)
+    #   if resource.is_a?(User) && resource.teacher?
+    #     teachers_dashboard_path
+    #   else
+    #     students_dashboard_path # Or some other path you want
+    #   end
+    # end
 
 end

@@ -36,6 +36,35 @@ end
   )
 end
 
+# Instruments
+instruments = [
+  "Flute",
+  "Recorder",
+  "Oboe",
+  "Clarinet",
+  "Saxophone",
+  "Bassoon",
+  "French Horn",
+  "Trumpet",
+  "Trombone",
+  "Tuba",
+  "Percussion",
+  "Guitar",
+  "Harp",
+  "Voice",
+  "Violin",
+  "Viola",
+  "'Cello",
+  "Double Bass",
+  "Piano",
+  "Organ",
+  "Harpsichord"
+]
+
+instruments.each do |instrument_name|
+  Instrument.find_or_create_by(name: instrument_name)
+end
+
 # Tasks
 students = User.where(role: 'student')
 teachers = User.where(role: 'teacher')
@@ -56,9 +85,10 @@ students.each do |student|
       Task.create!(task_attributes.merge(
         name: 'Practice scales and arpeggios',
         reward_xp: 30,
-        deadline: 1.week.from_now,
+        deadline: Date.today,
         status: 0,
-        description: 'Practice the C major scale and arpeggio patterns for 30 minutes.'
+        description: 'Practice the C major scale and arpeggio patterns for 30 minutes.',
+        instrument_id: 1
       ))
     when 1
       Task.create!(task_attributes.merge(
@@ -66,15 +96,17 @@ students.each do |student|
         reward_xp: 80,
         deadline: 1.days.from_now,
         status: 1,
-        description: 'Learn to play the song "Imagine" by John Lennon on your instrument.'
+        description: 'Learn to play the song "Imagine" by John Lennon on your instrument.',
+        instrument_id: 3
       ))
     when 2
       Task.create!(task_attributes.merge(
         name: 'Prepare for recital',
         reward_xp: 100,
-        deadline: 6.days.from_now,
+        deadline: 2.days.from_now,
         status: 2,
-        description: 'Practice and memorize your pieces for the upcoming recital performance.'
+        description: 'Practice and memorize your pieces for the upcoming recital performance.',
+        instrument_id: 5
       ))
     end
   end

@@ -1,15 +1,34 @@
 require 'rails_helper'
 
-# describe 'level_up.' do
-#   let!(:student) { FactoryBot.create(:user) }
+describe 'level_up.' do
+  let!(:student) { FactoryBot.create(:user) }
+  #before { login_as student }
 
-#   visit '/'
-#   click_on 'Log in'
-#   fill_in 'Email', with: 'student_test@test.com'
-#   fill_in 'Password', with: 'Password1234'
-#   within(:css, 'form') { click_on 'Log in' }
+  specify "I don't see a pop up in my student dashboard when I haven't leveled up" do
+    student.recently_leveled_up = false
+    login_as student
+    visit '/students'
+    
+    expect(page).to have_selector('#levelUpModal', visible: false)
+  end
 
-#   specify 'I see a pop up when I level up' do
-#     skip
-#   end
-# end
+  specify 'I see a pop up in my student dashboard when I level up' do
+    student.recently_leveled_up = true
+    login_as student
+    visit '/students'
+
+    expect(page).to have_selector('#levelUpModal', visible: :visible)
+  end
+
+  specify 'The pop up modal has the correct content (including my new level)' do
+    student.recently_leveled_up = true
+    login_as student
+    visit '/students'
+
+    within('#levelUpModal') do
+      expect(page).to have_content("Level #{student.level} reached")
+      expect(page).to have_content("New avatars unlocked:")
+    end
+  end
+
+end

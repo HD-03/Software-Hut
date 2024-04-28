@@ -1,0 +1,18 @@
+.row.justify-content-center.mb-5
+  .col-sm-8.col-lg-6
+    %h2= @task.name
+    .card
+      .card-body
+        .row
+          .col-md-6
+            %h5 Task
+            %p= @task.description
+          .col-md-6
+            %h5 Attachment
+            - if @task.attachment_paths.present?
+              %img{src: @task.attachment_paths.first, alt: 'Sheet Music'}
+.row.justify-content-center
+  .col.text-center
+    %button.btn.btn-outline-primary.btn-lg{type: 'button'}
+      %i.bi.bi-play-circle
+

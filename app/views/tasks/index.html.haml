@@ -50,6 +50,6 @@
           %td
             .btn-toolbar.float-end
               - if task.status.to_s == "todo"
-                = link_to 'Do', '#', class: 'btn btn-outline-secondary btn-sm'
+                = link_to 'Do', task , class: 'btn btn-outline-secondary btn-sm'
               - else
                 = link_to 'View', '#', class: 'btn btn-outline-secondary btn-sm'

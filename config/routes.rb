@@ -48,4 +48,7 @@ Rails.application.routes.draw do
   resources :users do
     post :search, on: :collection
   end
+  
+  #for testing level up modal (delete after development this is finished)
+  post 'students/give_student_xp', to: 'students#give_student_xp'
 end

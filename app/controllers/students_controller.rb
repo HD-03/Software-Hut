@@ -1,9 +1,11 @@
 class StudentsController < ApplicationController
 
   # GET /students
-  def dashboard
+  def index
     check_level_up
     @tasks = Task.where(student_id: current_user.id)
+    
+    authorize! :index, :students
   end
 
   def give_student_xp

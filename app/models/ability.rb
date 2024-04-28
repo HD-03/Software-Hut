@@ -32,14 +32,13 @@ class Ability
     user ||= User.new
 
     if user.role == 'admin'
-      can :manage, Task
-      can :manage, User
+      can :manage, :all
     elsif user.role == 'teacher'
-      can [:create, :update, :destroy], Task
-      can :read, User
+      can :manage, Task
+      can :index, :teachers
     elsif user.role == 'student'
-      can :read, Task
-      can :read, User
+      can [:read, :search], Task
+      can :index, :students
     end
   end
 end

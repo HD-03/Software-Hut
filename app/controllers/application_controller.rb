@@ -14,9 +14,9 @@ class ApplicationController < ActionController::Base
   def after_sign_in_path_for(current_user)
     case current_user.role
     when 'student'
-      students_dashboard_path
+      students_path
     when 'teacher'
-      teachers_dashboard_path
+      teachers_path
     when 'admin'
       admin_dashboard_path
     else

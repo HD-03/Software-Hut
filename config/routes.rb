@@ -10,8 +10,6 @@ Rails.application.routes.draw do
   root "pages#home"
 
   # Dashboards
-  get 'teachers/dashboard', to: 'teachers#dashboard', as: 'teachers_dashboard'
-  get 'students/dashboard', to: 'students#dashboard', as: 'students_dashboard'
   get 'admin/dashboard', to: 'admin#dashboard', as: 'admin_dashboard'
 
   # -------------------------------------------------------------------
@@ -31,6 +29,17 @@ Rails.application.routes.draw do
   delete 'admin/delete_user/:id', to: 'admin#delete_user', as: 'delete_user'
 
   post 'teachers/tasks', to: 'tasks#create', as: 'create_task'
+  # Example route for a teacher's dashboard. Adjust according to your actual controller and action names.
+  # get 'teachers/dashboard', to: 'teachers#dashboard', as: 'teachers_dashboard'
+
+  # Example route for adding a new task. Adjust according to your actual controller and action names.
+  #get 'teachers/add_new_task', to: 'teachers#add_new_task', as: 'new_add_task'
+
+  # get 'students/dashboard', to: 'students#dashboard', as: 'students_dashboard'
+
+  resources :students
+
+  resources :teachers
 
   resources :tasks do
     post :search, on: :collection
@@ -39,6 +48,4 @@ Rails.application.routes.draw do
   resources :users do
     post :search, on: :collection
   end
-
-  # -------------------------------------------------------------------
 end

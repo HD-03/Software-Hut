@@ -18,7 +18,7 @@
                     %td= student.username
                     %td= student.email
                     %td
-                      = link_to 'Edit', edit_user_path(student.id), class: 'btn btn-sm btn-primary'
+                      = link_to 'Edit', edit_user_admin_path(student.id), class: 'btn btn-sm btn-primary'
                       = link_to 'Delete', delete_user_path(student.id), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger'
 
 
@@ -36,7 +36,7 @@
                     %td= teacher.username
                     %td= teacher.email
                     %td
-                      = link_to 'Edit', edit_user_path(teacher.id), class: 'btn btn-sm btn-primary'
+                      = link_to 'Edit', edit_user_admin_path(teacher.id), class: 'btn btn-sm btn-primary'
                       = link_to 'Delete', delete_user_path(teacher.id), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger'
 
           .card-footer.d-flex.justify-content-between

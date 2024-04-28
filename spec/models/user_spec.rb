@@ -8,6 +8,7 @@
 #  full_name                     :string           not null
 #  level                         :integer          default(1), not null
 #  old_enough_for_cooler_avatars :boolean          default(FALSE), not null
+#  recently_leveled_up           :boolean          default(FALSE), not null
 #  remember_created_at           :datetime
 #  reset_password_sent_at        :datetime
 #  reset_password_token          :string
@@ -45,24 +46,81 @@ RSpec.describe User, type: :model do
         old_enough_for_cooler_avatars: false
       )
 
+
     describe '#set_xp_needed_for_next_level_value' do
-      it 'updates value for xp_needed_for_next_level variable correctly' do  
+      it 'normal: updates value for xp_needed_for_next_level variable correctly' do
         expect(user.xp_needed_for_next_level).to eq 300
       end
+
+      it 'boundary: for level 0 (raises a RangeError)' do
+        user.level = 0
+        user.xp_points = 0
+        expect{ user.save }.to raise_error(RangeError, "Level can't be below 1")
+        
+        expect(user.xp_needed_for_next_level).to eq 30
+      end
+
+      it 'boundary: for level 1' do
+        user.level = 1
+        user.xp_points = 15
+        user.save
+        
+        expect(user.xp_needed_for_next_level).to eq 30
+      end
+
+      it 'boundary: for level 19' do
+        user.level = 19
+        user.xp_points = 197
+        user.save
+        
+        expect(user.xp_needed_for_next_level).to eq 570
+      end
+
+      it 'boundary: for level 20' do
+        user.level = 20
+        user.xp_points = 240
+        user.save
+        
+        expect(user.xp_needed_for_next_level).to eq 600
+      end
+
+      it 'boundary: for level 30' do
+        user.level = 30
+        user.xp_points = 5
+        user.save
+        
+        expect(user.xp_needed_for_next_level).to eq 600
+      end
     end
+
 
     describe '#get_current_level_progress' do
       it 'returns current level progress percentage value' do
+        user.xp_points = 100
+        user.level = 10
+        user.save
         expect(user.get_current_level_progress).to eq 33
+      end
+
+      it 'boundary: for level 1 and 0 xp' do
+        user.xp_points = 0
+        user.level = 1
+        user.save
+        expect(user.get_current_level_progress).to eq 0
       end
     end
 
+
     describe '#give_student_xp_points' do
       it 'returns false if user has not levelled up' do
+        user.xp_points = 100
+        user.level = 10
+        user.save
         expect(user.give_student_xp_points(50)).to eq false
       end
 
       it 'returns true if user has levelled up' do
+        user.xp_points = 100
         expect(user.give_student_xp_points(200)).to eq true
       end
 
@@ -74,16 +132,22 @@ RSpec.describe User, type: :model do
 
       it 'updates users "xp_points" correctly when levelled up and should have 0 xp' do
         user.xp_points = 100
+        user.level = 10
+        user.save
         user.give_student_xp_points(200)
         expect(user.xp_points).to eq 0
       end
 
       it 'updates users xp correctly when levelled up and should have more than 0 xp' do
         user.xp_points = 100
+        user.level = 10
+        user.save
         user.give_student_xp_points(236)
         expect(user.xp_points).to eq 36
       end
     end
+
+
   end
 
 end

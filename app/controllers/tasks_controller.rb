@@ -1,12 +1,32 @@
 class TasksController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_task, only: %i[ show edit update destroy ]
+  before_action :set_task, only: %i[ show edit update destroy new ]
+  before_action :set_role
 
+  authorize_resource
 
-  def new
-    @task = Task.new
+  # GET /tasks
+  def index
+    @tasks = Task.all
+    @tasks = @tasks.where(teacher_id: current_user.id) if @user_is_teacher
+    @tasks = @tasks.where(student_id: current_user.id) if @user_is_student
   end
 
+  # GET /tasks/1
+  def show
+  end
+
+  # GET /tasks/1/edit
+  def edit
+  end
+
+  # GET /tasks/new
+  def new
+    @students = params[:student_ids] ? User.find(params[:student_ids]) : User.where(role: :student)
+    @instruments = Instrument.all
+  end
+
+  # POST /tasks
   def create
     student_ids = params[:task].delete(:student_id).reject(&:empty?) # Remove empty elements
 
@@ -23,48 +43,65 @@ class TasksController < ApplicationController
     end
 
     if @tasks.all?(&:persisted?)
-      redirect_to teachers_dashboard_path, notice: 'Tasks were successfully created.'
+      redirect_to teachers_path, notice: 'Tasks were successfully created.'
     else
-      render 'teachers/add_new_task'
+      render :new, status: :unprocessable_entity
     end
   end
 
-  # GET /tasks
-  def index
-    if current_user.role == 'teacher'
-      @tasks = Task.where(teacher_id: current_user.id)
-    elsif current_user.role == 'student'
-      @tasks = Task.where(student_id: current_user.id)
-    end
+  # DELETE /tasks/1
+  def destroy
+    @task = Task.find(params[:id])
+    @task.destroy
+    redirect_to teachers_path, notice: 'Task was successfully deleted.'
   end
 
   # POST /tasks/search
   def search
-    @tasks = Task.includes(:student) 
-
-    if current_user.role == 'teacher'
-      @tasks = @tasks.where(teacher_id: current_user.id)
-    elsif current_user.role == 'student'
-     @tasks = @tasks.where(student_id: current_user.id)
-    end
-  
-    if params[:search].present?
-        search_term = params[:search].downcase
-     @tasks = @tasks.joins(:student).where('LOWER(users.full_name) LIKE :search OR LOWER(users.email) LIKE :search', search: "%#{search_term}%")
+    # Initial sort of tasks based on the user
+    if @user_is_student
+      @tasks = Task.where(student_id: current_user.id)
+    elsif @user_is_teacher
+      @tasks = Task.where(teacher_id: current_user.id)
+    else
+      @tasks = Task.all
     end
 
+    # Search by intrument
+    if params[:search][:instrument_id].present?
+      @tasks = @tasks.where(instrument_id: params[:search][:instrument_id])
+    end
+      
+    # Search by student or/and teacher
+    if params[:search][:teacher_id].present? && params[:search][:student_id].present?
+      @tasks = @tasks.where(teacher_id: params[:search][:teacher_id], student_id: params[:search][:student_id])
+    elsif params[:search][:student_id].present?
+      @tasks = @tasks.where(student_id: params[:search][:student_id])
+    elsif params[:search][:teacher_id].present?
+      @tasks = @tasks.where(teacher_id: params[:search][:teacher_id])
+    end
+
+    # Search by name
+    @tasks = @tasks.where('name LIKE ?', "%#{params[:search][:name]}%") if params[:search][:name].present?
+    
+    authorize! :search, Task
     render :index
   end
 
   private
+
+    def set_role
+      @user_is_student = current_user.role == 'student'
+      @user_is_teacher = current_user.role == 'teacher'
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_task
-      @tasks = Task.find(params[:id])
+      @task = params[:task_id] ? Task.find(params[:task_id]) : Task.new
     end
 
     # Only allow a list of trusted parameters through.
     def task_params
-      # Ensure you permit student__id and not user_id if that's what the Task model expects
-      params.require(:task).permit(:name, :student_id, :teacher_id, :description, :deadline, :recording_boolean,:reward_xp)
+      params.require(:task).permit(:name, :instrument_id, :teacher_id, :description, :deadline, :recording_boolean, :reward_xp, student_id: [])
     end
 end

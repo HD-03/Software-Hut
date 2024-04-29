@@ -1,4 +1,4 @@
-class AdminController < ApplicationController
+  class AdminController < ApplicationController
     before_action :authenticate_user!, only: [:dashboard, :add_new_user, :edit_user, :delete_user]
     before_action :set_user, only: [:edit_user_info, :update_user, :delete_user]
 
@@ -15,14 +15,8 @@ class AdminController < ApplicationController
     # POST create new users
     def create
         @user = User.new(user_params)
-
         # For students there are additional fields need such as lvl and xp_points and these would be default 
-        if @user.role == :student
-            @user.level = 1
-            @user.xp_points = 0
-            @user.avatar_id = 1
-            @user.old_enough_for_cooler_avatars = params[:user][:old_enough_for_cooler_avatars] if params[:user][:old_enough_for_cooler_avatars]
-        end
+       set_default_student_attributes if @user.student?
 
         if @user.save
             redirect_to admin_dashboard_path, notice: 'User was successfully created'
@@ -48,10 +42,21 @@ class AdminController < ApplicationController
 
     #PATCH
     def update_user
-
+        if @user.update(user_params)
+            redirect_to admin_dashboard_path, notice: 'User was successfully updated.'
+        else
+            render :edit_user_info
+        end
     end
 
     def search
+    end
+
+    def set_default_student_attributes
+      @user.level = 1
+      @user.xp_points = 0
+      @user.avatar_id = 1
+      @user.old_enough_for_cooler_avatars = params[:user][:old_enough_for_cooler_avatars] if params[:user][:old_enough_for_cooler_avatars]
     end
 
     private
@@ -63,4 +68,6 @@ class AdminController < ApplicationController
         def user_params
           params.require(:user).permit(:full_name, :email, :username, :password, :role, :old_enough_for_cooler_avatars)
         end
+
+
 end

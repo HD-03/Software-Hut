@@ -12,6 +12,6 @@
         = f.input :role, collection: [['Student', :student], ['Teacher', :teacher]], wrapper_html: { class: 'mb-3' }
         = f.input :old_enough_for_cooler_avatars, as: :boolean, label: 'Old enough for cooler avatars?', wrapper_html: { class: 'mb-3' }, inline_label: true
 
-        %button.btn.btn-primary{ type: 'submit' }
+        %button.btn.btn-primary.border-0.rounded-5.shadow-lg.py-2.px-3{ type: 'submit' }
           Add User
-        = link_to 'Cancel', admin_dashboard_path, class: 'btn btn-link ms-auto'
+        = link_to 'Cancel', admin_dashboard_path, class: 'btn btn-primary border-0 rounded-5 shadow-lg py-2 px-3 ms-auto'

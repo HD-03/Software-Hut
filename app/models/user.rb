@@ -8,6 +8,7 @@
 #  full_name                     :string           not null
 #  level                         :integer          default(1), not null
 #  old_enough_for_cooler_avatars :boolean          default(FALSE), not null
+#  recently_leveled_up           :boolean          default(FALSE), not null
 #  remember_created_at           :datetime
 #  reset_password_sent_at        :datetime
 #  reset_password_token          :string
@@ -34,7 +35,7 @@ class User < ApplicationRecord
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  devise :database_authenticatable, :recoverable, :rememberable, :validatable
+  devise :database_authenticatable, :recoverable, :rememberable, :validatable, :registerable
 
   enum role: { student: 0, teacher: 1, admin: 2 }
   has_many :tasks, foreign_key: "student_id"
@@ -65,7 +66,9 @@ class User < ApplicationRecord
       self.xp_points = new_xp_points_count - xp_needed_for_next_level
     end
 
-    return user_leveled_up
+    self.recently_leveled_up = user_leveled_up
+    self.save
+    return self.recently_leveled_up
 
   end
   
@@ -83,12 +86,14 @@ class User < ApplicationRecord
     max = 600   # max xp threshold which is reached at level 20
     xp = nil   # xp_needed_for_next_level
 
-    if level >= 0 && level <= 20
+    if level >= 1 && level <= 20
       xp = 30 * level
     elsif level > 20
-      xp = MAX
+      xp = max
     else
-      raise RangeError, "Level can't be below 0"
+      #set it to the level 1 value, this can be changed cause idk what to best set it to
+      self.xp_needed_for_next_level = 30
+      raise RangeError, "Level can't be below 1"
     end
 
     self.xp_needed_for_next_level = xp

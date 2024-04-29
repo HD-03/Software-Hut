@@ -8,6 +8,7 @@
 #  full_name                     :string           not null
 #  level                         :integer          default(1), not null
 #  old_enough_for_cooler_avatars :boolean          default(FALSE), not null
+#  recently_leveled_up           :boolean          default(FALSE), not null
 #  remember_created_at           :datetime
 #  reset_password_sent_at        :datetime
 #  reset_password_token          :string
@@ -28,7 +29,7 @@
 #
 FactoryBot.define do
   factory :user do
-    email { 'student_test@test.com' }
+    sequence(:email) { |n| "user#{n}@example.com" }
     username { 'student_test1' }
     password { 'Password1234' }
     full_name { 'Student Student' }

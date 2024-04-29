@@ -6,31 +6,27 @@
       %span.navbar-toggler-icon
 
     #navbar-content.navbar-collapse.collapse
+      -#= puts "--- ROLE: #{current_user.role} ---"
       - if user_signed_in?
         %ul.navbar-nav.me-auto.mb-2.mb-lg-0
           %li.nav-item.ps-3
             - if current_user.role == 'admin' 
-              %a.nav-link.active{aria_current: "page", href: "/admin/dashboard"} Home
+              = link_to 'Home', admin_dashboard_path, class: 'nav-link', aria_current: 'page'
             - elsif current_user.role == 'teacher'
-              %a.nav-link.active{aria_current: "page", href: "/teachers/dashboard"} Home
-            - else 
-              = link_to 'Home', students_dashboard_path, class: 'nav-link active', aria_current: 'page'
-
-          %li.nav-item.ps-3
-            - if current_user.role == 2
-              %a.nav-link{href: "#"} Users
+              = link_to 'Home', teachers_path, class: 'nav-link', aria_current: 'page'
             - else
-              = link_to tasks_path, class: 'nav-link' do
-                Tasks
-          - if current_user.role == 'admin'
-            %li.nav-item.ps-3
-              %a.nav-link{href: "/admin/add_new_user"} Add User
+              = link_to 'Home', students_path, class: 'nav-link', aria_current: 'page'
           
-
+          - if current_user.role == 'student' || current_user.role == 'teacher'
+            %li.nav-item.ps-3
+              = link_to 'Tasks', tasks_path, class: 'nav-link', aria_current: 'page'
+          %li.nav-item.ps-3
+            - if current_user.role == 'student' || current_user.role == 'teacher' || current_user.role == 'admin'
+              = link_to 'Settings', edit_user_registration_path, class: 'nav-link', aria_current: 'page'
       
-        .btn.btn-primary.border-0.rounded-5.shadow-lg.py-2.px-3.ms-auto
+        .btn.btn-primary.border-0.rounded-5.shadow-lg.py-2.px-3.ms-auto.my-2
           = link_to 'Log out', destroy_user_session_path, class: 'text-light link-underline link-underline-opacity-0', method: :delete
     
       - else
-        .btn.btn-primary.border-0.rounded-5.shadow-lg.py-2.px-3.ms-auto
+        .btn.btn-primary.border-0.rounded-5.shadow-lg.py-2.px-3.ms-auto.my-2
           = link_to 'Log in', new_user_session_path, class: 'text-light link-underline link-underline-opacity-0'

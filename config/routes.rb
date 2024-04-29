@@ -1,15 +1,15 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: { registrations: 'users/registrations' }
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-  # Example route for a teacher's dashboard. Adjust according to your actual controller and action names.
-  get 'teachers/dashboard', to: 'teachers#dashboard', as: 'teachers_dashboard'
+  #for user settings
+  resources :users, only: [:show, :edit], path_names: { update: 'settings' }
 
-  # Example route for adding a new task. Adjust according to your actual controller and action names.
-  get 'teachers/add_new_task', to: 'teachers#add_new_task', as: 'new_add_task'
 
-  get 'students/dashboard', to: 'students#dashboard', as: 'students_dashboard'
+  # Defines the root path route ("/")
+  root "pages#home"
 
+  # Dashboards
   get 'admin/dashboard', to: 'admin#dashboard', as: 'admin_dashboard'
 
   # -------------------------------------------------------------------
@@ -19,10 +19,29 @@ Rails.application.routes.draw do
 
   # post route to submit the new user form
   post 'admin/add_new_user', to: 'admin#create', as: 'create_new_user'
+  
+  #  get route for editing user details
+  get 'admin/edit_user/:id', to: 'admin#edit_user_info', as: 'edit_user_admin'
+
+  # route to submit the edit user form
+  patch 'admin/update_user/:id', to: 'admin#update_user', as:'update_user'
 
   delete 'admin/delete_user/:id', to: 'admin#delete_user', as: 'delete_user'
 
   post 'teachers/tasks', to: 'tasks#create', as: 'create_task'
+  # Example route for a teacher's dashboard. Adjust according to your actual controller and action names.
+  # get 'teachers/dashboard', to: 'teachers#dashboard', as: 'teachers_dashboard'
+
+  # Example route for adding a new task. Adjust according to your actual controller and action names.
+  #get 'teachers/add_new_task', to: 'teachers#add_new_task', as: 'new_add_task'
+
+  # get 'students/dashboard', to: 'students#dashboard', as: 'students_dashboard'
+
+  resources :students do
+    post :give_student_xp
+  end
+
+  resources :teachers
 
   resources :tasks do
     post :search, on: :collection
@@ -31,8 +50,7 @@ Rails.application.routes.draw do
   resources :users do
     post :search, on: :collection
   end
-  # -------------------------------------------------------------------
-
-  # Defines the root path route ("/")
-  root "pages#home"
+  
+  # for testing level up modal (delete after development this is finished)
+  # post 'students/give_student_xp', to: 'students#give_student_xp'
 end

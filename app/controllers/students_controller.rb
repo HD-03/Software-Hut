@@ -10,6 +10,8 @@ class StudentsController < ApplicationController
 
   def give_student_xp
     current_user.give_student_xp_points(600)
+
+    authorize! :give_student_xp, :students
   end
 
   def check_level_up

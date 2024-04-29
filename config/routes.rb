@@ -37,7 +37,9 @@ Rails.application.routes.draw do
 
   # get 'students/dashboard', to: 'students#dashboard', as: 'students_dashboard'
 
-  resources :students
+  resources :students do
+    post :give_student_xp
+  end
 
   resources :teachers
 
@@ -49,6 +51,6 @@ Rails.application.routes.draw do
     post :search, on: :collection
   end
   
-  #for testing level up modal (delete after development this is finished)
-  post 'students/give_student_xp', to: 'students#give_student_xp'
+  # for testing level up modal (delete after development this is finished)
+  # post 'students/give_student_xp', to: 'students#give_student_xp'
 end

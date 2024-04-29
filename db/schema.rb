@@ -58,7 +58,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_28_224437) do
     t.boolean "recording_boolean", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "instrument_id", default: 19, null: false
+    t.bigint "instrument_id", default: 1, null: false
     t.index ["instrument_id"], name: "index_tasks_on_instrument_id"
   end
 

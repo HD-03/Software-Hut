@@ -1,6 +1,7 @@
 class TasksController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_task, only: %i[ show destroy new ]
+  before_action :set_task, only: %i[ show destroy new create ]
+  #before_action :set_task, only: %i[ show destroy new ]
   before_action :set_role
 
   authorize_resource
@@ -25,7 +26,8 @@ class TasksController < ApplicationController
   # POST /tasks
   def create
     student_ids = params[:task].delete(:student_id).reject(&:empty?) # Remove empty elements
-
+    @students = params[:student_ids] ? User.find(params[:student_ids]) : User.where(role: :student)
+    @instruments = Instrument.all
     # Iterate over each student ID and create a new task
     @tasks = student_ids.map do |student_id|
       current_task = Task.new(task_params)
@@ -36,6 +38,16 @@ class TasksController < ApplicationController
       # You can handle each save individually or collect errors
       current_task.save
       current_task
+    # @tasks = student_ids.map do |student_id|
+    #   @task = Task.new(task_params)
+    #   @task.student_id = student_id
+    #   @task.teacher_id = current_user.id
+    #   @task.time_set = Time.current
+
+    #   # You can handle each save individually or collect errors
+    #   @task.save
+    #   @task
+
     end
 
     if @tasks.all?(&:persisted?)

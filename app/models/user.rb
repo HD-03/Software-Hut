@@ -33,6 +33,8 @@ class User < ApplicationRecord
   has_many :taught_tasks, class_name: 'Task', foreign_key: :teacher
   has_many :studied_tasks, class_name: 'Task', foreign_key: :student
 
+  has_one_attached :avatar
+  
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :recoverable, :rememberable, :validatable, :registerable

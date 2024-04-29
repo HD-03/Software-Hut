@@ -104,3 +104,4 @@ group :test do
   gem 'simplecov'
 end
 
+gem "ruby-vips"

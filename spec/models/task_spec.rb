@@ -1,3 +1,30 @@
+# == Schema Information
+#
+# Table name: tasks
+#
+#  id                :bigint           not null, primary key
+#  attachment_paths  :string           default([]), is an Array
+#  deadline          :datetime         not null
+#  description       :text
+#  name              :string           not null
+#  recording_boolean :boolean          default(FALSE), not null
+#  reward_xp         :integer          not null
+#  status            :integer          default("todo"), not null
+#  time_set          :datetime         not null
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  instrument_id     :bigint           default(1), not null
+#  student_id        :integer          not null
+#  teacher_id        :integer          not null
+#
+# Indexes
+#
+#  index_tasks_on_instrument_id  (instrument_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (instrument_id => instruments.id)
+#
 require 'rails_helper'
 
 RSpec.describe Task, type: :model do

@@ -36,50 +36,7 @@ end
   )
 end
 
-# Tasks
-students = User.where(role: 'student')
-teachers = User.where(role: 'teacher')
-
-# Assign each task to a different teacher
-students.each do |student|
-  3.times do |i|
-    teacher = teachers[i]
-    
-    task_attributes = {
-      student: student,
-      teacher: teacher,
-      time_set: Time.now
-    }
-
-    case i
-    when 0
-      Task.create!(task_attributes.merge(
-        name: 'Practice scales and arpeggios',
-        reward_xp: 30,
-        deadline: 1.week.from_now,
-        status: 0,
-        description: 'Practice the C major scale and arpeggio patterns for 30 minutes.'
-      ))
-    when 1
-      Task.create!(task_attributes.merge(
-        name: 'Learn a new song',
-        reward_xp: 80,
-        deadline: 1.days.from_now,
-        status: 1,
-        description: 'Learn to play the song "Imagine" by John Lennon on your instrument.'
-      ))
-    when 2
-      Task.create!(task_attributes.merge(
-        name: 'Prepare for recital',
-        reward_xp: 100,
-        deadline: 6.days.from_now,
-        status: 2,
-        description: 'Practice and memorize your pieces for the upcoming recital performance.'
-      ))
-    end
-  end
-end
-
+# Instruments
 instruments = [
   "Flute",
   "Recorder",
@@ -106,4 +63,51 @@ instruments = [
 
 instruments.each do |instrument_name|
   Instrument.find_or_create_by(name: instrument_name)
+end
+
+# Tasks
+students = User.where(role: 'student')
+teachers = User.where(role: 'teacher')
+
+# Assign each task to a different teacher
+students.each do |student|
+  3.times do |i|
+    teacher = teachers[i]
+    
+    task_attributes = {
+      student: student,
+      teacher: teacher,
+      time_set: Time.now
+    }
+
+    case i
+    when 0
+      Task.create!(task_attributes.merge(
+        name: 'Practice scales and arpeggios',
+        reward_xp: 30,
+        deadline: Date.today,
+        status: 0,
+        description: 'Practice the C major scale and arpeggio patterns for 30 minutes.',
+        instrument_id: 1
+      ))
+    when 1
+      Task.create!(task_attributes.merge(
+        name: 'Learn a new song',
+        reward_xp: 80,
+        deadline: 1.days.from_now,
+        status: 1,
+        description: 'Learn to play the song "Imagine" by John Lennon on your instrument.',
+        instrument_id: 3
+      ))
+    when 2
+      Task.create!(task_attributes.merge(
+        name: 'Prepare for recital',
+        reward_xp: 100,
+        deadline: 2.days.from_now,
+        status: 2,
+        description: 'Practice and memorize your pieces for the upcoming recital performance.',
+        instrument_id: 5
+      ))
+    end
+  end
 end

@@ -28,7 +28,7 @@ Rails.application.routes.draw do
 
   delete 'admin/delete_user/:id', to: 'admin#delete_user', as: 'delete_user'
 
-  post 'teachers/tasks', to: 'tasks#create', as: 'create_task'
+  #post 'teachers/tasks', to: 'tasks#create', as: 'create_task'
   # Example route for a teacher's dashboard. Adjust according to your actual controller and action names.
   # get 'teachers/dashboard', to: 'teachers#dashboard', as: 'teachers_dashboard'
 

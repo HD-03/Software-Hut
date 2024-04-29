@@ -7,7 +7,7 @@
         .card-header.border-0.bg-transparent.text-center.pt-3.pb-0
           %h5 Set task
         .card-body.border-0.bg-transparent.pt-0
-          = simple_form_for @task, url: tasks_path do |f|
+          = simple_form_for @task, url: tasks_path, method: :post do |f|
             .mt-2
               = f.select :student_id, @students.map { |student| [student.full_name, student.id] }, {}, { multiple: true, class: 'js-example-basic-multiple', name: 'task[student_id][]' }
             .mt-2

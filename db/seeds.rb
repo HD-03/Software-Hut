@@ -79,3 +79,31 @@ students.each do |student|
     end
   end
 end
+
+instruments = [
+  "Flute",
+  "Recorder",
+  "Oboe",
+  "Clarinet",
+  "Saxophone",
+  "Bassoon",
+  "French Horn",
+  "Trumpet",
+  "Trombone",
+  "Tuba",
+  "Percussion",
+  "Guitar",
+  "Harp",
+  "Voice",
+  "Violin",
+  "Viola",
+  "'Cello",
+  "Double Bass",
+  "Piano",
+  "Organ",
+  "Harpsichord"
+]
+
+instruments.each do |instrument_name|
+  Instrument.find_or_create_by(name: instrument_name)
+end

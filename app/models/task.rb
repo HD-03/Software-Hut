@@ -20,6 +20,7 @@
 class Task < ApplicationRecord
   belongs_to :teacher, -> { where(role: 1) }, class_name: 'User'
   belongs_to :student, -> { where(role: 0) }, class_name: 'User'
+  belongs_to :instrument
 
   enum status: { todo: 0, pending: 1, completed: 2 }
 
@@ -39,7 +40,7 @@ class Task < ApplicationRecord
   end
 
   def deadline_readable
-    day = deadline.strftime('%d') + 'th'
+    day = deadline.strftime('%-d')
     month = deadline.strftime('%B')
     year = deadline.strftime('%Y')
 

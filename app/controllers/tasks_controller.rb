@@ -23,6 +23,7 @@ class TasksController < ApplicationController
   # GET /tasks/new
   def new
     @students = params[:student_ids] ? User.find(params[:student_ids]) : User.where(role: :student)
+    @instruments = Instrument.all
   end
 
 
@@ -107,15 +108,12 @@ class TasksController < ApplicationController
   def destroy
     @task = Task.find(params[:id])
     @task.destroy
-<<<<<<< HEAD
-    redirect_to teachers_dashboard_path, notice: 'Task was successfully deleted.'
-=======
-    redirect_to teachers_path, notice: "task was successfully destroyed.", status: :see_other
->>>>>>> origin/search-new-task-fix
+    redirect_to teachers_path, notice: 'Task was successfully deleted.'
   end
 
   # POST /tasks/search
   def search
+    # Initial sort of tasks based on the user
     if @user_is_student
       @tasks = Task.where(student_id: current_user.id)
     elsif @user_is_teacher
@@ -124,6 +122,12 @@ class TasksController < ApplicationController
       @tasks = Task.all
     end
 
+    # Search by intrument
+    if params[:search][:instrument_id].present?
+      @tasks = @tasks.where(instrument_id: params[:search][:instrument_id])
+    end
+      
+    # Search by student or/and teacher
     if params[:search][:teacher_id].present? && params[:search][:student_id].present?
       @tasks = @tasks.where(teacher_id: params[:search][:teacher_id], student_id: params[:search][:student_id])
     elsif params[:search][:student_id].present?
@@ -132,12 +136,11 @@ class TasksController < ApplicationController
       @tasks = @tasks.where(teacher_id: params[:search][:teacher_id])
     end
 
+    # Search by name
     @tasks = @tasks.where('name LIKE ?', "%#{params[:search][:name]}%") if params[:search][:name].present?
     
     authorize! :search, Task
     render :index
-
-    authorize! :search, Task
   end
 
   private
@@ -154,7 +157,6 @@ class TasksController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def task_params
-      # Ensure you permit student__id and not user_id if that's what the Task model expects
-      params.require(:task).permit(:name, :teacher_id, :description, :deadline, :recording_boolean, :reward_xp, student_id: [])
+      params.require(:task).permit(:name, :instrument_id, :teacher_id, :description, :deadline, :recording_boolean, :reward_xp, student_id: [])
     end
 end

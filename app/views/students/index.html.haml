@@ -4,49 +4,54 @@
   .col-md-7.p-4
     .mx-auto
       %h2.pb-4.mb-0 Plan for the week
-      - %w[Monday Tuesday Wednesday Thursday Friday Saturday Sunday].each do |day|
-        - today = day == Date.today.strftime('%A')
-        .pb-2.accordion{id: "#{day}"}
+      - (Date.today.beginning_of_week..Date.today.end_of_week).each do |day|
+        - today = day == Date.today
+        - week_day = day.strftime("%A")
+        .pb-2.accordion{id: "#{week_day}"}
           .accordion-item
             %h3.accordion-header
-              %button.accordion-button{ class: today ? '' : 'collapsed', type: "button", data: { bs_toggle: "collapse", bs_target: "#collapse-#{day}", aria_expanded: today ? 'true' : 'false', aria_controls: "collapse-#{day}" } }
-                = today ? 'Today' : day
-            .accordion-collapse.collapse{ class: today ? 'show' : '', id: "collapse-#{day}", data: { bs_parent: "#{day}" } }
+              %button.accordion-button{ class: today ? '' : 'collapsed', type: "button", data: { bs_toggle: "collapse", bs_target: "#collapse-#{week_day}", aria_expanded: today ? 'true' : 'false', aria_controls: "collapse-#{week_day}" } }
+                = day.strftime("%A %-d %B")
+            .accordion-collapse.collapse{ class: today ? 'show' : '', id: "collapse-#{week_day}", data: { bs_parent: "#{week_day}" } }
               .accordion-body
-                - if @tasks.select { |task| task.deadline_day_this_week == day }.empty?
+                - if @tasks.select { |task| task.deadline_day_this_week == week_day }.empty?
                   No tasks for this day
                 - else
-                  %table.table
-                    %thead
-                      %tr
-                        %th Task
-                        %th Reward XP
-                        %th Teacher
-                        %th Status
-                        %th
-                    %tbody
-                      - @tasks.select { |task| task.deadline_day_this_week == day }.each do |task|
-                        %tr{ class: status_class_mapping[task.status.to_s] }
-                          %td.align-middle
-                            = task.name
-                          %td.align-middle
-                            = task.reward_xp
-                          %td.align-middle
-                            = task.teacher.full_name
-                          %td.align-middle.fs-4
-                            - if task.status.to_s == "completed"
-                              %i.bi.bi-check2-all
-                            - elsif task.status.to_s == "pending"
-                              %i.bi.bi-check2
-                            - else
-                              %i.bi.bi-clock-history
-
-                          %td
-                            .btn-toolbar.float-end
-                              - if task.status.to_s == "todo"
-                                = link_to 'Do', '#', class: 'btn btn-outline-secondary btn-sm'
+                  .table-responsive
+                    %table.table
+                      %thead
+                        %tr
+                          %th Task
+                          %th Instrument 
+                          %th Reward XP
+                          %th Teacher
+                          %th Status
+                          %th
+                      %tbody
+                        - @tasks.select { |task| task.deadline_day_this_week == week_day }.each do |task|
+                          %tr{ class: status_class_mapping[task.status.to_s] }
+                            %td.align-middle
+                              = task.name
+                            %td.align-middle
+                              = task.instrument.name
+                            %td.align-middle
+                              = task.reward_xp
+                            %td.align-middle
+                              = task.teacher.full_name
+                            %td.align-middle.fs-4
+                              - if task.status.to_s == "completed"
+                                %i.bi.bi-check2-all
+                              - elsif task.status.to_s == "pending"
+                                %i.bi.bi-check2
                               - else
-                                = link_to 'View', '#', class: 'btn btn-outline-secondary btn-sm'
+                                %i.bi.bi-clock-history
+
+                            %td.align-middle
+                              .btn-toolbar.float-end
+                                - if task.status.to_s == "todo"
+                                  = link_to 'Do', '#', class: 'btn btn-outline-secondary btn-sm'
+                                - else
+                                  = link_to 'View', '#', class: 'btn btn-outline-secondary btn-sm'
 
   .col-md-5.p-4.text-white.d-flex.align-items-center
     .card.border-0.rounded-5.shadow-lg.text-center.mx-auto.mb-auto

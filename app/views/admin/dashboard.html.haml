@@ -5,40 +5,44 @@
         .card
           .card-body
             %h3 Students
-            %table.table.table-striped
-              %thead
-                %tr
-                  %th Name
-                  %th Username
-                  %th Email
-              %tbody
-                - @students.each do |student|
-                  %tr{id: "user_#{student.id}"}
-                    %td= student.full_name
-                    %td= student.username
-                    %td= student.email
-                    %td
-                      = link_to 'Edit', edit_user_admin_path(student.id), class: 'btn btn-sm btn-primary'
-                      = link_to 'Delete', delete_user_path(student.id), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger'
+            .table-responsive
+              %table.table.table-striped
+                %thead
+                  %tr
+                    %th Name
+                    %th Username
+                    %th Email
+                %tbody
+                  - @students.each do |student|
+                    %tr{id: "user_#{student.id}"}
+                      %td.align-middle= student.full_name
+                      %td.align-middle= student.username
+                      %td.align-middle= student.email
+                      %td.align-middle
+                        = link_to 'Edit', edit_user_admin_path(student.id), class: 'btn btn-sm btn-primary'
+                      %td.align-middle
+                        = link_to 'Delete', delete_user_path(student.id), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger'
 
 
             %h3 Teachers
-            %table.table.table-striped
-              %thead
-                %tr
-                  %th Name
-                  %th Username
-                  %th Email
-              %tbody
-                - @teachers.each do |teacher|
-                  %tr{id: "user_#{teacher.id}"}
-                    %td= teacher.full_name
-                    %td= teacher.username
-                    %td= teacher.email
-                    %td
-                      = link_to 'Edit', edit_user_admin_path(teacher.id), class: 'btn btn-sm btn-primary'
-                      = link_to 'Delete', delete_user_path(teacher.id), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger'
+            .table-responsive
+              %table.table.table-striped
+                %thead
+                  %tr
+                    %th Name
+                    %th Username
+                    %th Email
+                %tbody
+                  - @teachers.each do |teacher|
+                    %tr{id: "user_#{teacher.id}"}
+                      %td.align-middle= teacher.full_name
+                      %td.align-middle= teacher.username
+                      %td.align-middle= teacher.email
+                      %td.align-middle
+                        = link_to 'Edit', edit_user_admin_path(teacher.id), class: 'btn btn-sm btn-primary'
+                      %td.align-middle
+                        = link_to 'Delete', delete_user_path(teacher.id), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger'
 
           .card-footer.d-flex.justify-content-between
-            = link_to 'Add User', new_add_user_path, class: 'btn btn-primary'
+            = link_to 'Add User', new_add_user_path, class: 'btn btn-primary border-0 rounded-5 shadow-lg py-2 px-3'
       

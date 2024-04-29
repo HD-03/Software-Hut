@@ -26,50 +26,6 @@ class TasksController < ApplicationController
     @instruments = Instrument.all
   end
 
-
-  # def update
-  #   student_ids = params[:task].delete(:student_id).reject(&:empty?) # Remove empty elements
-
-  # #   # Iterate over each student ID and create a new task
-  # #   @tasks = student_ids.map do |student_id|
-  # #     current_task = Task.new(task_params)
-  # #     current_task.student_id = student_id
-  # #     current_task.teacher_id = current_user.id
-  # #     current_task.time_set = Time.current
-
-  # #     # You can handle each save individually or collect errors
-  # #     current_task.save
-  # #     current_task
-  # #   end
-
-  #   if @tasks.all?(&:persisted?)
-  #     redirect_to teachers_path, notice: 'Tasks were successfully created.'
-  #   else
-  #     render 'teachers/add_new_task'
-  #   end
-  # end
-
-
-
-  # POST /tasks/search_students
-  #
-  # Searches for students based on the provided full name search term.
-  # If a search term is present, it splits the term into individual words
-  # and constructs a SQL condition to find students whose full name contains
-  # all the words (case-insensitive).
-  # Redirects to the new task page with the matching student IDs as query parameters.
-  # def search_students
-  #   if params[:search_students][:full_name].present?
-  #     full_name_words = params[:search_students][:full_name].split
-  #     conditions = full_name_words.map { |word| "full_name ILIKE '%#{word}%'" }
-
-  #     @students = @students.where(conditions.join(" AND "))
-  #   end
-
-  #   authorize! :search_students, Task
-  #   redirect_to new_task_path(student_ids: @students.map(&:id))
-  # end
-
   # POST /tasks
   def create
     student_ids = params[:task].delete(:student_id).reject(&:empty?) # Remove empty elements
@@ -92,17 +48,6 @@ class TasksController < ApplicationController
       render :new, status: :unprocessable_entity
     end
   end
-
-  # PATCH/PUT /tasks/1
-  # PATCH/PUT /tasks/1
-  # def update
-  #   if @task.update(task_params)
-  #     redirect_to teachers_dashboard_path, notice: "Task was successfully updated."
-  #   else
-  #     render :edit, status: :unprocessable_entity
-  #   end
-  # end
-
 
   # DELETE /tasks/1
   def destroy

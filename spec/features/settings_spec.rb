@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'settings.' do
-  let!(:student) { FactoryBot.create(:user) }
+  let!(:student) { FactoryBot.create(:user ,email: 'student_test@test.com') }
   before { login_as student }
   before { visit '/users/edit' }
 

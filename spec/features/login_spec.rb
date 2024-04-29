@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'Login.' do
-  let!(:student_test1) { FactoryBot.create(:user) }
+  let!(:student_test1) { FactoryBot.create(:user ,email: 'student_test@test.com') }
   let!(:teacher_test1) { FactoryBot.create(:user, email: 'teacher_test@test.com',role: 1) }
   let!(:admin_test1) { FactoryBot.create(:user, email: 'admin_test@test.com',role: 2) }
 

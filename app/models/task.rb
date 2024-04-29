@@ -29,9 +29,8 @@ class Task < ApplicationRecord
   #
   # @return [String, nil]
   def deadline_day_this_week
-    current_week_start = Date.current.beginning_of_week
-    current_week_end = Date.current.end_of_week
-  
+    current_week_start = Date.current.beginning_of_week(:monday) -  1.days
+    current_week_end = Date.current.beginning_of_week(:monday) + 6.days
     if deadline.between?(current_week_start, current_week_end)
       deadline.strftime('%A')
     else
@@ -47,4 +46,3 @@ class Task < ApplicationRecord
     "#{day} #{month} #{year}"
   end
 end
-  

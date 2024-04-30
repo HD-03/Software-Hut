@@ -5,13 +5,11 @@
     .col-sm-6.col-lg-10
       .card.card-light.border-0.rounded-4.shadow-lg.px-3
         .card-header.border-0.bg-transparent.text-center.pt-3.pb-0
-          %h5 Set task
+          %h3 Set task
         - if @task.errors.any?
           .alert.alert-danger
-            %h4 Please fill out all required fields
-            %ul
-              - @task.errors.full_messages.each do |message|
-                %li= message
+            %h5 Please fill out all required fields
+            -#- if @task.errors.full_messages.include?"Instrument can't be blank"
 
         .card-body.border-0.bg-transparent.pt-0
           = simple_form_for @task, url: tasks_path, method: :post do |f|
@@ -21,7 +19,12 @@
               = f.input :name, label: false, input_html: { placeholder: 'Task Name', required: true }
             .mt-2
               - @task.instrument_id = nil
-              = f.select :instrument_id, [['', nil]] + @instruments.map { |instrument| [instrument.name, instrument.id] }, {}, { class: 'js-example-basic-single', name: 'task[instrument_id]', data: { placeholder: 'Instrument', allow_clear: true }, required: true }
+              - error_class = @task.errors.full_messages.include?("Instrument can't be blank") ? 'is-invalid' : ''
+              = f.select :instrument_id, @instruments.map { |instrument| [instrument.name, instrument.id] }, {}, { class: "js-example-basic-single #{error_class}", name: 'task[instrument_id]', required: true }
+              
+              - if @task.errors.full_messages.include?"Instrument can't be blank"
+                .div.invalid-feedback
+                  Instrument can't be blank
             .mt-2
               = f.input :description, label: false, input_html: { placeholder: 'Task Description', required: true }
             .mt-2
@@ -30,7 +33,8 @@
               = f.input :deadline, label: "Deadline", as: :date, html5: true, input_html: { min: Date.today, required: true }
             .mt-2
               = f.input :recording_boolean, label: "Allow Recording?", collection: [['Yes', true], ['No', false]], selected: 'Yes'
-            = f.button :submit, "Save", class: 'btn btn-primary border-0 rounded-5 shadow-lg py-2 px-3 mt-2'
+            = f.button :submit, "Submit", class: 'btn btn-primary border-0 rounded-5 shadow-lg py-2 px-3 mt-2'
+            = link_to 'Cancel', teachers_path, class: 'btn btn-primary border-0 rounded-5 shadow-lg py-2 px-3 mt-2 ms-2', data: { confirm: 'Are you sure?' }
 
 :javascript
   $(document).ready(function() {
@@ -46,4 +50,3 @@
       allowClear: true
     });
   });
-    

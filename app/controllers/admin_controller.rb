@@ -4,8 +4,8 @@
 
     # GET /dashboard
     def dashboard
-        @students = User.where(role: :student)
-        @teachers = User.where(role: :teacher)
+        @students = User.where(role: :student).page(params[:students_page]).per(10)
+        @teachers = User.where(role: :teacher).page(params[:teachers_page]).per(10)
     end
 
     def add_new_user

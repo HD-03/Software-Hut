@@ -67,6 +67,8 @@ gem 'delayed_job'
 gem 'delayed_job_active_record'
 gem 'daemons'
 
+gem 'kaminari'
+
 gem 'sanitize_email'
 
 gem 'sentry-ruby'

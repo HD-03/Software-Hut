@@ -66,7 +66,7 @@
         end
 
         def user_params
-          params.require(:user).permit(:full_name, :email, :username, :password, :role, :old_enough_for_cooler_avatars)
+          params.require(:user).permit(:full_name, :email, :username, :password, :role, :old_enough_for_cooler_avatars, :avatar)
         end
 
 

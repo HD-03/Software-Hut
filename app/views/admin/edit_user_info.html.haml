@@ -9,6 +9,9 @@
       = f.input :full_name, wrapper_html: { class: 'mb-3' }
       = f.input :email, wrapper_html: { class: 'mb-3' }
       = f.input :username, wrapper_html: { class: 'mb-3' }
+      - if @user.avatar.attached?
+        = image_tag @user.avatar.variant(:thumb), class: 'p-4 rounded-circle mx-auto d-block'
+      = f.input :avatar, as: :file, label: 'Upload Avatar', wrapper_html: { class: 'mb-3' }, input_html: { class: 'ms-2' }
       = f.input :role, collection: [['Teacher', :teacher], ['Student', :student]], wrapper_html: { class: 'mb-3' }
 
       .actions

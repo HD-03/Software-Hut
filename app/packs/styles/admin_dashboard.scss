@@ -1,0 +1,18 @@
+.pagination {
+  display: flex;
+  justify-content: center;
+  padding: 20px 0;
+}
+
+
+.pagination .page a, .pagination .page span, .pagination .next a, .pagination .prev a {
+  padding: 10px;
+  margin: 0 5px;
+  border-radius: 5px;
+}
+
+.pagination .active a {
+  background: #007bff; 
+  color: #fff; 
+  font-weight: bold;
+}

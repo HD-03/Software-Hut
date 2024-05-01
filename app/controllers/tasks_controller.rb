@@ -1,6 +1,6 @@
 class TasksController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_task, only: %i[ show edit update destroy new ]
+  before_action :set_task, only: %i[ show destroy new ]
   before_action :set_role
 
   authorize_resource
@@ -14,10 +14,6 @@ class TasksController < ApplicationController
 
   # GET /tasks/1
   def show
-  end
-
-  # GET /tasks/1/edit
-  def edit
   end
 
   # GET /tasks/new
@@ -47,6 +43,11 @@ class TasksController < ApplicationController
     else
       render :new, status: :unprocessable_entity
     end
+  end
+
+  # PATCH
+  def create_from_tamplate
+    
   end
 
   # DELETE /tasks/1

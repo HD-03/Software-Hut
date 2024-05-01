@@ -31,6 +31,8 @@ class Task < ApplicationRecord
   belongs_to :student, -> { where(role: 0) }, class_name: 'User'
   belongs_to :instrument
 
+  has_many_attached :files
+
   enum status: { todo: 0, pending: 1, completed: 2 }
 
   # Returns the day of the week for the deadline if it falls within the current week,

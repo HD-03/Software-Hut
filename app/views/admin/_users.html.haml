@@ -7,12 +7,25 @@
         %thead
           %tr
             %th Name
+            %th 
             %th Username
             %th Email
         %tbody
           - @students.each do |student|
             %tr{id: "user_#{student.id}"}
               %td.align-middle= student.full_name
+              %td
+                .dropdown
+                  %button.btn.btn-secondary.bg-transparent.text-secondary.dropdown-toggle{"type" => "button", "data-bs-toggle" => "dropdown", "aria-expanded" => "false"}
+                    Instruments
+                  %ul.dropdown-menu
+                    - previous_instrument_names = []
+                    - @tasks.select { |task| task.student_id == student.id }.each do |task|
+                      - unless previous_instrument_names.include?(task.instrument.name)
+                        %li
+                          %p.dropdown-item= task.instrument.name
+                        - previous_instrument_names << task.instrument.name
+
               %td.align-middle= student.username
               %td.align-middle= student.email
               %td.align-middle

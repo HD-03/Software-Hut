@@ -6,6 +6,7 @@
     def dashboard
         @students = User.where(role: :student)
         @teachers = User.where(role: :teacher)
+        @tasks = Task.all
     end
 
     def add_new_user

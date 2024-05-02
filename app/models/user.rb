@@ -39,7 +39,7 @@ class User < ApplicationRecord
   validates :full_name, presence: true
   # validates :password, presence: true, length: { minimum: 8 }, confirmation: true,
   #           format: { with: /\A(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, message: "must include at least one lowercase letter, one uppercase letter, and one digit" }
-  validates :password, length: { minimum: 8 }, format: { with: /\A(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, message: "must include at least one lowercase letter, one uppercase letter, and one digit" }, confirmation: true, allow_blank: true
+  validates :password, format: { with: /\A(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, message: "must include at least one lowercase letter, one uppercase letter, and one digit" }, confirmation: true, allow_blank: true
   validates :role, presence: true
   validate :password_presence
 

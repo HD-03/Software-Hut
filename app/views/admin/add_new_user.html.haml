@@ -1,20 +1,38 @@
-#container
-  %header
-  %main
-    .admin-new_user
-      %h1 Add New User
-      -# frozen_string_literal: true
-      = simple_form_for @user, url: create_new_user_path do |f|
-        = f.input :full_name, wrapper_html: { class: 'mb-3' }
-        = f.input :email, wrapper_html: { class: 'mb-3' }
-        = f.input :username, wrapper_html: { class: 'mb-3' }
-        = f.input :password, wrapper_html: { class: 'mb-3' }
-        = f.input :password_confirmation, wrapper_html: { class: 'mb-3' }
-        = f.input :role, collection: [['Student', :student], ['Teacher', :teacher]], wrapper_html: { class: 'mb-3' }
-        = f.input :old_enough_for_cooler_avatars, as: :boolean, label: 'Old enough for cooler avatars?', wrapper_html: { class: 'mb-3' }, inline_label: true
+-# #container
+-#   %header
+-#   %main
+-#     .admin-new_user
+-#       %h1 Add New User
+-#       -# frozen_string_literal: true
+-#       = simple_form_for @user, url: create_new_user_path do |f|
+-#         = f.input :full_name, wrapper_html: { class: 'mb-3' }
+-#         = f.input :email, wrapper_html: { class: 'mb-3' }
+-#         = f.input :username, wrapper_html: { class: 'mb-3' }
+-#         = f.input :password, wrapper_html: { class: 'mb-3' }
+-#         = f.input :password_confirmation, wrapper_html: { class: 'mb-3' }
+-#         = f.input :role, collection: [['Student', :student], ['Teacher', :teacher]], wrapper_html: { class: 'mb-3' }
+-#         = f.input :old_enough_for_cooler_avatars, as: :boolean, label: 'Old enough for cooler avatars?', wrapper_html: { class: 'mb-3' }, inline_label: true
 
-        %button.btn.btn-primary.border-0.rounded-5.shadow-lg.py-2.px-3{ type: 'submit' }
-          Add User
-        -#btn btn-sm btn-danger
-        = link_to 'Cancel', admin_dashboard_path, class: 'btn-sm btn-danger'
-        -# = link_to 'Cancel', admin_dashboard_path, class: 'btn btn-primary border-0 rounded-5 shadow-lg py-2 px-3 ms-auto'
+-#         %button.btn.btn-primary.border-0.rounded-5.shadow-lg.py-2.px-3{ type: 'submit' }
+-#           Add User
+-#         -#btn btn-sm btn-danger
+-#         = link_to 'Cancel', admin_dashboard_path, class: 'btn-sm btn-danger'
+-#         -# = link_to 'Cancel', admin_dashboard_path, class: 'btn btn-primary border-0 rounded-5 shadow-lg py-2 px-3 ms-auto'
+.container.mb-3
+  .row.justify-content-center
+    .col-sm-6.col-lg-10
+      .card.card-light.border-0.rounded-4.shadow-lg.px-3
+        .card-header.border-0.bg-transparent.text-center.pt-3.pb-0
+          %h1 Add New User
+        .card-body.border-0.bg-transparent.pt-0
+          = simple_form_for @user, url: create_new_user_path do |f|
+            = f.input :full_name, wrapper_html: { class: 'mb-3' }
+            = f.input :email, wrapper_html: { class: 'mb-3' }
+            = f.input :username, wrapper_html: { class: 'mb-3' }
+            = f.input :password, wrapper_html: { class: 'mb-3' }
+            = f.input :password_confirmation, wrapper_html: { class: 'mb-3' }
+            = f.input :role, collection: [['Student', :student], ['Teacher', :teacher]], wrapper_html: { class: 'mb-3' }
+            = f.input :old_enough_for_cooler_avatars, as: :boolean, label: 'Old enough for cooler avatars?', wrapper_html: { class: 'mb-3' }, inline_label: true
+
+            = f.button :submit, 'Add user', class: 'btn btn-primary border-0 rounded-5 shadow-lg py-2 px-3'
+            = link_to 'Cancel', admin_dashboard_path, class: 'btn btn-primary border-0 rounded-5 shadow-lg py-2 px-3 ms-auto'

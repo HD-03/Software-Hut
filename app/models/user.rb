@@ -43,6 +43,10 @@ class User < ApplicationRecord
   validates :role, presence: true
   validate :password_presence
 
+  has_one_attached :avatar do |attachable|
+    attachable.variant :thumb, resize_to_limit: [300, 300]
+  end
+  
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :recoverable, :rememberable, :validatable, :registerable

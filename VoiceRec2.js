@@ -79,6 +79,7 @@ export default class extends Controller {
       if (finalTranscript.includes(triggers[i]) == true || interimTranscript.includes(triggers[i]) == true) {
         console.log("Trigger Detected")
         this.stopRecording
+        // Begin the actual recording of the music lesson
       }
 
     }
@@ -93,11 +94,9 @@ export default class extends Controller {
 
     const startButton = this.startButtonTarget;
     if (this.speaking) {
-      this.stopRecording();
-      startButton.textContent = "Start Voice Input";
+      console.log("Already recording")
     } else {
       this.startRecording();
-      startButton.textContent = "Stop Voice Input";
     }
   }
 

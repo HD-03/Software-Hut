@@ -40,6 +40,7 @@ class Ability
       can [:read, :search], Task
       can :index, :students
       can :give_student_xp, :students
+      can :update_status, Task, student_id: user.id
     end
   end
 end

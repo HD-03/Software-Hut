@@ -17,6 +17,17 @@ class TasksController < ApplicationController
     @task = Task.find(params[:id])
   end
 
+  def update_status
+    @task = Task.find(params[:id])
+    if params[:status] == 'completed' && @task.status != 'completed'
+      current_user.give_student_xp_points(@task.reward_xp)
+      current_user.save
+    end
+    @task.update(status: 'pending')  
+    redirect_to tasks_path, notice: 'Task status updated to pending.' 
+  end
+  
+
   # GET /tasks/new
   def new
     @students = params[:student_ids] ? User.find(params[:student_ids]) : User.where(role: :student)

@@ -1,7 +1,7 @@
 %div.container.mt-5
   %div.card.border-0.shadow-sm
     %div.card-header.bg-primary.text-white.rounded
-      %h5.mb-0 #{@task.name}
+      %h5.mb-0= @task.name
     %div.card-body.bg-light.rounded
       %p= @task.description
       %p= @task.instrument.name
@@ -11,25 +11,32 @@
           %h5.mb-3 Attachments
           - @task.files.each do |file|
             - if file.content_type.start_with? 'audio'
-              %audio{ controls: true, id: 'audio-player' }
-                %source{ src: url_for(file), type: file.content_type }
+              %audio{controls: true, id: 'audio-player'}
+                %source{src: url_for(file), type: file.content_type}
             - elsif file.content_type.include?('pdf') || file.content_type.include?('text') || file.content_type.include?('word') || file.content_type.include?('document')
-              %iframe{ src: url_for(file), style: 'width:100%; height:500px;', frameborder: '0' }
+              %iframe{src: url_for(file), style: 'width:100%; height:500px;', frameborder: '0'}
             - else
               %p= link_to file.filename.to_s, url_for(file), download: true, class: 'btn btn-link'
 
       %div#recording-controls.mt-4
         %div.d-flex.flex-column.gap-3
-          %div.recording-set.border.p-3.rounded
-            %span.d-block.font-weight-bold= "Recording 1"
-            %button.record-btn.btn.btn-success{ type: 'button' }
-              Start Recording
-            %button.play-recording-btn.btn.btn-secondary.ml-2{ type: 'button', disabled: true }
-              Play Recording
+          - 1.times do |i|
+            %div.recording-set.border.p-3.rounded
+              %span.d-block.font-weight-bold= "Recording #{i + 1}"
+              %button.record-btn.btn.btn-success{type: 'button', onclick: "handleRecording(this)"}
+                Start Recording
+              %button.play-recording-btn.btn.btn-secondary.ml-2{type: 'button', disabled: true, onclick: "playRecording(this)"}
+                Play Recording
 
-      %button#add-recording.btn.btn-primary.mt-3{ type: 'button' }
+      %button#add-recording.btn.btn-primary.mt-3{type: 'button', onclick: "addRecording()"}
         %i.fas.fa-plus
         Add another recording
+
+      %button#complete-task.btn.btn-success.mt-3{type: 'button', style: 'display: none;'}
+        Complete Task
+        = link_to 'Complete Task', update_status_task_path(@task), method: :patch
+
+
 
     %div.card-footer.bg-light.text-muted.rounded
       %i.fas.fa-clock
@@ -37,39 +44,35 @@
       = @task.deadline.strftime("%A, %d %B %Y")
 
 :javascript
-  document.addEventListener('DOMContentLoaded', function() {
-    const addRecordingButton = document.getElementById('add-recording');
-    const recordingControls = document.getElementById('recording-controls');
+  var completedRecordings = 0;
 
-    addRecordingButton.addEventListener('click', function() {
-      const newIndex = document.querySelectorAll('.recording-set').length + 1;
-      const newSet = document.createElement('div');
-      newSet.className = 'recording-set border p-3 rounded';
-      newSet.innerHTML = `
-        <span class="d-block font-weight-bold">Recording ${newIndex}</span>
-        <button class="record-btn btn btn-success" type="button">Start Recording</button>
-        <button class="play-recording-btn btn btn-secondary ml-2" type="button" disabled="true">Play Recording</button>
-      `;
-      recordingControls.appendChild(newSet);
-    });
-
-    recordingControls.addEventListener('click', function(event) {
-      if (event.target.classList.contains('record-btn')) {
-        const recordBtn = event.target;
-        const playBtn = recordBtn.nextElementSibling;
-
-        if (recordBtn.textContent.includes('Start')) {
-          recordBtn.textContent = 'Stop Recording';
-          recordBtn.classList.remove('btn-success');
-          recordBtn.classList.add('btn-danger');
-        } else if (recordBtn.textContent.includes('Stop')) {
-          recordBtn.textContent = 'Recording Done';
-          recordBtn.classList.remove('btn-danger');
-          recordBtn.classList.add('btn-secondary');
-          playBtn.disabled = false;
-        }
-      } else if (event.target.classList.contains('play-recording-btn')) {
-        alert('Playing the recording...'); // Simulate playing the recording
+  function handleRecording(button) {
+    if (button.textContent.includes('Start')) {
+      button.textContent = 'Stop Recording';
+      button.classList.replace('btn-success', 'btn-danger');
+    } else {
+      button.textContent = 'Recording Done';
+      button.classList.replace('btn-danger', 'btn-secondary');
+      button.nextElementSibling.disabled = false;
+      completedRecordings++;
+      if (completedRecordings >= 2) {
+        document.getElementById('complete-task').style.display = 'block';
       }
-    });
-  });
+    }
+  }
+
+  function playRecording(button) {
+    alert('Playing the recording...');
+  }
+
+  function addRecording() {
+    var newIndex = document.querySelectorAll('.recording-set').length + 1;
+    var newSet = document.createElement('div');
+    newSet.className = 'recording-set border p-3 rounded';
+    newSet.innerHTML = `
+      <span class="d-block font-weight-bold">Recording ${newIndex}</span>
+      <button class="record-btn btn btn-success" type="button" onclick="handleRecording(this)">Start Recording</button>
+      <button class="play-recording-btn btn btn-secondary ml-2" type="button" disabled onclick="playRecording(this)">Play Recording</button>
+    `;
+    document.getElementById('recording-controls').appendChild(newSet);
+  }

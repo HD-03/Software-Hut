@@ -53,6 +53,12 @@ Rails.application.routes.draw do
     post :search, on: :collection
   end
 
+  resources :tasks do
+    member do
+      patch 'update_status'
+    end
+  end
+
   authenticate :user do
     # Specific task show route - this is included in the resources :tasks above, so it's redundant here unless you need to restrict it to authenticated users only
     get 'tasks/:id', to: 'tasks#show', as: 'task_details'

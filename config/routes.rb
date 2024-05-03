@@ -28,6 +28,8 @@ Rails.application.routes.draw do
 
   delete 'admin/delete_user/:id', to: 'admin#delete_user', as: 'delete_user'
 
+
+
   #post 'teachers/tasks', to: 'tasks#create', as: 'create_task'
   # Example route for a teacher's dashboard. Adjust according to your actual controller and action names.
   # get 'teachers/dashboard', to: 'teachers#dashboard', as: 'teachers_dashboard'
@@ -49,6 +51,11 @@ Rails.application.routes.draw do
 
   resources :users do
     post :search, on: :collection
+  end
+
+  authenticate :user do
+    # Specific task show route - this is included in the resources :tasks above, so it's redundant here unless you need to restrict it to authenticated users only
+    get 'tasks/:id', to: 'tasks#show', as: 'task_details'
   end
   
   # for testing level up modal (delete after development this is finished)

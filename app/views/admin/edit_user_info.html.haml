@@ -1,16 +1,23 @@
-#container
-  %header
+.container.mb-3
+  .row.justify-content-center
+    .col-sm-6.col-lg-10
+      .card.card-light.border-0.rounded-4.shadow-lg.px-3
+        .card-header.border-0.bg-transparent.text-center.pt-3.pb-0
+          %h1 Edit User
+        .card-body.border-0.bg-transparent.pt-0
+          = simple_form_for @user, url: update_user_path(@user), method: :patch do |f|
+            = f.input :full_name, wrapper_html: { class: 'mb-3' }
+            = f.input :email, wrapper_html: { class: 'mb-3' }
+            = f.input :username, wrapper_html: { class: 'mb-3' }
+            - if @user.avatar.attached?
+              .form-group.row
+                .col-md-2.my-auto
+                  = f.label "Current avatar"
+                .col-md-10
+                  = image_tag @user.avatar.variant(:thumb), class: 'p-4 rounded-circle w-25'
+            = f.input :avatar, as: :hidden, value: @user.avatar.signed_id if @user.avatar.attached?
+            = f.input :avatar, as: :file, label: 'Update avatar', wrapper_html: { class: 'mb-3' }, input_html: { class: 'form-control', accept: "image/jpeg,image/png" }, label_html: { class: 'form-label' }
+            = f.input :role, collection: [['Teacher', :teacher], ['Student', :student]], wrapper_html: { class: 'mb-3' }
 
-  %main
-    .admin-edit_user
-    %h1 Edit User
-    -# frozen_string_literal: true
-    = simple_form_for @user, url: update_user_path(@user), method: :patch do |f|
-      = f.input :full_name, wrapper_html: { class: 'mb-3' }
-      = f.input :email, wrapper_html: { class: 'mb-3' }
-      = f.input :username, wrapper_html: { class: 'mb-3' }
-      = f.input :role, collection: [['Teacher', :teacher], ['Student', :student]], wrapper_html: { class: 'mb-3' }
-
-      .actions
-      = f.button :submit, 'Save Changes', class: 'btn btn-primary border-0 rounded-5 shadow-lg py-2 px-3'
-      = link_to 'Cancel', admin_dashboard_path, class: 'btn btn-link ms-auto'
+            = f.button :submit, 'Save Changes', class: 'btn btn-primary border-0 rounded-5 shadow-lg py-2 px-3'
+            = link_to 'Cancel', admin_dashboard_path, class: 'btn btn-primary border-0 rounded-5 shadow-lg py-2 px-3 ms-auto'

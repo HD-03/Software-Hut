@@ -7,10 +7,10 @@
       - (Date.today.beginning_of_week..Date.today.end_of_week).each do |day|
         - today = day == Date.today
         - week_day = day.strftime("%A")
-        .pb-2.accordion{id: "#{week_day}"}
-          .accordion-item
+        .pb-3.accordion{id: "#{week_day}"}
+          .accordion-item.rounded-3
             %h3.accordion-header
-              %button.accordion-button{ class: today ? '' : 'collapsed', type: "button", data: { bs_toggle: "collapse", bs_target: "#collapse-#{week_day}", aria_expanded: today ? 'true' : 'false', aria_controls: "collapse-#{week_day}" } }
+              %button.accordion-button.rounded-3{ class: today ? '' : 'collapsed', type: "button", data: { bs_toggle: "collapse", bs_target: "#collapse-#{week_day}", aria_expanded: today ? 'true' : 'false', aria_controls: "collapse-#{week_day}" } }
                 = day.strftime("%A %-d %B")
             .accordion-collapse.collapse{ class: today ? 'show' : '', id: "collapse-#{week_day}", data: { bs_parent: "#{week_day}" } }
               .accordion-body
@@ -57,7 +57,9 @@
     .card.border-0.rounded-5.shadow-lg.text-center.mx-auto.mb-auto
       .my-auto.p-3
         .mb-3
-          %img.p-4.rounded-circle.img-fluid{src: "https://via.placeholder.com/300x300"}
+          - if current_user.avatar.attached?
+            = image_tag current_user.avatar.variant(:thumb), class: 'p-4 rounded-circle img-fluid'
+          -# %img.p-4.rounded-circle.img-fluid{src: "https://via.placeholder.com/300x300"}
         .h3
           Level
           = current_user.level

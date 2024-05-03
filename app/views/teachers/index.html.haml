@@ -9,9 +9,9 @@
     - @students.each do |student|
       - username = student.username
       .pb-2.accordion{id: "#{username}"}
-        .accordion-item
+        .accordion-item.rounded-3
           %h3.accordion-header
-            %button.accordion-button{ class: 'collapsed', type: "button", data: { bs_toggle: "collapse", bs_target: "#collapse-#{username}", aria_expanded: 'false', aria_controls: "collapse-#{username}" } }
+            %button.accordion-button.rounded-3{ class: 'collapsed', type: "button", data: { bs_toggle: "collapse", bs_target: "#collapse-#{username}", aria_expanded: 'false', aria_controls: "collapse-#{username}" } }
               = student.full_name
           .accordion-collapse.collapse{ id: "collapse-#{username}", data: { bs_parent: "#{username}" } }
             .accordion-body

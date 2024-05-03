@@ -18,12 +18,14 @@ class TasksController < ApplicationController
   end
 
   def update_status
+    puts "///////////////////   THIS IS RUNNING   ///////////////////////"
     @task = Task.find(params[:id])
-    if params[:status] == 'completed' && @task.status != 'completed'
-      current_user.give_student_xp_points(@task.reward_xp)
-      current_user.save
-      @task.update(student_text: params[:task][:student_text]) if params[:task][:student_text].present?
-    end
+
+    #if params[:status] == 'completed' && @task.status != 'completed'
+    current_user.give_student_xp_points(@task.reward_xp)
+    current_user.save
+    #@task.update(student_text: params[:task][:student_text]) if params[:task][:student_text].present?
+
     @task.update(status: 'pending')  
     redirect_to tasks_path, notice: 'Task status updated to pending.'
   end

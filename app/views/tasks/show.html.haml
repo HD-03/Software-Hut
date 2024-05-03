@@ -33,7 +33,6 @@
         Add another recording
 
       %button#complete-task.btn.btn-success.mt-3{type: 'button', style: 'display: none;'}
-        Complete Task
         = link_to 'Complete Task', update_status_task_path(@task), method: :patch
 
 
@@ -42,6 +41,9 @@
       %i.fas.fa-clock
       Deadline: 
       = @task.deadline.strftime("%A, %d %B %Y")
+
+    %textarea{ name: "task[student_text]", placeholder: "Add your comments or details here...", rows: "3" }
+
 
 :javascript
   var completedRecordings = 0;

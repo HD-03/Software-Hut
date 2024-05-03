@@ -22,10 +22,12 @@ class TasksController < ApplicationController
     if params[:status] == 'completed' && @task.status != 'completed'
       current_user.give_student_xp_points(@task.reward_xp)
       current_user.save
+      @task.update(student_text: params[:task][:student_text]) if params[:task][:student_text].present?
     end
     @task.update(status: 'pending')  
-    redirect_to tasks_path, notice: 'Task status updated to pending.' 
+    redirect_to tasks_path, notice: 'Task status updated to pending.'
   end
+  
   
 
   # GET /tasks/new
@@ -116,6 +118,7 @@ class TasksController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def task_params
-      params.require(:task).permit(:name, :instrument_id, :teacher_id, :description, :deadline, :recording_boolean, :reward_xp, student_id: [], files: [])
+      params.require(:task).permit(:name, :instrument_id, :teacher_id, :description, :deadline, :recording_boolean, :reward_xp, :student_text, student_id: [], files: [])
     end
+    
 end

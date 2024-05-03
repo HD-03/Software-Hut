@@ -6,6 +6,7 @@ class CreateTasks < ActiveRecord::Migration[7.0]
       t.string :name,                           null: false
       t.text :description
       t.datetime :time_set,                     null: false
+      t.text :student_text,                      
       t.datetime :deadline,                     null: false
       t.integer :reward_xp,                     null: false
       t.integer :status,                        null: false, default: 0

@@ -5,7 +5,7 @@ export default class extends Controller {
   static targets = ["input", "startButton"];
   // Called when the controller is connected
   connect() {
-    console.log("VoiceRec2 connected");
+    console.log("voice_controller connected");
     this.speechRecognition = this.getSpeechRecognition();
     this.speaking = false;
   }

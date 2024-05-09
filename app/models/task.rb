@@ -22,7 +22,15 @@ class Task < ApplicationRecord
   belongs_to :student, -> { where(role: 0) }, class_name: 'User'
   belongs_to :instrument
 
+  has_many_attached :files
+
   enum status: { todo: 0, pending: 1, completed: 2 }
+
+  # This validates that when a task is set, everything is filled out
+  validates :student_id, :instrument_id, :name, :description, :reward_xp, :deadline, presence: true
+  validates :name, length: { minimum: 5 }
+  validates :description, length: { minimum: 10 }
+  validate :at_least_one_student
 
   # Returns the day of the week for the deadline if it falls within the current week,
   # or nil if the deadline is not within the current week.
@@ -45,4 +53,11 @@ class Task < ApplicationRecord
 
     "#{day} #{month} #{year}"
   end
+
+  private
+
+  def at_least_one_student
+    errors.add(:student_id, "can't be blank") if student_id.blank?
+  end
+
 end

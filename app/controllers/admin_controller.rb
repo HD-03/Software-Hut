@@ -4,8 +4,9 @@
 
     # GET /dashboard
     def dashboard
-        @students = User.where(role: :student).page(params[:students_page]).per(10)
-        @teachers = User.where(role: :teacher).page(params[:teachers_page]).per(10)
+        @students = User.where(role: :student)
+        @teachers = User.where(role: :teacher)
+        @tasks = Task.all
     end
 
     def add_new_user
@@ -66,7 +67,7 @@
         end
 
         def user_params
-          params.require(:user).permit(:full_name, :email, :username, :password, :role, :old_enough_for_cooler_avatars)
+          params.require(:user).permit(:full_name, :email, :username, :password, :password_confirmation, :role, :old_enough_for_cooler_avatars, :avatar)
         end
 
 

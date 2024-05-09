@@ -2,18 +2,12 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { registrations: 'users/registrations' }
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-  #for user settings
-  resources :users, only: [:show, :edit], path_names: { update: 'settings' }
-
-
   # Defines the root path route ("/")
   root "pages#home"
 
   # Dashboards
   get 'admin/dashboard', to: 'admin#dashboard', as: 'admin_dashboard'
 
-  # -------------------------------------------------------------------
-  #       check merge issues here !!!!!!!!!!!!!!!!!!!!!!!!!!
   # get route for adding a new user.
   get 'admin/add_new_user', to: 'admin#add_new_user', as: 'new_add_user'
 
@@ -38,6 +32,7 @@ Rails.application.routes.draw do
   # get 'students/dashboard', to: 'students#dashboard', as: 'students_dashboard'
 
   resources :students do
+    # for testing level up modal (delete after development for this is finished)
     post :give_student_xp
   end
 
@@ -47,10 +42,10 @@ Rails.application.routes.draw do
     post :search, on: :collection
   end
 
-  resources :users do
+  resources :users, only: [:show, :edit], path_names: { update: 'settings' } do
     post :search, on: :collection
   end
-  
-  # for testing level up modal (delete after development this is finished)
-  # post 'students/give_student_xp', to: 'students#give_student_xp'
+  # resources :users do
+  #   post :search, on: :collection
+  # end
 end

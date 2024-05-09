@@ -33,6 +33,20 @@ class User < ApplicationRecord
   has_many :taught_tasks, class_name: 'Task', foreign_key: :teacher
   has_many :studied_tasks, class_name: 'Task', foreign_key: :student
 
+  # This validates that when a user is created, everything is filled out
+  validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }, uniqueness: true
+  validates :username, presence: true, uniqueness: true
+  validates :full_name, presence: true
+  # validates :password, presence: true, length: { minimum: 8 }, confirmation: true,
+  #           format: { with: /\A(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, message: "must include at least one lowercase letter, one uppercase letter, and one digit" }
+  validates :password, format: { with: /\A(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, message: "must include at least one lowercase letter, one uppercase letter, and one digit" }, confirmation: true, allow_blank: true
+  validates :role, presence: true
+  validate :password_presence
+
+  has_one_attached :avatar do |attachable|
+    attachable.variant :thumb, resize_to_limit: [300, 300]
+  end
+  
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :recoverable, :rememberable, :validatable, :registerable
@@ -103,6 +117,14 @@ class User < ApplicationRecord
   # @returns [integer] users xp point progress for the level they're currently on
   def get_current_level_progress
     return (xp_points/xp_needed_for_next_level.to_f * 100).round
+  end
+
+  private
+
+  def password_presence
+    if new_record? && password.blank?
+      errors.add(:password, "can't be blank")
+    end
   end
 
 end

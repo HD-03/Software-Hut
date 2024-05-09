@@ -5,8 +5,10 @@
 #  id                            :bigint           not null, primary key
 #  email                         :string           default(""), not null
 #  encrypted_password            :string           default(""), not null
+#  failed_attempts               :integer          default(0), not null
 #  full_name                     :string           not null
 #  level                         :integer          default(1), not null
+#  locked_at                     :datetime
 #  old_enough_for_cooler_avatars :boolean          default(FALSE), not null
 #  recently_leveled_up           :boolean          default(FALSE), not null
 #  remember_created_at           :datetime
@@ -14,6 +16,7 @@
 #  reset_password_token          :string
 #  role                          :integer          not null
 #  unchecked_background          :boolean
+#  unlock_token                  :string
 #  username                      :string           not null
 #  xp_needed_for_next_level      :integer          default(30), not null
 #  xp_points                     :integer          default(0), not null
@@ -39,7 +42,7 @@ class User < ApplicationRecord
   
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  devise :database_authenticatable, :recoverable, :rememberable, :validatable, :registerable
+  devise :database_authenticatable, :recoverable, :rememberable, :validatable, :registerable, :lockable
 
   enum role: { student: 0, teacher: 1, admin: 2 }
   has_many :tasks, foreign_key: "student_id"

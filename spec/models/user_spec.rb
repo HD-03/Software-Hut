@@ -119,17 +119,17 @@ RSpec.describe User, type: :model do
         user.xp_points = 100
         user.level = 10
         user.save
-        expect(user.give_student_xp_points(50)).to eq false
+        expect(User.give_student_xp_points(user, 50)).to eq false
       end
 
       it 'returns true if user has levelled up' do
         user.xp_points = 100
-        expect(user.give_student_xp_points(200)).to eq true
+        expect(User.give_student_xp_points(user, 200)).to eq true
       end
 
       it 'updates users "xp_points" correctly when not levelled up' do
         user.xp_points = 100
-        user.give_student_xp_points(50)
+        User.give_student_xp_points(user, 50)
         expect(user.xp_points).to eq 150
       end
 
@@ -137,7 +137,7 @@ RSpec.describe User, type: :model do
         user.xp_points = 100
         user.level = 10
         user.save
-        user.give_student_xp_points(200)
+        User.give_student_xp_points(user, 200)
         expect(user.xp_points).to eq 0
       end
 
@@ -145,7 +145,7 @@ RSpec.describe User, type: :model do
         user.xp_points = 100
         user.level = 10
         user.save
-        user.give_student_xp_points(236)
+        User.give_student_xp_points(user, 236)
         expect(user.xp_points).to eq 36
       end
     end

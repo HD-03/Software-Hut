@@ -9,7 +9,7 @@ class StudentsController < ApplicationController
   end
 
   def give_student_xp
-    current_user.give_student_xp_points(600)
+    give_student_xp_points(current_user, 600)
 
     authorize! :give_student_xp, :students
   end

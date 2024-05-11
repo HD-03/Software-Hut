@@ -37,7 +37,9 @@ Rails.application.routes.draw do
     post :give_student_xp
   end
 
-  resources :teachers
+  resources :teachers do
+    post :give_student_xp
+  end
 
   resources :tasks do
     post :search, on: :collection

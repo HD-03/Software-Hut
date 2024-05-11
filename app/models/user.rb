@@ -53,29 +53,29 @@ class User < ApplicationRecord
   #     user = User.find_by(email: 'student@example.com')
   #     puts user.role  >>>  outputs 'student'
 
-  def give_student_xp_points(xp_points_given)
-    new_xp_points_count = self.xp_points + xp_points_given
+  def self.give_student_xp_points(user, xp_points_given)
+    new_xp_points_count = user.xp_points + xp_points_given
     user_leveled_up = false
 
-    if new_xp_points_count < xp_needed_for_next_level
-      self.xp_points = new_xp_points_count
-    elsif new_xp_points_count == xp_needed_for_next_level
+    if new_xp_points_count < user.xp_needed_for_next_level
+      user.xp_points = new_xp_points_count
+    elsif new_xp_points_count == user.xp_needed_for_next_level
       # level up student and set xp points to zero
-      self.level += 1
+      user.level += 1
       user_leveled_up = true
-      self.xp_points = 0
+      user.xp_points = 0
     else
       # if new_xp_points_count > xp_needed_for_next_level
       # level up student and set xp points to how much more xp they got than
       # they needed to level up
-      self.level += 1
+      user.level += 1
       user_leveled_up = true
-      self.xp_points = new_xp_points_count - xp_needed_for_next_level
+      user.xp_points = new_xp_points_count - user.xp_needed_for_next_level
     end
 
-    self.recently_leveled_up = user_leveled_up
-    self.save
-    return self.recently_leveled_up
+    user.recently_leveled_up = user_leveled_up
+    user.save
+    return user.recently_leveled_up
 
   end
   

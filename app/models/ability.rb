@@ -36,6 +36,7 @@ class Ability
     elsif user.role == 'teacher'
       can :manage, Task
       can :index, :teachers
+      can :give_student_xp, :teachers
     elsif user.role == 'student'
       can [:read, :search], Task
       can :index, :students

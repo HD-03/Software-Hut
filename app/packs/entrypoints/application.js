@@ -4,6 +4,7 @@ import 'popper.js'
 import "bootstrap";
 
 import { Application, defaultSchema } from 'stimulus'
+import VoiceController from '../controllers/voice_controller'
 import VoiceController from "../controllers/voice_controller";
 
 const customSchema = {

@@ -20,13 +20,13 @@ class BasetenRequest < ApplicationRecord
   belongs_to :student, -> { where(role: 0) }, class_name: 'User', foreign_key: 'user_id'
 
   # method makes API call to Baseten server with Stable Diffusion XL
-  def generate_avatar(baseten_api_key, model_id, prompt)
+  def generate_avatar(baseten_api_key, model_id)
     # Set prompts and controlnet image
     values = {
       "seed" => rand(1..1000000000000000),
       "steps" => 30,
       "cfg" => 7,
-      "positive_prompt" => prompt, #"cheerful smiling pirate, closeup portrait, 32-bit pixel art, beach background with palm trees, ocean, sand, colorful, vibrant, playful cartoon style, happy friendly expression, jaunty pirate hat, parrot on shoulder",
+      "positive_prompt" => "cheerful smiling pirate, closeup portrait, 32-bit pixel art, beach background with palm trees, ocean, sand, colorful, vibrant, playful cartoon style, happy friendly expression, jaunty pirate hat, parrot on shoulder",
       "negative_prompt" => "bad quality, bad anatomy, worst quality, low quality, low resolution, extra fingers, blur, blurry, ugly, wrong proportions, watermark, image artifacts, lowres, jpeg artifacts, deformed, noisy image, deformation, corrupt image",
       "safety_sensitivity" => 0.7
     }

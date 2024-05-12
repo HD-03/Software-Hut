@@ -74,8 +74,6 @@ gem 'sentry-rails'
 
 gem 'haml', '~> 5.2'
 
-gem 'google-cloud-speech'
-
 group :development do
   gem 'letter_opener'
   gem 'annotate'
@@ -107,4 +105,3 @@ group :test do
 end
 
 gem 'image_processing', '~> 1.2'
-gem 'httparty'

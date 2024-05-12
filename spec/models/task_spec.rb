@@ -5,7 +5,7 @@
 #  id                :bigint           not null, primary key
 #  attachment_paths  :string           default([]), is an Array
 #  deadline          :datetime         not null
-#  description       :text             not null
+#  description       :text
 #  name              :string           not null
 #  recording_boolean :boolean          default(FALSE), not null
 #  reward_xp         :integer          not null

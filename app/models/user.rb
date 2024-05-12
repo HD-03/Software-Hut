@@ -5,8 +5,10 @@
 #  id                            :bigint           not null, primary key
 #  email                         :string           default(""), not null
 #  encrypted_password            :string           default(""), not null
+#  failed_attempts               :integer          default(0), not null
 #  full_name                     :string           not null
 #  level                         :integer          default(1), not null
+#  locked_at                     :datetime
 #  old_enough_for_cooler_avatars :boolean          default(FALSE), not null
 #  recently_leveled_up           :boolean          default(FALSE), not null
 #  remember_created_at           :datetime
@@ -14,6 +16,7 @@
 #  reset_password_token          :string
 #  role                          :integer          not null
 #  unchecked_background          :boolean
+#  unlock_token                  :string
 #  username                      :string           not null
 #  xp_needed_for_next_level      :integer          default(30), not null
 #  xp_points                     :integer          default(0), not null
@@ -33,6 +36,10 @@ class User < ApplicationRecord
   has_many :taught_tasks, class_name: 'Task', foreign_key: :teacher
   has_many :studied_tasks, class_name: 'Task', foreign_key: :student
 
+  has_one_attached :avatar do |attachable|
+    attachable.variant :thumb, resize_to_limit: [300, 300]
+  end
+  
   # This validates that when a user is created, everything is filled out
   validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }, uniqueness: true
   validates :username, presence: true, uniqueness: true
@@ -49,7 +56,7 @@ class User < ApplicationRecord
   
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  devise :database_authenticatable, :recoverable, :rememberable, :validatable, :registerable
+  devise :database_authenticatable, :recoverable, :rememberable, :validatable, :registerable, :lockable
 
   enum role: { student: 0, teacher: 1, admin: 2 }
   has_many :tasks, foreign_key: "student_id"
@@ -60,29 +67,29 @@ class User < ApplicationRecord
   #     user = User.find_by(email: 'student@example.com')
   #     puts user.role  >>>  outputs 'student'
 
-  def give_student_xp_points(xp_points_given)
-    new_xp_points_count = self.xp_points + xp_points_given
+  def self.give_student_xp_points(user, xp_points_given)
+    new_xp_points_count = user.xp_points + xp_points_given
     user_leveled_up = false
 
-    if new_xp_points_count < xp_needed_for_next_level
-      self.xp_points = new_xp_points_count
-    elsif new_xp_points_count == xp_needed_for_next_level
+    if new_xp_points_count < user.xp_needed_for_next_level
+      user.xp_points = new_xp_points_count
+    elsif new_xp_points_count == user.xp_needed_for_next_level
       # level up student and set xp points to zero
-      self.level += 1
+      user.level += 1
       user_leveled_up = true
-      self.xp_points = 0
+      user.xp_points = 0
     else
       # if new_xp_points_count > xp_needed_for_next_level
       # level up student and set xp points to how much more xp they got than
       # they needed to level up
-      self.level += 1
+      user.level += 1
       user_leveled_up = true
-      self.xp_points = new_xp_points_count - xp_needed_for_next_level
+      user.xp_points = new_xp_points_count - user.xp_needed_for_next_level
     end
 
-    self.recently_leveled_up = user_leveled_up
-    self.save
-    return self.recently_leveled_up
+    user.recently_leveled_up = user_leveled_up
+    user.save
+    return user.recently_leveled_up
 
   end
   

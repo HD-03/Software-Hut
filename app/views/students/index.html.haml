@@ -49,7 +49,8 @@
                             %td.align-middle
                               .btn-toolbar.float-end
                                 - if task.status.to_s == "todo"
-                                  = link_to 'Do', '#', class: 'btn btn-outline-secondary btn-sm'
+                                  = link_to 'Do', task_details_path(task), class: 'btn btn-outline-secondary btn-sm'
+
                                 - else
                                   = link_to 'View', '#', class: 'btn btn-outline-secondary btn-sm'
 
@@ -114,8 +115,9 @@
           
         .modal-footer.d-flex.flex-column.justify-content-center
           .h3.text-decoration-underline
-            New avatars unlocked:
-          .mt-3
-            %img.p-4.rounded-circle.img-fluid.scaled-avatar-image{src: "https://via.placeholder.com/300x300"}
-            %img.p-4.rounded-circle.img-fluid.scaled-avatar-image{src: "https://via.placeholder.com/300x300"}
-            %img.p-4.rounded-circle.img-fluid.scaled-avatar-image{src: "https://via.placeholder.com/300x300"}
+            You have unlocked an avatar token!
+        -#     New avatars unlocked:
+        -#   .mt-3
+        -#     %img.p-4.rounded-circle.img-fluid.scaled-avatar-image{src: "https://via.placeholder.com/300x300"}
+        -#     %img.p-4.rounded-circle.img-fluid.scaled-avatar-image{src: "https://via.placeholder.com/300x300"}
+        -#     %img.p-4.rounded-circle.img-fluid.scaled-avatar-image{src: "https://via.placeholder.com/300x300"}

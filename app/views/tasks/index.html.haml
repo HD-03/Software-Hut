@@ -40,7 +40,7 @@
           - if @user_is_student
             %th
           - else
-            %th Tamplate
+            %th Template
             %th
             %th
       %tbody
@@ -69,7 +69,7 @@
               %td.align-middle
                 .btn-toolbar.float-end
                   - if task.status.to_s == "todo"
-                    = link_to 'Do', '#', class: 'btn btn-outline-secondary btn-sm'
+                    = link_to 'Do', task_details_path(task), class: 'btn btn-outline-secondary btn-sm'
                   - else
                     = link_to 'View', '#', class: 'btn btn-outline-secondary btn-sm'
             - else

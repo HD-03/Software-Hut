@@ -33,16 +33,49 @@ class BasetenRequest < ApplicationRecord
 
     webhook_endpoint = "https://team09.demo2.hut.shefcompsci.org.uk/webhooks/baseten"
 
-    # Call model endpoint
-    response = HTTParty.post(
-      "https://model-#{model_id}.api.baseten.co/development/async_predict",
-      headers: { "Authorization" => "Api-Key #{baseten_api_key}" },
-      body: { 
-        "model_input" => { "workflow_values" => values },
-        "webhook_endpoint" => webhook_endpoint
-      }.to_json,
-      format: :plain
-    )
+    # # Call model endpoint
+    # response = HTTParty.post(
+    #   "https://model-#{model_id}.api.baseten.co/development/async_predict",
+    #   headers: { "Authorization" => "Api-Key #{baseten_api_key}" },
+    #   body: { 
+    #     "model_input" => { "workflow_values" => values },
+    #     "webhook_endpoint" => webhook_endpoint
+    #   }.to_json,
+    #   format: :plain
+    # )
+
+    begin
+      response = HTTParty.post(
+        "https://model-#{model_id}.api.baseten.co/development/async_predict",
+        headers: {
+          "Authorization" => "Api-Key #{baseten_api_key}"
+        },
+        body: {
+          "model_input" => {
+            "workflow_values" => values
+          },
+          "webhook_endpoint" => webhook_endpoint
+        }.to_json,
+        format: :plain
+      )
+    
+      if response.success?
+        Sentry.capture_message("Baseten API request successful", extra: {
+          response_status: response.code,
+          response_headers: response.headers,
+          response_body: response.body
+        })
+      else
+        Sentry.capture_message("Baseten API request failed", extra: {
+          response_status: response.code,
+          response_headers: response.headers,
+          response_body: response.body
+        })
+      end
+    rescue => e
+      Sentry.capture_exception(e)
+      raise e
+    end
     
     # Create request
     request_id = JSON.parse(response)["request_id"]

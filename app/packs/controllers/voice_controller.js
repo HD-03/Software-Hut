@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus";
 
 // Connects to data-controller="voice-input"
 export default class extends Controller {
-  static targets = ["input", "startButton"];
+  static targets = ["startButton"];
   // Called when the controller is connected
   connect() {
     console.log("voice_controller connected");
@@ -78,7 +78,7 @@ export default class extends Controller {
     for (let i = 0; i < triggerLength; i++){
       if (finalTranscript.includes(triggers[i]) == true || interimTranscript.includes(triggers[i]) == true) {
         console.log("Trigger Detected")
-        this.stopRecording
+        this.stopRecording()
         // Begin the actual recording of the music lesson
       }
 
@@ -97,6 +97,7 @@ export default class extends Controller {
       console.log("Already recording")
     } else {
       this.startRecording();
+      console.log("testtesttest")
     }
   }
 

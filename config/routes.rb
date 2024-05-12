@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")
-  root "tasks/testaudiorec"
+  root "pages#home"
 
   # ------------- Admin -------------
   get 'admin/dashboard', to: 'admin#dashboard', as: 'admin_dashboard'
@@ -49,11 +49,6 @@ Rails.application.routes.draw do
   resources :users, only: [:show, :edit], path_names: { update: 'settings' } do
     post :search, on: :collection
   end
-<<<<<<< HEAD
-  # resources :users do
-  #   post :search, on: :collection
-  # end
-=======
 
   #for user settings
   resources :users, only: [:show, :edit], path_names: { update: 'settings' }
@@ -68,5 +63,4 @@ Rails.application.routes.draw do
     # Specific task show route - this is included in the resources :tasks above, so it's redundant here unless you need to restrict it to authenticated users only
     get 'tasks/:id', to: 'tasks#show', as: 'task_details'
   end
->>>>>>> origin/task-completion-as-extension
 end

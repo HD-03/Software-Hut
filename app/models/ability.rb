@@ -42,6 +42,8 @@ class Ability
       can :index, :students
       can :give_student_xp, :students
       can :update_status, Task, student_id: user.id
+      can :generate_avatar, :students
+      can :avatars, :students
     end
   end
 end

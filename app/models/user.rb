@@ -7,6 +7,7 @@
 #  encrypted_password            :string           default(""), not null
 #  failed_attempts               :integer          default(0), not null
 #  full_name                     :string           not null
+#  has_right_to_generate_avatar  :integer          default(0), not null
 #  level                         :integer          default(1), not null
 #  locked_at                     :datetime
 #  old_enough_for_cooler_avatars :boolean          default(FALSE), not null
@@ -35,6 +36,7 @@ class User < ApplicationRecord
   before_validation :set_xp_needed_for_next_level_value
   has_many :taught_tasks, class_name: 'Task', foreign_key: :teacher
   has_many :studied_tasks, class_name: 'Task', foreign_key: :student
+  has_many :baseten_requests, foreign_key: :student
 
   has_one_attached :avatar do |attachable|
     attachable.variant :thumb, resize_to_limit: [300, 300]
@@ -50,7 +52,8 @@ class User < ApplicationRecord
   validates :role, presence: true
   validate :password_presence
 
-  has_one_attached :avatar do |attachable|
+  # Avatars
+  has_many_attached :avatar do |attachable|
     attachable.variant :thumb, resize_to_limit: [300, 300]
   end
   

@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'baseten_requests/create'
   devise_for :users, controllers: { registrations: 'users/registrations' }
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -33,9 +34,17 @@ Rails.application.routes.draw do
 
   # get 'students/dashboard', to: 'students#dashboard', as: 'students_dashboard'
 
-  resources :students do
+  # Webhooks
+  namespace :webhooks do
+    resource :baseten, controller: :baseten, only: [:create]
+  end
+  
+  resources :baseten_requests, only: [:create]
+
+  resources :students, only: [:index] do
     # for testing level up modal (delete after development for this is finished)
-    post :give_student_xp
+    post :give_student_xp, on: :collection
+    get :avatars, on: :collection
   end
 
   resources :teachers do

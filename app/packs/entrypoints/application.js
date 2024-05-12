@@ -4,7 +4,7 @@ import 'popper.js'
 import "bootstrap";
 
 import { Application, defaultSchema } from 'stimulus'
-import { definitionsFromContext } from "stimulus-webpack-helpers"
+import VoiceController from "../controllers/voice_controller";
 
 const customSchema = {
     ...defaultSchema,
@@ -14,8 +14,7 @@ const customSchema = {
 }
 
 window.Stimulus = Application.start(document.documentElement, customSchema)
-const context = require.context("./controllers", true, /\.js$/)
-Stimulus.load(definitionsFromContext(context))
+Stimulus.register("voice", VoiceController)
 
 // window.bootstrap = require('bootstrap/dist/js/bootstrap.bundle.js');
 // window.bootstrap = require("bootstrap")

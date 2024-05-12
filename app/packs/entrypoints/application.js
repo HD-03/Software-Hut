@@ -1,10 +1,9 @@
 import Rails from "@rails/ujs";
-import 'jquery'
-import 'popper.js'
+import 'jquery';
+import 'popper.js';
 import "bootstrap";
 
-import { Application, defaultSchema } from 'stimulus'
-import VoiceController from '../controllers/voice_controller'
+import { Application, defaultSchema } from 'stimulus';
 import VoiceController from "../controllers/voice_controller";
 
 const customSchema = {

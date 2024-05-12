@@ -33,6 +33,7 @@ class Task < ApplicationRecord
   belongs_to :instrument
 
   has_many_attached :files
+  
 
   enum status: { todo: 0, pending: 1, completed: 2 }
 

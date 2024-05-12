@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   root "pages#home"
 
   # ------------- Admin -------------
+  # ------------- Admin -------------
   get 'admin/dashboard', to: 'admin#dashboard', as: 'admin_dashboard'
 
   # get route for adding a new user.

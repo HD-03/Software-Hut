@@ -15,7 +15,23 @@ class TasksController < ApplicationController
   # GET /tasks/1
   def show
     @task = Task.find(params[:id])
+    @task = Task.find(params[:id])
   end
+
+  def update_status
+    puts "///////////////////   THIS IS RUNNING   ///////////////////////"
+    @task = Task.find(params[:id])
+
+    #if params[:status] == 'completed' && @task.status != 'completed'
+    User.give_student_xp_points(current_user, @task.reward_xp)
+    current_user.save
+    #@task.update(student_text: params[:task][:student_text]) if params[:task][:student_text].present?
+
+    @task.update(status: 'pending')  
+    redirect_to tasks_path, notice: 'Task status updated to pending.'
+  end
+  
+  
 
   def update_status
     puts "///////////////////   THIS IS RUNNING   ///////////////////////"

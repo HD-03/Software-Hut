@@ -13,6 +13,7 @@
 
         .card-body.border-0.bg-transparent.pt-0
           = simple_form_for @task, url: tasks_path, method: :post do |f|
+<<<<<<< HEAD
             .mb-3
               = f.select :student_id, @students.map { |student| [student.full_name, student.id] }, {}, { multiple: true, class: 'js-example-basic-multiple', name: 'task[student_id][]', required: true }
             = f.input :name, label: false, input_html: { placeholder: 'Task Name', required: true }, wrapper_html: { class: 'mb-3' }
@@ -35,6 +36,32 @@
             = f.input :files, as: :file, label: 'Attach files', wrapper_html: { class: 'mb-3' }, input_html: { class: 'form-control', multiple: true, accept: "application/pdf,image/jpeg,image/png,application/vnd.openxmlformats-officedocument.wordprocessingml.document" }, label_html: { class: 'form-label' }
             = f.button :submit, "Submit", class: 'btn btn-primary border-0 rounded-5 shadow-lg py-2 px-3 mt-2'
             = link_to 'Cancel', teachers_path, class: 'btn btn-primary border-0 rounded-5 shadow-lg py-2 px-3 mt-2 ms-2', data: { confirm: 'Are you sure?' }
+=======
+            .mt-2
+              = f.select :student_id, @students.map { |student| [student.full_name, student.id] }, {}, { multiple: true, class: 'js-example-basic-multiple', name: 'task[student_id][]' }
+            .mt-2
+              = f.label "Select instrument", class: "form-label"
+              = f.select :instrument_id, @instruments.map { |instrument| [instrument.name, instrument.id] }, {}, { class: 'form-control js-example-basic-single', name: 'task[instrument_id]' }
+            .mt-2
+              = f.input :name, label: false, input_html: { placeholder: 'Task Name' }, label_html: { class: 'form-label' }
+            .mt-2
+              = f.input :description, label: false, input_html: { placeholder: 'Task Description' }, label_html: { class: 'form-label' }
+            .mt-2
+              = f.input :reward_xp, as: :integer, label: 'Experience Points', input_html: { placeholder: '0' }, label_html: { class: 'form-label' }
+            .mt-2
+              = f.input :deadline, label: "Deadline", as: :date, html5: true, input_html: { class: "mx-0", min: Date.today }, label_html: { class: 'form-label' }
+            .mt-2
+              = f.input :recording_boolean, label: "Allow Recording?", collection: [['Yes', true], ['No', false]], selected: 'Yes', label_html: { class: 'form-label' }
+            .mt-2
+              - @task.files.each do |file|
+                = f.input :files, as: :hidden, input_html: { value: file.signed_id } # = f.input :files, as: :hidden, input_html: { multiple: true }, value: file.signed_id if file.attached?
+              = f.input :files, as: :file, label: 'Attach files', wrapper_html: { class: 'mb-3' }, input_html: { class: 'form-control', multiple: true, accept: "application/pdf,image/jpeg,image/png,application/vnd.openxmlformats-officedocument.wordprocessingml.document" }, label_html: { class: 'form-label' }
+              -# - @task.files.each do |file|
+              -#   = f.input :files, as: :hidden, input_html: { value: file.signed_id }
+
+              
+            = f.button :submit, "Save", class: 'btn btn-primary border-0 rounded-5 shadow-lg py-2 px-3 mt-2'
+>>>>>>> origin/task-completion-as-extension
 
 :javascript
   $(document).ready(function() {

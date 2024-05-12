@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "pages#home"
 
-  # Dashboards
+  # ------------- Admin -------------
   get 'admin/dashboard', to: 'admin#dashboard', as: 'admin_dashboard'
 
   # get route for adding a new user.
@@ -21,6 +21,8 @@ Rails.application.routes.draw do
   patch 'admin/update_user/:id', to: 'admin#update_user', as:'update_user'
 
   delete 'admin/delete_user/:id', to: 'admin#delete_user', as: 'delete_user'
+  # ---------------------------------
+
 
   #post 'teachers/tasks', to: 'tasks#create', as: 'create_task'
   # Example route for a teacher's dashboard. Adjust according to your actual controller and action names.
@@ -36,7 +38,9 @@ Rails.application.routes.draw do
     post :give_student_xp
   end
 
-  resources :teachers
+  resources :teachers do
+    post :give_student_xp
+  end
 
   resources :tasks do
     post :search, on: :collection
@@ -45,7 +49,24 @@ Rails.application.routes.draw do
   resources :users, only: [:show, :edit], path_names: { update: 'settings' } do
     post :search, on: :collection
   end
+<<<<<<< HEAD
   # resources :users do
   #   post :search, on: :collection
   # end
+=======
+
+  #for user settings
+  resources :users, only: [:show, :edit], path_names: { update: 'settings' }
+
+  resources :tasks do
+    member do
+      patch 'update_status'
+    end
+  end
+
+  authenticate :user do
+    # Specific task show route - this is included in the resources :tasks above, so it's redundant here unless you need to restrict it to authenticated users only
+    get 'tasks/:id', to: 'tasks#show', as: 'task_details'
+  end
+>>>>>>> origin/task-completion-as-extension
 end

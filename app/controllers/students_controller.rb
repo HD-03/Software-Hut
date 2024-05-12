@@ -9,9 +9,13 @@ class StudentsController < ApplicationController
   end
 
   def give_student_xp
-    current_user.give_student_xp_points(600)
+    give_student_xp_points(current_user, 600)
 
     authorize! :give_student_xp, :students
+  end
+
+  def show
+    @task = Task.find(params[:id])
   end
 
   def check_level_up

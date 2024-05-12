@@ -9,12 +9,21 @@
     - @students.each do |student|
       - username = student.username
       .pb-2.accordion{id: "#{username}"}
-        .accordion-item
+        .accordion-item.rounded-3
           %h3.accordion-header
-            %button.accordion-button{ class: 'collapsed', type: "button", data: { bs_toggle: "collapse", bs_target: "#collapse-#{username}", aria_expanded: 'false', aria_controls: "collapse-#{username}" } }
-              = student.full_name
+            %button.accordion-button.rounded-3{ class: 'collapsed', type: "button", data: { bs_toggle: "collapse", bs_target: "#collapse-#{username}", aria_expanded: 'false', aria_controls: "collapse-#{username}" } }
+              = student.full_name 
           .accordion-collapse.collapse{ id: "collapse-#{username}", data: { bs_parent: "#{username}" } }
             .accordion-body
+              = simple_form_for :xp_points_form, url: teacher_give_student_xp_path(student.id), method: :post, remote: true, html: { class: 'xp-points-form', id: "xpPointsForm-#{student.id}" } do |f|
+                .row.p-3
+                  .col-md-2
+                    = f.input :number_of_xp_points, input_html: { type: 'number', class: 'xpPointsInput', id: "xpPointsInput-#{student.id}" }
+                  .col-md-2.mt-auto
+                    = f.hidden_field :student_id, value: student.id
+                    = f.submit 'Give Student XP', class: 'btn btn-outline-secondary xpPointsSubmit', id: "xpPointsSubmit-#{student.id}"
+                    = link_to 'Reset', '#', class: 'btn btn-outline-secondary resetButton', id: "resetButton-#{student.id}", data: { target_form: "xpPointsForm-#{student.id}" }
+              
               - if @tasks.where(student_id: student.id).empty?
                 .card-body
                   %p No tasks available for this student
@@ -52,3 +61,29 @@
                           %td.align-middle
                             .btn-toolbar.float-end
                               = link_to 'Delete', task_path(task), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-outline-danger btn-sm'
+
+:javascript
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.resetButton').forEach(function(button) {
+      var targetFormId = button.dataset.targetForm;
+      var form = document.getElementById(targetFormId);
+
+      button.addEventListener('click', function(e) {
+        e.preventDefault();
+        form.reset();
+      });
+    });
+  });
+
+-# document.querySelectorAll('.xp-points-form').forEach(function(form) {
+-#   var studentId = form.dataset.studentId;
+-#   var xpPointsInput = form.querySelector('.xpPointsInput');
+-#   var xpPointsSubmit = form.querySelector('.xpPointsSubmit');
+
+-#   form.addEventListener('submit', function(e) {
+-#     e.preventDefault();
+-#     xpPointsInput.value = '';
+-#     xpPointsSubmit.disabled = false;
+-#     //form.submit();
+-#   });
+-# });

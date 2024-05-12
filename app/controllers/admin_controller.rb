@@ -1,4 +1,6 @@
   class AdminController < ApplicationController
+    include ActionView::Helpers::SanitizeHelper
+
     before_action :authenticate_user!, only: [:dashboard, :add_new_user, :edit_user, :delete_user]
     before_action :set_user, only: [:edit_user_info, :update_user, :delete_user]
 
@@ -66,7 +68,10 @@
         end
 
         def user_params
-          params.require(:user).permit(:full_name, :email, :username, :password, :password_confirmation, :role, :old_enough_for_cooler_avatars)
+          params.require(:user).permit(:full_name, :email, :username, :password, :password_confirmation, :role, :old_enough_for_cooler_avatars, :avatar)
+          #params.require(:user).permit(:full_name, :email, :username, :password, :role, :old_enough_for_cooler_avatars, :avatar)
+          #sanitizing for XSS attacks
+          #params.require(:user).permit(:full_name, :email, :username, :password, :role, :old_enough_for_cooler_avatars, :avatar).transform_values { |v| sanitize(v) }
         end
 
 

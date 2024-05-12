@@ -16,23 +16,30 @@
             .mt-2
               = f.select :student_id, @students.map { |student| [student.full_name, student.id] }, {}, { multiple: true, class: 'js-example-basic-multiple', name: 'task[student_id][]', required: true }
             .mt-2
-              = f.input :name, label: false, input_html: { placeholder: 'Task Name', required: true }
+              = f.input :name, label: false, input_html: { placeholder: 'Task Name', required: true }, label_html: { class: 'form-label' }
             .mt-2
               - @task.instrument_id = nil
               - error_class = @task.errors.full_messages.include?("Instrument can't be blank") ? 'is-invalid' : ''
+              = f.label "Select instrument", class: "form-label"
               = f.select :instrument_id, @instruments.map { |instrument| [instrument.name, instrument.id] }, {}, { class: "js-example-basic-single #{error_class}", name: 'task[instrument_id]', required: true }
               
               - if @task.errors.full_messages.include?"Instrument can't be blank"
                 .div.invalid-feedback
                   Instrument can't be blank
             .mt-2
-              = f.input :description, label: false, input_html: { placeholder: 'Task Description', required: true }
+              = f.input :description, label: false, input_html: { placeholder: 'Task Description', required: true }, label_html: { class: 'form-label' }
             .mt-2
-              = f.input :reward_xp, as: :integer, label: 'Experience Points', input_html: { placeholder: '0', required: true }
+              = f.input :reward_xp, as: :integer, label: 'Experience Points', input_html: { placeholder: '0', required: true }, label_html: { class: 'form-label' }
             .mt-2
-              = f.input :deadline, label: "Deadline", as: :date, html5: true, input_html: { min: Date.today, required: true }
+              = f.input :deadline, label: "Deadline", as: :date, html5: true, input_html: { class: "mx-0", min: Date.today, required: true }, label_html: { class: 'form-label' }
             .mt-2
-              = f.input :recording_boolean, label: "Allow Recording?", collection: [['Yes', true], ['No', false]], selected: 'Yes'
+              = f.input :recording_boolean, label: "Allow Recording?", collection: [['Yes', true], ['No', false]], selected: 'Yes', label_html: { class: 'form-label' }
+            .mt-2
+              - @task.files.each do |file|
+                = f.input :files, as: :hidden, input_html: { value: file.signed_id } # = f.input :files, as: :hidden, input_html: { multiple: true }, value: file.signed_id if file.attached?
+              = f.input :files, as: :file, label: 'Attach files', wrapper_html: { class: 'mb-3' }, input_html: { class: 'form-control', multiple: true, accept: "application/pdf,image/jpeg,image/png,application/vnd.openxmlformats-officedocument.wordprocessingml.document" }, label_html: { class: 'form-label' }
+              -# - @task.files.each do |file|
+              -#   = f.input :files, as: :hidden, input_html: { value: file.signed_id }
             = f.button :submit, "Submit", class: 'btn btn-primary border-0 rounded-5 shadow-lg py-2 px-3 mt-2'
             = link_to 'Cancel', teachers_path, class: 'btn btn-primary border-0 rounded-5 shadow-lg py-2 px-3 mt-2 ms-2', data: { confirm: 'Are you sure?' }
 

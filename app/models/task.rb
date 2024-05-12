@@ -5,11 +5,12 @@
 #  id                :bigint           not null, primary key
 #  attachment_paths  :string           default([]), is an Array
 #  deadline          :datetime         not null
-#  description       :text
+#  description       :text             not null
 #  name              :string           not null
 #  recording_boolean :boolean          default(FALSE), not null
 #  reward_xp         :integer          not null
 #  status            :integer          default("todo"), not null
+#  student_text      :text
 #  time_set          :datetime         not null
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
@@ -30,6 +31,9 @@ class Task < ApplicationRecord
   belongs_to :teacher, -> { where(role: 1) }, class_name: 'User'
   belongs_to :student, -> { where(role: 0) }, class_name: 'User'
   belongs_to :instrument
+
+  has_many_attached :files
+  
 
   enum status: { todo: 0, pending: 1, completed: 2 }
 

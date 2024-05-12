@@ -1,48 +1,17 @@
-#container
-  %header
-    .row.justify-content-center
-      .col-sm-12.col-lg-12
-        .card
-          .card-body
-            %h3 Students
-            .table-responsive
-              %table.table.table-striped
-                %thead
-                  %tr
-                    %th Name
-                    %th Username
-                    %th Email
-                %tbody
-                  - @students.each do |student|
-                    %tr{id: "user_#{student.id}"}
-                      %td.align-middle= student.full_name
-                      %td.align-middle= student.username
-                      %td.align-middle= student.email
-                      %td.align-middle
-                        = link_to 'Edit', edit_user_admin_path(student.id), class: 'btn btn-sm btn-primary'
-                      %td.align-middle
-                        = link_to 'Delete', delete_user_path(student.id), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger'
+.row.justify-content-center
+  .col-sm-12.col-lg-12
+    %ul.nav.nav-tabs#myTab{role: "tablist"}
+      %li.nav-item{role: "presentation"}
+        %button.nav-link.active#users-tab{"data-bs-toggle" => "tab", "data-bs-target" => "#users-tab-pane", type: "button", role: "tab", "aria-controls" => "users-tab-pane", "aria-selected" => "true"} Users
+      %li.nav-item{role: "presentation"}
+        %button.nav-link#instruments-tab{"data-bs-toggle" => "tab", "data-bs-target" => "#instruments-tab-pane", type: "button", role: "tab", "aria-controls" => "instruments-tab-pane", "aria-selected" => "false"} Instruments
+      %li.nav-item{role: "presentation"}
+        %button.nav-link#avatars-tab{"data-bs-toggle" => "tab", "data-bs-target" => "#avatars-tab-pane", type: "button", role: "tab", "aria-controls" => "avatars-tab-pane", "aria-selected" => "false"} Avatars
 
-
-            %h3 Teachers
-            .table-responsive
-              %table.table.table-striped
-                %thead
-                  %tr
-                    %th Name
-                    %th Username
-                    %th Email
-                %tbody
-                  - @teachers.each do |teacher|
-                    %tr{id: "user_#{teacher.id}"}
-                      %td.align-middle= teacher.full_name
-                      %td.align-middle= teacher.username
-                      %td.align-middle= teacher.email
-                      %td.align-middle
-                        = link_to 'Edit', edit_user_admin_path(teacher.id), class: 'btn btn-sm btn-primary'
-                      %td.align-middle
-                        = link_to 'Delete', delete_user_path(teacher.id), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger'
-
-          .card-footer.d-flex.justify-content-between
-            = link_to 'Add User', new_add_user_path, class: 'btn btn-primary border-0 rounded-5 shadow-lg py-2 px-3'
-      
+    .tab-content#myTabContent
+      .tab-pane.fade.show.active#users-tab-pane{role: "tabpanel", "aria-labelledby" => "users-tab", tabindex: "0"}
+        = render 'admin/users'
+      .tab-pane.fade#instruments-tab-pane{role: "tabpanel", "aria-labelledby" => "instruments-tab", tabindex: "0"}
+        = render 'admin/instruments'
+      .tab-pane.fade#avatars-tab-pane{role: "tabpanel", "aria-labelledby" => "avatars-tab", tabindex: "0"}
+        = render 'admin/avatars'

@@ -27,7 +27,7 @@ describe 'level_up.' do
 
     within('#levelUpModal') do
       expect(page).to have_content("Level #{student.level} reached")
-      expect(page).to have_content("New avatars unlocked:")
+      expect(page).to have_content("You have unlocked an avatar token!")
     end
   end
 

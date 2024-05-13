@@ -25,6 +25,19 @@ User.where(email: 'admin@example.com').first_or_create(
   )
 end
 
+# Seed 12 avatars for student 1
+avatars_user = User.find(2) # Find the user with ID 2
+
+(1..12).each do |i|
+  filename = "image_#{i}.jpeg"
+  puts(filename)
+  filepath = Rails.root.join('db', 'images', filename)
+
+  File.open(filepath) do |file|
+    avatars_user.avatar.attach(io: file, filename: filename)
+  end
+end
+
 # Create 3 teacher users
 3.times do |n|
   User.where(email: "teacher#{n + 1}@example.com").first_or_create(

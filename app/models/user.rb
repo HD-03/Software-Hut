@@ -38,7 +38,7 @@ class User < ApplicationRecord
   has_many :studied_tasks, class_name: 'Task', foreign_key: :student
   has_many :baseten_requests, foreign_key: :student
 
-  has_one_attached :avatar do |attachable|
+  has_many_attached :avatar do |attachable|
     attachable.variant :thumb, resize_to_limit: [300, 300]
   end
   

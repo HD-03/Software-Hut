@@ -1,13 +1,16 @@
-.row-sm-4
+.row.mx-auto
   .col-sm-3.mx-auto.justify-content-center
     .row.shadow-lg
-      - if current_user.avatar.find { |a| a.id == current_user.avatar_id }.present?
-        = image_tag current_user.avatar.variant(:thumb), class: 'p-0 rounded-circle img-fluid '
-      - else
-        = image_tag 'https://via.placeholder.com/300x300', alt: 'placeholder', class: 'p-0 rounded-circle img-fluid'
+      = image_tag 'https://via.placeholder.com/300x300', alt: 'placeholder', class: 'p-0 rounded-circle img-fluid', style: 'border: 3px solid #000;'
     .row.mx-auto
       - if current_user.has_right_to_generate_avatar
         %button.btn.btn-primary.border-0.rounded-5.shadow-lg.py-2.px-3.my-4{ type: "button", "data-bs-toggle" => "modal", "data-bs-target" => "#generateAvatarModal" }
           Generate Avatar
+  .row.mx-auto
+    - current_user.avatar.each_slice(4) do |avatar_row|
+      .row.my-3
+        - avatar_row.each do |avatar|
+          .col-sm-3
+            = image_tag avatar, class: 'p-0 rounded-circle img-fluid scaled-avatar-image', style: 'border: 3px solid #000;'
 
   = render 'students/generate_avatar_modal'

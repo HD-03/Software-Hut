@@ -71,7 +71,8 @@
     .tab-content
       - (Date.today.beginning_of_month..Date.today.end_of_month).each_slice(7).with_index do |week, index|
         - week_id = "week-#{index}"
-        .tab-pane{ class: (index.zero? ? 'show active' : ''), id: "#{week_id}", role: "tabpanel", "aria-labelledby" => "#{week_id}-tab" }
+        - is_current_week = (Date.today >= week.first) && (Date.today <= week.last) 
+        .tab-pane{ class: (is_current_week ? 'show active' : ''), id: "#{week_id}", role: "tabpanel", "aria-labelledby" => "#{week_id}-tab" }
           .pb-3.accordion
             .accordion-item.rounded-3.border.border-0
               .accordion-body

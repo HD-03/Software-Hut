@@ -34,18 +34,22 @@ class BasetenRequest < ApplicationRecord
     webhook_endpoint = "https://team09.demo2.hut.shefcompsci.org.uk/webhooks/baseten"
 
     # Call model endpoint
-    response = HTTParty.post(
-      "https://model-#{model_id}.api.baseten.co/development/async_predict",
-      headers: { "Authorization" => "Api-Key #{baseten_api_key}" },
-      body: { 
-        "model_input" => { "workflow_values" => values },
-        "webhook_endpoint" => webhook_endpoint
-      }.to_json,
-      format: :plain
-    )
+    # response = HTTParty.post(
+    #   "https://model-#{model_id}.api.baseten.co/development/async_predict",
+    #   headers: { "Authorization" => "Api-Key #{baseten_api_key}" },
+    #   body: { 
+    #     "model_input" => { "workflow_values" => values },
+    #     "webhook_endpoint" => webhook_endpoint
+    #   }.to_json,
+    #   format: :plain
+    # )
     
-    # Create request
-    request_id = JSON.parse(response)["request_id"]
-    request_id
+    # # Create request
+    # request_id = JSON.parse(response)["request_id"]
+    # request_id
+
+    puts "-----------------------------------------------------------------"
+    puts prompt #print in console for testing, and to not make a request
+    puts "-----------------------------------------------------------------"
   end
 end

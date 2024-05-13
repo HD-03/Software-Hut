@@ -1,3 +1,11 @@
+- @backgrounds_list = ['Beach', 'Mountains', 'Forest', 'Underwater', 'Castle courtyard', 'City skyline', 'Space station', 'Enchanted garden', 'Volcano', 'Desert oasis']
+- @weather_list = ['Sunny', 'Rainy', 'Snowy', 'Foggy', 'Thunderstorm', 'Windy', 'Misty', 'Rainbow', 'Aurora borealis']
+- @characters_list = ['Ninja', 'Farmer', 'Pirate', 'Samurai', 'Astronaut', 'Mermaid', 'Wizard', 'Superhero', 'Robot']
+- @expressions_list = ['Happy', 'Curious', 'Mischievous', 'Excited', 'Worried', 'Confused', 'Surprised']
+- @facial_hair_list = ['No Facial Hair', 'Stubble', 'Goatee', 'Sideburns', 'Bushy beard']
+- @time_periods_list = ['Jurassic Period', 'Stone Age', 'Ancient Egypt', 'Medieval', 'Victorian', 'Futuristic']
+- @accessories_list = ['Top hat', 'Beanie', 'Straw Hat', 'Headphones', 'Glasses', 'Sunglasses', 'Magnifying Glass', 'Monocle', 'Crown']
+
 .row-sm-4
   .col-sm-3.mx-auto.justify-content-center
     .row.shadow-lg
@@ -7,5 +15,53 @@
         = image_tag 'https://via.placeholder.com/300x300', alt: 'placeholder', class: 'p-0 rounded-circle img-fluid'
     .row.mx-auto
       - if current_user.has_right_to_generate_avatar
-        .btn.btn-primary.border-0.rounded-5.shadow-lg.py-2.px-3.my-4
-          = link_to 'Generate Avatar', baseten_requests_path(student_id: current_user.id), method: :post, class: 'text-light link-underline link-underline-opacity-0'
+        %button.btn.btn-primary.border-0.rounded-5.shadow-lg.py-2.px-3.my-4{ type: "button", "data-bs-toggle" => "modal", "data-bs-target" => "#generateAvatarModal" }
+          Generate Avatar
+        -# .btn.btn-primary.border-0.rounded-5.shadow-lg.py-2.px-3.my-4
+          -# = link_to 'Generate Avatar', baseten_requests_path(student_id: current_user.id), method: :post, class: 'text-light link-underline link-underline-opacity-0'
+
+  .modal.fade#generateAvatarModal(tabindex="-1" role="dialog" aria-labelledby="generateAvatarModalLabel" aria-hidden="true")
+    .modal-dialog.modal-dialog-centered.modal-l
+      .modal-content
+        .modal-header.p-3
+          %h5.modal-title#levelUpModalLabel Create new Avatar!
+          %button.btn.btn-primary.border-0.rounded-5.shadow-lg.ms-auto.px-4.py-2(type="button" data-bs-dismiss="modal" aria-label="Close")
+            Cancel
+        
+        .modal-body.h4.px-4.py-1.m-2
+          .card-body.border-0.bg-transparent.pt-0
+            = form_tag baseten_requests_path(student_id: current_user.id), method: :post, id: 'prompt-form' do
+              .mb-3
+                = label_tag :background, "Background", class: "form-label"
+                = select_tag :background, options_for_select(@backgrounds_list), class: 'js-example-basic-single form-control', required: true
+              .mb-3
+                = label_tag :time_period, "Time Period", class: "form-label"
+                = select_tag :time_period, options_for_select(@time_periods_list), class: 'js-example-basic-single form-control', required: true
+              .mb-3
+                = label_tag :weather, "Weather", class: "form-label"
+                = select_tag :weather, options_for_select(@weather_list), class: 'js-example-basic-single form-control', required: true
+              .mb-3
+                = label_tag :character, "Character Type", class: "form-label"
+                = select_tag :character, options_for_select(@characters_list), class: 'js-example-basic-single form-control', required: true
+              .mb-3
+                = label_tag :expression, "Expression", class: "form-label"
+                = select_tag :expression, options_for_select(@expressions_list), class: 'js-example-basic-single form-control', required: true
+              .mb-3
+                = label_tag :facial_hair, "Facial Hair", class: "form-label"
+                = select_tag :facial_hair, options_for_select(@facial_hair_list), class: 'js-example-basic-single form-control', required: true
+              .mb-3
+                = label_tag :accessory, "Accessory", class: "form-label"
+                = select_tag :accessory, options_for_select(@accessories_list), class: 'js-example-basic-single form-control', required: true
+              .text-center
+                = button_tag "Generate Avatar", class: 'btn btn-primary btn-lg border-0 rounded-5 shadow-lg py-2 px-3 mt-2', data: { disable_with: "Processing..." }, name: nil
+
+
+          -# %p.m-0 Fake Prompt
+        -#   .card-body.border-0.bg-transparent.pt-0
+        -#     = simple_form_for @prompt, url: baseten_requests_path(student_id: current_user.id), method: :post do |f|
+        -#       = f.input :prompt, label: "Prompt", input_html: { placeholder: 'Task Description', required: true }, label_html: { class: 'form-label' }, wrapper_html: { class: 'mb-3' }
+        -#       = f.button :submit, "Submit", class: 'btn btn-primary border-0 rounded-5 shadow-lg py-2 px-3 mt-2'
+        -# .modal-footer.d-flex.flex-column.justify-content-center
+        -#   .h3.text-decoration-underline
+        -#     .btn.btn-primary.border-0.rounded-5.shadow-lg.py-2.px-3.my-2
+        -#       = link_to 'Generate Avatar', baseten_requests_path(student_id: current_user.id), method: :post, class: 'text-light link-underline link-underline-opacity-0'

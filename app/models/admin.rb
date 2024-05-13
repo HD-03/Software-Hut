@@ -11,6 +11,5 @@
 #  updated_at      :datetime         not null
 #
 class Admin < ApplicationRecord
-
     
 end

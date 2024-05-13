@@ -2,11 +2,14 @@
     before_action :authenticate_user!, only: [:dashboard, :add_new_user, :edit_user, :delete_user]
     before_action :set_user, only: [:edit_user_info, :update_user, :delete_user]
 
+    authorize_resource
+
     # GET /dashboard
     def dashboard
-        @students = User.where(role: :student).page(params[:students_page]).per(10)
-        @teachers = User.where(role: :teacher).page(params[:teachers_page]).per(10)
+        @students = User.where(role: :student).page(params[:students_page]).per(15)
+        @teachers = User.where(role: :teacher).page(params[:teachers_page]).per(15)
         @tasks = Task.all
+        @instruments = Instrument.all
     end
 
     def add_new_user

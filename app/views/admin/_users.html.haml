@@ -3,6 +3,10 @@
     .card-header.bg-transparent
       %h3.text-center.m-3 Students
     .table-responsive
+    = simple_form_for :search, url: search_users_path, method: :post do |f|
+      .row.p-3 
+        .col-md-4
+          = f.input 
       %table.table.table-striped.m-0
         %thead
           %tr
@@ -32,7 +36,7 @@
                 = link_to 'Edit', edit_user_admin_path(student.id), class: 'btn btn-sm btn-primary'
               %td.align-middle
                 = link_to 'Delete', delete_user_path(student.id), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger'
-    
+    = paginate @students, param_name: 'students_page'
     .card-header.bg-transparent
       %h3.text-center.m-3 Teachers
     .table-responsive
@@ -52,6 +56,6 @@
                 = link_to 'Edit', edit_user_admin_path(teacher.id), class: 'btn btn-sm btn-primary'
               %td.align-middle
                 = link_to 'Delete', delete_user_path(teacher.id), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger'
-
+    = paginate @teachers, param_name: 'teachers_page'
   .card-footer.d-flex.justify-content-center.bg-transparent.p-3
     = link_to 'Add User', new_add_user_path, class: 'btn btn-primary border-0 rounded-5 shadow-lg py-2 px-3'

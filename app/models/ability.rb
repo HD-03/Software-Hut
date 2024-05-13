@@ -44,6 +44,7 @@ class Ability
       can :update_status, Task, student_id: user.id
       can :generate_avatar, :students
       can :avatars, :students
+      can :update_avatar_id, :students
     end
   end
 end

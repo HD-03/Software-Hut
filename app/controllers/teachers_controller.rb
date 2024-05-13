@@ -12,7 +12,7 @@ class TeachersController < ApplicationController
     student = User.find(params[:xp_points_form][:student_id])
     xp_points = params[:xp_points_form][:number_of_xp_points].to_i
 
-    if xp_points > 0 && xp_points < 100
+    if xp_points > 0 && xp_points <= 100
       User.give_student_xp_points(student, xp_points)
       student.save
     end

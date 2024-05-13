@@ -28,4 +28,15 @@ class StudentsController < ApplicationController
     # Set @show_level_up_modal to true if the condition is met
     @show_level_up_modal = current_user.recently_leveled_up?
   end
+
+  def update_avatar_id
+    current_user.avatar_id = params[:avatar_id]
+    current_user.save
+  end
+
+  private
+  def student_params
+    params.permit(:avatar_id)
+  end
+
 end

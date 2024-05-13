@@ -20,6 +20,12 @@ class BasetenRequestsController < ApplicationController
     # # Call the generate_avatar method and assign the returned request_id
     # request.request_id = request.generate_avatar(baseten_api_key, model_id, prompt) # pass string prompt
     request.request_id = request.generate_avatar("dummy_api_key", "dummy_model_id", prompt)
+    
+
+    #--- ARTEM REMEMBER TO DO STUFF WITH THIS WHATEVER IT WAS YOU HAD TO DO ---
+    #reduce number of generate tokens by 1 for user
+    current_user.generate_tokens -= 1
+    current_user.save
 
     if request.save
       redirect_to students_path, notice: 'Avatar was successfully requested.'

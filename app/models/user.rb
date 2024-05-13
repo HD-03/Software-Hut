@@ -7,7 +7,7 @@
 #  encrypted_password            :string           default(""), not null
 #  failed_attempts               :integer          default(0), not null
 #  full_name                     :string           not null
-#  has_right_to_generate_avatar  :integer          default(0), not null
+#  generate_tokens               :integer          default(1), not null
 #  level                         :integer          default(1), not null
 #  locked_at                     :datetime
 #  old_enough_for_cooler_avatars :boolean          default(FALSE), not null
@@ -81,6 +81,7 @@ class User < ApplicationRecord
       user.level += 1
       user_leveled_up = true
       user.xp_points = 0
+      user.generate_tokens += 1
     else
       # if new_xp_points_count > xp_needed_for_next_level
       # level up student and set xp points to how much more xp they got than
@@ -88,6 +89,7 @@ class User < ApplicationRecord
       user.level += 1
       user_leveled_up = true
       user.xp_points = new_xp_points_count - user.xp_needed_for_next_level
+      user.generate_tokens += 1
     end
 
     user.recently_leveled_up = user_leveled_up

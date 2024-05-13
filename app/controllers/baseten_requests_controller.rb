@@ -12,7 +12,7 @@ class BasetenRequestsController < ApplicationController
     prompt = [pre_prompt_setup,
               params[:background] + " background",
               params[:weather] + " weather",
-              params[:character] + " character",
+              params[:character] + " " + params[:gender] + " character",
                params[:expression] + " facial expression",
               params[:facial_hair], params[:time_period],
               params[:accessory]].compact.join(', ')
@@ -33,7 +33,7 @@ class BasetenRequestsController < ApplicationController
   # Only allow a list of trusted parameters through.
   def baseten_request_params 
     # Create a new parameters object with only the permitted attributes
-    params.permit(:student_id, :authenticity_token, :background, :weather, :character, :expression, :facial_hair, :time_period, :accessory)
+    params.permit(:student_id, :authenticity_token, :background, :weather, :character, :expression, :facial_hair, :time_period, :accessory, :gender, :btnradio)
     #params.permit(:student_id, :_method, :authenticity_token, :prompt) # add string prompt
   end
 

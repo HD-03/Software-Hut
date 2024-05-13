@@ -5,8 +5,15 @@ class BasetenRequestsController < ApplicationController
     student = User.find_by(id: baseten_request_params[:student_id])
     puts student.username
     request = BasetenRequest.new(user_id: student.id)
-    prompt = [params[:background], params[:weather],
-              params[:character], params[:expression],
+    not_cooler_avatars = "playful cartoon style, "
+    pre_prompt_setup = "closeup portrait, 32-bit pixel art, colorful, vibrant"
+    pre_prompt_setup = not_cooler_avatars + pre_prompt_setup if !student.old_enough_for_cooler_avatars
+
+    prompt = [pre_prompt_setup,
+              params[:background] + " background",
+              params[:weather] + " weather",
+              params[:character] + " character",
+               params[:expression] + " facial expression",
               params[:facial_hair], params[:time_period],
               params[:accessory]].compact.join(', ')
 

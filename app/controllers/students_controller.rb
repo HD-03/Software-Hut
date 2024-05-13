@@ -8,10 +8,19 @@ class StudentsController < ApplicationController
     authorize! :index, :students
   end
 
+  #GET /students/avatars
+  def avatars
+    authorize! :avatars, :students
+  end
+
   def give_student_xp
-    current_user.give_student_xp_points(600)
+    User.give_student_xp_points(current_user, 600)
 
     authorize! :give_student_xp, :students
+  end
+
+  def show
+    @task = Task.find(params[:id])
   end
 
   def check_level_up
@@ -19,5 +28,4 @@ class StudentsController < ApplicationController
     # Set @show_level_up_modal to true if the condition is met
     @show_level_up_modal = current_user.recently_leveled_up?
   end
-
 end

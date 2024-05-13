@@ -10,6 +10,7 @@
 #  recording_boolean :boolean          default(FALSE), not null
 #  reward_xp         :integer          not null
 #  status            :integer          default("todo"), not null
+#  student_text      :text
 #  time_set          :datetime         not null
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null

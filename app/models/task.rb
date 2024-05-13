@@ -10,6 +10,7 @@
 #  recording_boolean :boolean          default(FALSE), not null
 #  reward_xp         :integer          not null
 #  status            :integer          default("todo"), not null
+#  student_text      :text
 #  time_set          :datetime         not null
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
@@ -23,6 +24,7 @@ class Task < ApplicationRecord
   belongs_to :instrument
 
   has_many_attached :files
+  
 
   enum status: { todo: 0, pending: 1, completed: 2 }
 

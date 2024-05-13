@@ -5,8 +5,11 @@
 #  id                            :bigint           not null, primary key
 #  email                         :string           default(""), not null
 #  encrypted_password            :string           default(""), not null
+#  failed_attempts               :integer          default(0), not null
 #  full_name                     :string           not null
+#  has_right_to_generate_avatar  :integer          default(0), not null
 #  level                         :integer          default(1), not null
+#  locked_at                     :datetime
 #  old_enough_for_cooler_avatars :boolean          default(FALSE), not null
 #  recently_leveled_up           :boolean          default(FALSE), not null
 #  remember_created_at           :datetime
@@ -14,6 +17,7 @@
 #  reset_password_token          :string
 #  role                          :integer          not null
 #  unchecked_background          :boolean
+#  unlock_token                  :string
 #  username                      :string           not null
 #  xp_needed_for_next_level      :integer          default(30), not null
 #  xp_points                     :integer          default(0), not null

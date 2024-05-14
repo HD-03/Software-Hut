@@ -11,8 +11,9 @@ class Webhooks::BasetenJob < ApplicationJob
     decoded_image = Base64.decode64(base64_data)
 
     # Save image to Active Storage
-    student = BasetenRequest.find_by(request_id: webhook_payload[:request_id]).student
-    student.avatar.attach(io: StringIO.new(decoded_image), filename: "avatar.png", content_type: "image/png")
+    request_id = webhook_payload[:request_id]
+    student = BasetenRequest.find_by(request_id: request_id).student
+    student.avatar.attach(io: StringIO.new(decoded_image), filename: "#{request_id}.png", content_type: "image/png")
     student.save
 
     # TODO: delete when deploy

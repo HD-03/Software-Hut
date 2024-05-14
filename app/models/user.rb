@@ -38,10 +38,6 @@ class User < ApplicationRecord
   has_many :studied_tasks, class_name: 'Task', foreign_key: :student
   has_many :baseten_requests, foreign_key: :student
 
-  has_many_attached :avatar do |attachable|
-    attachable.variant :thumb, resize_to_limit: [300, 300]
-  end
-  
   # This validates that when a user is created, everything is filled out
   validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }, uniqueness: true
   validates :username, presence: true, uniqueness: true

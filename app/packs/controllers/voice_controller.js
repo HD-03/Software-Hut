@@ -8,6 +8,8 @@ export default class extends Controller {
     console.log("voice_controller connected");
     this.speechRecognition = this.getSpeechRecognition();
     this.speaking = false;
+
+    this.startRecording();
   }
   // Get the SpeechRecognition object
   getSpeechRecognition() {
@@ -72,17 +74,35 @@ export default class extends Controller {
 
   // detect trigger word to begin
   detectTriggerWord(finalTranscript, interimTranscript) {
-    const triggers = ["start", "begin"]
-    let triggerLength = triggers.length
+    // const triggers = ["start", "begin"]
+    // let triggerLength = triggers.length
 
-    for (let i = 0; i < triggerLength; i++){
-      if (finalTranscript.includes(triggers[i]) == true || interimTranscript.includes(triggers[i]) == true) {
-        console.log("Trigger Detected")
-        this.stopRecording()
-        // Begin the actual recording of the music lesson
+    // for (let i = 0; i < triggerLength; i++){
+    //   if (finalTranscript.includes(triggers[i]) == true || interimTranscript.includes(triggers[i]) == true) {
+    //     console.log("Trigger Detected")
+    //     this.stopRecording()
+
+    //     window.handleRecording(this.element);
+    //     // Begin the actual recording of the music lesson
+    //   }
+
+    // }
+
+    const triggers = [/\bstart\w*/i, /\bbegin\w*/i];
+    let triggerLength = triggers.length;
+
+    for (let i = 0; i < triggerLength; i++) {
+      if (
+        finalTranscript.match(triggers[i]) !== null ||
+        interimTranscript.match(triggers[i]) !== null
+      ) {
+          console.log("Trigger Detected");
+          break;
       }
-
     }
+
+    this.stopRecording();
+    window.handleRecording(this.element);
   }
 
   // Handle the click event on the start button

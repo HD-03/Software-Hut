@@ -33,14 +33,15 @@ class Task < ApplicationRecord
   belongs_to :instrument
 
   has_many_attached :files
+  has_many_attached :recordings
   
 
   enum status: { todo: 0, pending: 1, completed: 2 }
 
   # This validates that when a task is set, everything is filled out
   validates :student_id, :instrument_id, :name, :description, :reward_xp, :deadline, presence: true
-  validates :name, length: { minimum: 5 }
-  validates :description, length: { minimum: 10 }
+  validates :name, presence: true
+  validates :description, presence: true
   validate :at_least_one_student
 
   # Returns the day of the week for the deadline if it falls within the current week,

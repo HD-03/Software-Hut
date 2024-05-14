@@ -1,0 +1,52 @@
+- @backgrounds_list = ['Beach', 'Mountains', 'Forest', 'Underwater', 'Castle courtyard', 'City skyline', 'Space station', 'Enchanted garden', 'Volcano', 'Desert oasis']
+- @weather_list = ['Sunny', 'Rainy', 'Snowy', 'Foggy', 'Thunderstorm', 'Windy', 'Misty', 'Rainbow', 'Aurora borealis']
+- @characters_list = ['Ninja', 'Farmer', 'Pirate', 'Samurai', 'Astronaut', 'Mermaid', 'Wizard', 'Superhero', 'Robot']
+- @expressions_list = ['Happy', 'Curious', 'Mischievous', 'Excited', 'Worried', 'Confused', 'Surprised']
+- @facial_hair_list = ['No Facial Hair', 'Stubble', 'Goatee', 'Sideburns', 'Bushy beard']
+- @time_periods_list = ['Jurassic Period', 'Stone Age', 'Ancient Egypt', 'Medieval', 'Victorian', 'Futuristic']
+- @accessories_list = ['Top hat', 'Beanie', 'Straw Hat', 'Headphones', 'Glasses', 'Sunglasses', 'Magnifying Glass', 'Monocle', 'Crown']
+
+.modal.fade#generateAvatarModal(tabindex="-1" role="dialog" aria-labelledby="generateAvatarModalLabel" aria-hidden="true")
+  .modal-dialog.modal-dialog-centered.modal-l
+    .modal-content
+      .modal-header.p-3
+        %h5.modal-title#levelUpModalLabel Create new Avatar!
+        %button.btn.btn-primary.border-0.rounded-5.shadow-lg.ms-auto.px-4.py-2(type="button" data-bs-dismiss="modal" aria-label="Close")
+          Cancel
+
+      .modal-body.h4.px-4.py-1.m-2
+        .card-body.border-0.bg-transparent.pt-0
+          = form_tag baseten_requests_path(student_id: current_user.id), method: :post, data: { turbo: false }, id: 'prompt-form' do
+            .mb-3
+              = label_tag :background, "Background", class: "form-label"
+              = select_tag :background, options_for_select(@backgrounds_list), class: 'js-example-basic-single form-control', required: true
+            .mb-3
+              = label_tag :time_period, "Time Period", class: "form-label"
+              = select_tag :time_period, options_for_select(@time_periods_list), class: 'js-example-basic-single form-control', required: true
+            .mb-3
+              = label_tag :weather, "Weather", class: "form-label"
+              = select_tag :weather, options_for_select(@weather_list), class: 'js-example-basic-single form-control', required: true
+            .mb-3
+              = label_tag :character, "Character Type", class: "form-label"
+              = select_tag :character, options_for_select(@characters_list), class: 'js-example-basic-single form-control', required: true
+            .mb-3
+              = label_tag :expression, "Expression", class: "form-label"
+              = select_tag :expression, options_for_select(@expressions_list), class: 'js-example-basic-single form-control', required: true
+            .mb-3
+              = label_tag :facial_hair, "Facial Hair", class: "form-label"
+              = select_tag :facial_hair, options_for_select(@facial_hair_list), class: 'js-example-basic-single form-control', required: true
+            .mb-3
+              = label_tag :accessory, "Accessory", class: "form-label"
+              = select_tag :accessory, options_for_select(@accessories_list), class: 'js-example-basic-single form-control', required: true
+            .mb-2.mt-3.btn-group{ role: "group", "aria-label": "Basic radio toggle button group" }
+              %input.btn-check{ type: "radio", name: "gender", id: "btnradio-boy", autocomplete: "off", checked: true, value: "boy" }
+              %label.btn.btn-outline-primary{ for: "btnradio-boy" } Boy
+
+              %input.btn-check{ type: "radio", name: "gender", id: "btnradio-girl", autocomplete: "off", value: "girl" }
+              %label.btn.btn-outline-primary{ for: "btnradio-girl" } Girl
+            .text-center
+              = button_tag "Generate Avatar", class: 'btn btn-primary btn-lg border-0 rounded-5 shadow-lg py-2 px-3 mt-2', data: { disable_with: "Processing...", turbo: false  }, name: nil, disabled: current_user.generate_tokens < 1
+              
+            .text-center.text-danger.mt-2.h5
+              - if current_user.generate_tokens < 1
+                Out of generate tokens

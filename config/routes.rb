@@ -46,6 +46,7 @@ Rails.application.routes.draw do
     # for testing level up modal (delete after development for this is finished)
     post :give_student_xp, on: :collection
     get :avatars, on: :collection
+    post :update_avatar_id, on: :collection
   end
 
   resources :teachers do

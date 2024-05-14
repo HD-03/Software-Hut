@@ -62,17 +62,13 @@ class BasetenRequest < ApplicationRecord
           response_body: response.body
         })
       end
+
+      # Create request
+      request_id = JSON.parse(response)["request_id"]
+      request_id
     rescue => e
       Sentry.capture_exception(e)
       raise e
     end
-    
-    # Create request
-    request_id = JSON.parse(response)["request_id"]
-    request_id
-
-    puts "-----------------------------------------------------------------"
-    puts prompt #print in console for testing, and to not make a request
-    puts "-----------------------------------------------------------------"
   end
 end

@@ -50,7 +50,7 @@ export default class extends Controller {
   handleSpeechRecognitionResult(event) {
     const { finalTranscript, interimTranscript } =
       this.extractTranscripts(event);
-    this.detectTriggerWord(finalTranscript, interimTranscript);
+    this.detectTriggerWord(interimTranscript);
   }
 
   // Extract the final and interim transcripts from the speech recognition result
@@ -73,7 +73,7 @@ export default class extends Controller {
   }
 
   // detect trigger word to begin
-  detectTriggerWord(finalTranscript, interimTranscript) {
+  detectTriggerWord(interimTranscript) {
     // const triggers = ["start", "begin"]
     // let triggerLength = triggers.length
 

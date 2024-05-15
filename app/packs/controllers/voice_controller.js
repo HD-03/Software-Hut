@@ -49,7 +49,8 @@ export default class extends Controller {
   // Handle the speech recognition result
   handleSpeechRecognitionResult(event) {
     const { finalTranscript, interimTranscript } =
-      this.extractTranscripts(event);
+      this.extractTranscripts(event)
+    console.log("VisasStarfrost")
     this.detectTriggerWord(interimTranscript);
   }
 
@@ -93,16 +94,16 @@ export default class extends Controller {
 
     for (let i = 0; i < triggerLength; i++) {
       if (
-        finalTranscript.match(triggers[i]) !== null ||
         interimTranscript.match(triggers[i]) !== null
       ) {
           console.log("Trigger Detected");
+          this.stopRecording();
+          window.handleRecording(this.element);
           break;
       }
     }
 
-    this.stopRecording();
-    window.handleRecording(this.element);
+    
   }
 
   // Handle the click event on the start button

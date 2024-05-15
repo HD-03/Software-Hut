@@ -44,20 +44,6 @@ class Task < ApplicationRecord
   validates :description, presence: true
   validate :at_least_one_student
 
-  # Returns the day of the week for the deadline if it falls within the current week,
-  # or nil if the deadline is not within the current week.
-  #
-  # @return [String, nil]
-  def deadline_day_this_week
-    current_week_start = Date.current.beginning_of_week(:monday) -  1.days
-    current_week_end = Date.current.beginning_of_week(:monday) + 6.days
-    if deadline.between?(current_week_start, current_week_end)
-      deadline.strftime('%A')
-    else
-      nil
-    end
-  end
-
   def deadline_readable
     day = deadline.strftime('%-d')
     month = deadline.strftime('%B')

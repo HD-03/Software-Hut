@@ -21,10 +21,6 @@ class BasetenRequest < ApplicationRecord
 
   # method makes API call to Baseten server with Stable Diffusion XL
   def generate_avatar(baseten_api_key, model_id, prompt)
-
-    puts "---------------------------------------"
-    puts prompt
-    puts "---------------------------------------"
     # Set prompts and controlnet image
     values = {
       "seed" => rand(1..1000000000000000),

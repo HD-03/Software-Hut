@@ -34,7 +34,6 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  #pending "add some examples to (or delete) #{__FILE__}"
 
   context 'with_an_initialised_user' do
     user = User.new(
@@ -150,8 +149,5 @@ RSpec.describe User, type: :model do
         expect(user.xp_points).to eq 36
       end
     end
-
-
   end
-
 end

@@ -2,9 +2,14 @@ class BasetenRequestsController < ApplicationController
   before_action :authenticate_user!
 
   def create
-    student = User.find_by(id: baseten_request_params[:student_id])
-    puts student.username
+    student = User.find_by(id: baseten_request_params[:student_id], role: :student)
+    if student.nil?
+      raise ActiveRecord::RecordNotFound, "Invalid student ID: #{baseten_request_params[:student_id]}"
+    end
+
     request = BasetenRequest.new(user_id: student.id)
+
+    # Prompt
     not_cooler_avatars = "playful cartoon style, "
     pre_prompt_setup = "closeup portrait, 32-bit pixel art, colorful, vibrant"
     pre_prompt_setup = not_cooler_avatars + pre_prompt_setup if !student.old_enough_for_cooler_avatars
@@ -19,18 +24,10 @@ class BasetenRequestsController < ApplicationController
 
     # Call the generate_avatar method and assign the returned request_id
     request.request_id = request.generate_avatar(baseten_api_key, model_id, prompt) # pass string prompt
-    # request.request_id = request.generate_avatar("dummy_api_key", "dummy_model_id", prompt)
-    
-
-    #--- ARTEM REMEMBER TO DO STUFF WITH THIS WHATEVER IT WAS YOU HAD TO DO ---
-    #reduce number of generate tokens by 1 for user
-    current_user.generate_tokens -= 1
-    current_user.save
 
     if request.save
       redirect_to students_path, notice: 'Avatar was successfully requested.'
     else
-      puts request.errors.full_messages
       redirect_to students_path, notice: 'Oops! something went wrong', status: :unprocessable_entity
     end
   end
@@ -40,7 +37,6 @@ class BasetenRequestsController < ApplicationController
   def baseten_request_params 
     # Create a new parameters object with only the permitted attributes
     params.permit(:student_id, :authenticity_token, :background, :weather, :character, :expression, :facial_hair, :time_period, :accessory, :gender, :btnradio)
-    #params.permit(:student_id, :_method, :authenticity_token, :prompt) # add string prompt
   end
 
   def baseten_api_key

@@ -51,22 +51,6 @@ RSpec.describe Task, type: :model do
     end
   end
 
-  describe '#deadline_day_this_week' do
-    context 'when deadline is within the current week' do
-      it 'returns the day of the week' do
-        task = create(:task, deadline: Date.current.beginning_of_week(:monday))
-        expect(task.deadline_day_this_week).to eq('Monday')
-      end
-    end
-
-    context 'when deadline is not within the current week' do
-      it 'returns nil' do
-        task = create(:task, deadline: Date.current.next_week(:monday))
-        expect(task.deadline_day_this_week).to be_nil
-      end
-    end
-  end
-
   describe '#deadline_readable' do
     it 'returns the formatted deadline' do
       task = create(:task, deadline: Date.new(2023, 6, 15))

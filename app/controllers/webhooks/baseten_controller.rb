@@ -4,8 +4,6 @@ class Webhooks::BasetenController < ApplicationController
   skip_forgery_protection
   skip_before_action :authenticate_user!, only: [:create]
 
-  before_action :verify_request
-
   def create
     Webhooks::BasetenJob.perform_later(payload)
 
@@ -13,14 +11,6 @@ class Webhooks::BasetenController < ApplicationController
   end
 
   private
-
-  def verify_request
-    puts "====================================================================="
-    puts ""
-    puts ""
-    puts "====================================================================="
-  end
-
   def payload
     @payload ||= request.body.read
   end

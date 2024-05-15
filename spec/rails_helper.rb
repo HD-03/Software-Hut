@@ -5,6 +5,7 @@ SimpleCov.start 'rails' do
   add_filter 'app/decorators/application_decorator'
   add_filter 'app/jobs/application_job'
   add_filter 'app/mailers/application_mailer'
+  add_filter 'app/controllers/users'
 end
 
 require 'spec_helper'
@@ -14,6 +15,7 @@ require_relative '../config/environment'
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'rspec/rails'
 require 'webmock/rspec'
+WebMock.disable_net_connect!(allow_localhost: true)
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in

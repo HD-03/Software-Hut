@@ -14,7 +14,6 @@ class TeachersController < ApplicationController
 
     if xp_points > 0 && xp_points <= 100
       User.give_student_xp_points(student, xp_points)
-      student.save
     end
 
     respond_to do |format|
@@ -24,8 +23,8 @@ class TeachersController < ApplicationController
         format.js { render js: "alert('Error in giving XP points: number of xp points given cannot be less than 1');" }
       elsif xp_points > 100
         format.js { render js: "alert('Error in giving XP points: number of xp points given cannot be more than 100');" }
-      else
-        format.js { render js: "alert('Error in giving XP points: unknown error');" }
+      # else
+      #   format.js { render js: "alert('Error in giving XP points: unknown error');" }
       end
     end
 

@@ -19,7 +19,7 @@
     def create
         @user = User.new(user_params)
         # For students there are additional fields need such as lvl and xp_points and these would be default 
-       set_default_student_attributes if @user.student?
+        # set_default_student_attributes if @user.student?
 
         if @user.save
             redirect_to admin_dashboard_path, notice: 'User was successfully created'
@@ -55,12 +55,12 @@
     def search
     end
 
-    def set_default_student_attributes
-      @user.level = 1
-      @user.xp_points = 0
-      @user.avatar_id = 1
-      @user.old_enough_for_cooler_avatars = params[:user][:old_enough_for_cooler_avatars] if params[:user][:old_enough_for_cooler_avatars]
-    end
+    # def set_default_student_attributes
+    #   @user.level = 1
+    #   @user.xp_points = 0
+    #   @user.avatar_id = 1
+    #   @user.old_enough_for_cooler_avatars = params[:user][:old_enough_for_cooler_avatars] if params[:user][:old_enough_for_cooler_avatars]
+    # end
 
     private
 

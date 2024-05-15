@@ -37,11 +37,10 @@ class Ability
       can :manage, Task
       can :index, :teachers
       can :give_student_xp, :teachers
-      can :give_student_xp, :teachers
     elsif user.role == 'student'
       can [:read, :search], Task
       can :index, :students
-      can :give_student_xp, :students
+      # can :give_student_xp, :students
       can :update_status_to_pending, Task, student_id: user.id
       can :generate_avatar, :students
       can :avatars, :students

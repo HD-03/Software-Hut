@@ -10,18 +10,15 @@ class StudentsController < ApplicationController
 
   #GET /students/avatars
   def avatars
-    authorize! :avatars, :students
   end
 
-  def give_student_xp
-    User.give_student_xp_points(current_user, 600)
+  # def give_student_xp
+  #   User.give_student_xp_points(current_user, 600)
+  # end
 
-    authorize! :give_student_xp, :students
-  end
-
-  def show
-    @task = Task.find(params[:id])
-  end
+  # def show
+  #   @task = Task.find(params[:id])
+  # end
 
   def check_level_up
     # Logic to determine if the student recently leveled up

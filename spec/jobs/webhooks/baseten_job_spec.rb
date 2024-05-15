@@ -4,7 +4,7 @@ RSpec.describe Webhooks::BasetenJob, type: :job do
   describe '#perform' do
     let(:student) { create(:user) }
     let(:baseten_request) { create(:baseten_request, student: student) }
-    let(:temp_avatar_path) { Rails.root.join('tmp', 'temp_avatar.png') }
+    let(:temp_avatar_path) { Rails.root.join('spec/jobs/webhooks', 'temp_avatar.png') }
 
     let(:payload) do
       {

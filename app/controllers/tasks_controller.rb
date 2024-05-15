@@ -15,7 +15,6 @@ class TasksController < ApplicationController
   # GET /tasks/1
   def show
     @task = Task.find(params[:id])
-    @task = Task.find(params[:id])
   end
 
   # PATCH

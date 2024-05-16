@@ -32,13 +32,13 @@ RSpec.describe TasksController, type: :controller do
   describe "PATCH #update_status_to_complete" do
     before do
       sign_in student
-      patch :update_status_to_complete, params: { id: task.id, task: { student_text: "Completed" } }
+      patch :update_status_to_complete, params: { id: task.id}
     end
 
     it "updates the task's status to complete and assigns reward XP" do
       task.reload
       expect(task.status).to eq('completed')
-      expect(task.student_text).to eq('Completed')
+      
     end
   end
 

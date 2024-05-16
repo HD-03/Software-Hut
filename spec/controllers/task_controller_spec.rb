@@ -29,6 +29,19 @@ RSpec.describe TasksController, type: :controller do
     end
   end
 
+  describe "PATCH #update_status_to_complete" do
+    before do
+      sign_in student
+      patch :update_status_to_complete, params: { id: task.id, task: { student_text: "Completed" } }
+    end
+
+    it "updates the task's status to complete and assigns reward XP" do
+      task.reload
+      expect(task.status).to eq('completed')
+      expect(task.student_text).to eq('Completed')
+    end
+  end
+
   describe "DELETE #destroy" do
     before do
       sign_in teacher

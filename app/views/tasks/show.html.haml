@@ -47,4 +47,7 @@
     .card-footer.text-muted.border-0.bg-transparent
       %i.fas.fa-clock
       Deadline: #{@task.deadline.strftime("%A, %d %B %Y")}
-      
+  - if @task.status == "pending" && current_user.teacher?
+    = simple_form_for @task, url: update_status_to_complete_task_path(@task), method: :patch, html: { id: 'task-form', multipart: true } do |f|
+      = f.button :submit, 'Accept Task', id: 'complete-task', class: 'btn btn-success border-0 rounded-5 shadow-lg py-2 px-3 mt-3'
+

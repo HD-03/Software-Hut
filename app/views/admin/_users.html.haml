@@ -31,66 +31,6 @@
                 = link_to 'Edit', edit_user_admin_path(student.id), class: 'btn btn-sm btn-primary'
               %td.align-middle
                 = link_to 'Delete', delete_user_path(student.id), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger'
-    
-    .card-header.bg-transparent
-      %h3.text-center.m-3 Teachers
-    .table-responsive
-      %table.table.table-striped.m-0
-        %thead
-          %tr
-            %th Name
-            %th Username
-            %th Email
-        %tbody
-          - @teachers.each do |teacher|
-            %tr{id: "user_#{teacher.id}"}
-              %td.align-middle= teacher.full_name
-              %td.align-middle= teacher.username
-              %td.align-middle= teacher.email
-              %td.align-middle
-                = link_to 'Edit', edit_user_admin_path(teacher.id), class: 'btn btn-sm btn-primary'
-              %td.align-middle
-                = link_to 'Delete', delete_user_path(teacher.id), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger'
-
-  .card-footer.d-flex.justify-content-center.bg-transparent.p-3
-    = link_to 'Add User', new.card.border-0.bg-transparent
-  .card-body.bg-transparent.pt-0
-    .card-header.bg-transparent
-      %h3.text-center.m-3 Students
-    .table-responsive
-    = simple_form_for :search, url: search_users_path, method: :post do |f|
-      .row.p-3 
-        .col-md-4
-          = f.input 
-      %table.table.table-striped.m-0
-        %thead
-          %tr
-            %th Name
-            %th 
-            %th Username
-            %th Email
-        %tbody
-          - @students.each do |student|
-            %tr{id: "user_#{student.id}"}
-              %td.align-middle= student.full_name
-              %td
-                .dropdown
-                  %button.btn.btn-secondary.bg-transparent.text-secondary.dropdown-toggle{"type" => "button", "data-bs-toggle" => "dropdown", "aria-expanded" => "false"}
-                    Instruments
-                  %ul.dropdown-menu
-                    - previous_instrument_names = []
-                    - @tasks.select { |task| task.student_id == student.id }.each do |task|
-                      - unless previous_instrument_names.include?(task.instrument.name)
-                        %li
-                          %p.dropdown-item= task.instrument.name
-                        - previous_instrument_names << task.instrument.name
-
-              %td.align-middle= student.username
-              %td.align-middle= student.email
-              %td.align-middle
-                = link_to 'Edit', edit_user_admin_path(student.id), class: 'btn btn-sm btn-primary'
-              %td.align-middle
-                = link_to 'Delete', delete_user_path(student.id), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger'
     = paginate @students, param_name: 'students_page'
     .card-header.bg-transparent
       %h3.text-center.m-3 Teachers
@@ -113,4 +53,4 @@
                 = link_to 'Delete', delete_user_path(teacher.id), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger'
     = paginate @teachers, param_name: 'teachers_page'
   .card-footer.d-flex.justify-content-center.bg-transparent.p-3
-    = link_to 'Add User', new
+    = link_to 'Add User', new_add_user_path, class: 'btn btn-primary border-0 rounded-5 shadow-lg py-2 px-3'

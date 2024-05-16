@@ -10,10 +10,11 @@ describe 'Admin management' do
       fill_in 'Full name', with: 'Alice Wonderland'
       fill_in 'Email', with: 'alice@example.com'
       fill_in 'Username', with: 'alice123'
-      fill_in 'Password', with: 'securepassword!'
+      fill_in 'Password', with: 'Securepassword1!'
+      fill_in 'Password confirmation', with: 'Securepassword1!'
       select 'Student', from: 'Role'
       check 'Old enough for cooler avatars?'
-      click_button 'Add User'
+      click_button 'Add user'
       expect(page).to have_content 'User was successfully created'
       expect(User.last.role).to eq('student')
     end
@@ -24,18 +25,27 @@ describe 'Admin management' do
         fill_in 'Email', with: 'bob@example.com'
         fill_in 'Username', with: 'bobbuilder'
         fill_in 'Password', with: 'Builder123!'
+        fill_in 'Password confirmation', with: 'Builder123!'
         select 'Teacher', from: 'Role'
-        click_button 'Add User'
+        click_button 'Add user'
 
         expect(page).to have_content 'User was successfully created'
         
+    end
+
+    specify 'Admin can add an instrument' do
+        visit new_instrument_path
+        fill_in 'Name', with: 'Piccolo'
+        click_button 'Add instrument'
+        expect(page).to have_content 'Instrument added successfully.'
+        expect(Instrument.last.name).to eq('Piccolo')
     end
 
     context "With one existing user" do
         let!(:user) {FactoryBot.create(:user, full_name:'Test User', role: 'student',email: 'testuser@example.com')}
 
         specify 'Admin can edit user details' do
-            visit edit_user_path(user)
+            visit edit_user_admin_path(user)
             fill_in 'Full name', with: 'Updated User'
             fill_in 'Email', with: 'updateUser@example.com'
             fill_in 'Username', with: 'updateduser'

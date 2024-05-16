@@ -11,7 +11,7 @@
         @students = User.where(role: :student).page(params[:students_page]).per(15)
         @teachers = User.where(role: :teacher).page(params[:teachers_page]).per(15)
         @tasks = Task.all
-        @instruments = Instrument.all
+        @instruments = Instrument.all.page(params[:instruments_page]).per(10)
         @tasks = Task.all
     end
 

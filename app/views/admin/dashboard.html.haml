@@ -5,13 +5,9 @@
         %button.nav-link.active#users-tab{"data-bs-toggle" => "tab", "data-bs-target" => "#users-tab-pane", type: "button", role: "tab", "aria-controls" => "users-tab-pane", "aria-selected" => "true"} Users
       %li.nav-item{role: "presentation"}
         %button.nav-link#instruments-tab{"data-bs-toggle" => "tab", "data-bs-target" => "#instruments-tab-pane", type: "button", role: "tab", "aria-controls" => "instruments-tab-pane", "aria-selected" => "false"} Instruments
-      %li.nav-item{role: "presentation"}
-        %button.nav-link#avatars-tab{"data-bs-toggle" => "tab", "data-bs-target" => "#avatars-tab-pane", type: "button", role: "tab", "aria-controls" => "avatars-tab-pane", "aria-selected" => "false"} Avatars
 
     .tab-content#myTabContent
       .tab-pane.fade.show.active#users-tab-pane{role: "tabpanel", "aria-labelledby" => "users-tab", tabindex: "0"}
         = render 'admin/users'
       .tab-pane.fade#instruments-tab-pane{role: "tabpanel", "aria-labelledby" => "instruments-tab", tabindex: "0"}
         = render 'admin/instruments'
-      .tab-pane.fade#avatars-tab-pane{role: "tabpanel", "aria-labelledby" => "avatars-tab", tabindex: "0"}
-        = render 'admin/avatars'

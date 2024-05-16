@@ -56,9 +56,12 @@
                               %i.bi.bi-check2
                             - else
                               %i.bi.bi-clock-history
-                          %td.align-middle
-                            .btn-toolbar.float-end
-                              = link_to 'Use as template', new_task_path(task_id: task.id), class: 'btn btn-outline-secondary btn-sm'
+                            %td.align-middle
+                              .btn-toolbar.float-end
+                                - if task.status.to_s == "pending"
+                                  = link_to 'Grade', task_details_path(task), class: 'btn btn-outline-secondary btn-sm mr-2'
+                              .btn-toolbar
+                                = link_to 'Use as template', new_task_path(task_id: task.id), class: 'btn btn-outline-secondary btn-sm ml-2'
                           %td.align-middle
                             .btn-toolbar.float-end
                               = link_to 'Delete', task_path(task), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-outline-danger btn-sm'

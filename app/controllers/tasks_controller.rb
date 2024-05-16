@@ -21,7 +21,7 @@ class TasksController < ApplicationController
   def update_status_to_pending
     @task = Task.find(params[:id])
 
-    User.give_student_xp_points(current_user, @task.reward_xp)
+    User.give_student_xp_points(current_user, @task.reward_xp / 2)
     current_user.save
     @task.update(student_text: params[:task][:student_text]) if params[:task][:student_text].present?
 
@@ -33,6 +33,22 @@ class TasksController < ApplicationController
     if @task.save
       @task.update(status: 'pending')
       redirect_to tasks_path, notice: 'Task status updated to pending.'
+    else
+      # Handle the case when saving the task fails
+      render :show, alert: 'Failed to update task status.'
+    end
+  end
+
+  def update_status_to_complete
+    @task = Task.find(params[:id])
+
+    User.give_student_xp_points(current_user, @task.reward_xp / 2)
+    current_user.save
+    
+
+    if @task.save
+      @task.update(status: 'completed')
+      redirect_to tasks_path, notice: 'Task status updated to completed.'
     else
       # Handle the case when saving the task fails
       render :show, alert: 'Failed to update task status.'

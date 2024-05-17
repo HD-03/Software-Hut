@@ -40,7 +40,7 @@
           - if @user_is_student
             %th
           - else
-            %th Tamplate
+            %th Template
             %th
             %th
       %tbody
@@ -69,14 +69,14 @@
               %td.align-middle
                 .btn-toolbar.float-end
                   - if task.status.to_s == "todo"
-                    = link_to 'Do', '#', class: 'btn btn-outline-secondary btn-sm'
+                    = link_to 'Do', task_details_path(task), class: 'btn btn-outline-secondary btn-sm'
                   - else
-                    = link_to 'View', '#', class: 'btn btn-outline-secondary btn-sm'
+                    = link_to 'View', task_details_path(task), class: 'btn btn-outline-secondary btn-sm'
             - else
-              %td.align-middle 
-                .btn-toolbar.float-end
-                  = link_to 'Use as template', new_task_path(task_id: task.id), class: 'btn btn-outline-secondary btn-sm'
               %td.align-middle
                 .btn-toolbar.float-end
-                  = link_to 'View', '#', class: 'btn btn-outline-secondary btn-sm'
+                  - if task.status.to_s == "pending"
+                    = link_to 'Grade', task_details_path(task), class: 'btn btn-outline-secondary btn-sm'
+                .btn-toolbar.float-end
+                  = link_to 'Use as template', new_task_path(task_id: task.id), class: 'btn btn-outline-secondary btn-sm'
 

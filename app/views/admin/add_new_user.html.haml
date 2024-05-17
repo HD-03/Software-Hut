@@ -33,6 +33,8 @@
             = f.input :password_confirmation, wrapper_html: { class: 'mb-3' }
             = f.input :role, collection: [['Student', :student], ['Teacher', :teacher]], wrapper_html: { class: 'mb-3' }
             = f.input :old_enough_for_cooler_avatars, as: :boolean, label: 'Old enough for cooler avatars?', wrapper_html: { class: 'mb-3' }, inline_label: true
+            = f.input :avatar, as: :hidden, value: @user.avatar.signed_id if @user.avatar.attached?
+            = f.input :avatar, as: :file, label: 'Update avatar', wrapper_html: { class: 'mb-3' }, input_html: { class: 'form-control', accept: "image/jpeg,image/png" }, label_html: { class: 'form-label' }
 
             = f.button :submit, 'Add user', class: 'btn btn-primary border-0 rounded-5 shadow-lg py-2 px-3'
             = link_to 'Cancel', admin_dashboard_path, class: 'btn btn-primary border-0 rounded-5 shadow-lg py-2 px-3 ms-auto'

@@ -1,18 +1,53 @@
-.row.justify-content-center.mb-5
-  .col-sm-8.col-lg-6
-    %h2= @task.name
-    .card
-      .card-body
-        .row
-          .col-md-6
-            %h5 Task
-            %p= @task.description
-          .col-md-6
-            %h5 Attachment
-            - if @task.attachment_paths.present?
-              %img{src: @task.attachment_paths.first, alt: 'Sheet Music'}
-.row.justify-content-center
-  .col.text-center
-    %button.btn.btn-outline-primary.btn-lg{type: 'button'}
-      %i.bi.bi-play-circle
+.container.my-4
+  .card.border-0.shadow.rounded-4
+    .card-header.text-white.rounded-4.bg-primary.shadow
+      %h5.mb-0= @task.name
+    
+    .card-body.shadow.rounded-bottom-4
+      %p= "Task: " + @task.description
+      %p= "Intrument: " + @task.instrument.name
+      - if @task.files.attached?
+        .mt-4
+          %h5.mb-3 Attachments
+          - @task.files.each do |file|
+            .border.p-3.rounded-4.mb-3
+              - if file.content_type.include?('pdf') || file.content_type.include?('text') || file.content_type.include?('word') || file.content_type.include?('document')
+                %iframe.rounded-4{src: url_for(file), style: 'width:100%; height:500px;', frameborder: '0'}
+              - else
+                %p= link_to file.filename.to_s, url_for(file), download: true, class: 'btn btn-link'
+      
+      - if @task.recordings.attached?
+        .mt-4
+          %h5.mb-3 Recordings
+          - @task.recordings.each_with_index do |recording, index|
+            %p Recording #{index + 1}
+            %audio.playback{controls: true}
+              %source{src: url_for(recording), type: recording.content_type}
+      
+      - if @task.student_text
+        %h5.mb-3 Student's note
+        .border.p-3.rounded-4
+          %p=@task.student_text
+
+      - if @task.status == 'todo'   
+        #recording-controls.mt-4
+          .d-flex.flex-column.gap-3
+            - 1.times do |i|
+              .recording-set.border.p-3.rounded-4
+                %p.d-block.font-weight-bold Recording #{i + 1}
+                %button.record-btn.btn.btn-success.border-0.rounded-5.shadow-lg.py-2.px-3{type: 'button', onclick: 'handleRecording(this)', "data-stimulus-controller": "voice"} Start Recording
+                %button.play-recording-btn.btn.btn-secondary.border-0.rounded-5.shadow-lg.py-2.px-3.ml-2{type: 'button', disabled: true, onclick: 'playRecording(this)'} Play Recording
+        %button#add-recording.btn.btn-primary.border-0.rounded-5.shadow-lg.py-2.px-3.my-3{type: 'button', onclick: 'addRecording()'}
+          %i.fas.fa-plus
+          Add another recording
+        = simple_form_for @task, url: update_status_to_pending_task_path(@task), method: :patch, html: { id: 'task-form', multipart: true } do |f|
+          = f.input :student_text, as: :text, label: false, input_html: { rows: 3, class: 'form-control rounded-4', placeholder: 'Add your comments or details here...' }
+          #audio-inputs
+          = f.button :submit, 'Complete Task', id: 'complete-task', class: 'btn btn-success border-0 rounded-5 shadow-lg py-2 px-3 mt-3', style: 'display: none;'
+    .card-footer.text-muted.border-0.bg-transparent
+      %i.fas.fa-clock
+      Deadline: #{@task.deadline.strftime("%A, %d %B %Y")}
+  - if @task.status == "pending" && current_user.teacher?
+    = simple_form_for @task, url: update_status_to_complete_task_path(@task), method: :patch, html: { id: 'task-form', multipart: true } do |f|
+      = f.button :submit, 'Accept Task', id: 'complete-task', class: 'btn btn-success border-0 rounded-5 shadow-lg py-2 px-3 mt-3'
 

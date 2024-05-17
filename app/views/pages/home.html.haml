@@ -1,32 +1,36 @@
-%section
-  .container-fluid
+%section.main-container#main-section
+  .fluid
     .row
       .content-wrap.col-12.col-md-8 
-        %h1.mbr-section-title.mb-4.display-1
+        %h1.title.mb-4.display-1
           %strong MusicGuru 
         %p.mb-4.display-7
           Develop your musical talent with Music Guru
           Discover a world of musical possibilites and make practice fun!
-        .btn.btn-primary.border-0.rounded-5.shadow-lg.py-2.px-3.ms-auto.my-2
+        .home-page-btn.home-page-btn-primary.border-0.rounded-5.shadow-lg.py-2.px-3.ms-auto.my-2
           = link_to 'Log in', new_user_session_path, class: 'text-light link-underline link-underline-opacity-0'
+        .small.cta
+          Click the screen to see the magic
+    .musical-notes-container
 
+-# %section.who-we-are
+-#   .container 
+-#     .row.justify-content-center
+-#       .col-12.col-md-12.col-lg
+-#         .text-wrapper.align-left
+-#           %h1.title.mb-4.display-2
+-#             %strong Who We Are
+-#           .image-wrapper.col-12.col-md-12.col-lg-6
+-#             =image_pack_tag 'images/home_page_pic.jpeg', class: 'img'
+-#           %p.mbr-text.mb-3.display-7
+-#             At MusicGuru, we're on a mission to revolutionize music practice for kids aged 4-18!
+-#             Our app is not just about hitting the right notes, it's about creating a symphony of fun and learning.
+-#             Join us in the musical journey of a lifetime, where practice meets passion and talent meets technology.
 
-%section
-  .container 
-    .row.justify-content-center
-      .col-12.col-md-12.col-lg
-        .text-wrapper.align-left
-          %h1.mbr-section-title.mb-4.display-2
-            %strong Who We Are
-          %p.mbr-text.mb-3.display-7
-            At MusicGuru, we're on a mission to revolutionize music practice for kids aged 4-18!
-            Our app is not just about hitting the right notes, it's about creating a symphony of fun and learning.
-            Join us in the musical journey of a lifetime, where practice meets passion and talent meets technology.
-
-%section
+%section.faq-center
   .container
     .col-12.mb-5.content-head
-      %h3.mbr-section-title.mbr-fonts-style.align-center.mb-0.display-2
+      %h3.title.mbr-fonts-style.align-center.mb-0.display-2
         %strong FAQs
     .row.justify-content-center
       .col-12.col-lg-8
@@ -48,3 +52,9 @@
               %strong Is MusicGuru suitable for all skill levels?
             %p.mbr-text.mbr-fonts-style.mt-0.mb-3.display-7
               Yes, MusicGuru caters to beginners and advanced players alike, offering tailored exercises and challenges to suit individual learning needs.
+        .item.col-12
+          .item-wrapper 
+            %h5.mbr-card-title.mbr-fonts-style.mt-0.mb-3.display-5
+              %strong How can students benefit from MusicGuru?
+            %p.mbr-text.mbr-fonts-style.mt-0.mb-3.display-7
+              Students can access a wide range of practice materials and track their improvement over time, making learning music a thrilling adventure!

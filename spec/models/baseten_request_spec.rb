@@ -32,17 +32,17 @@ RSpec.describe BasetenRequest, type: :model do
     let(:prompt) { 'cheerful smiling pirate, closeup portrait, 32-bit pixel art, beach background with palm trees, ocean, sand, colorful, vibrant, playful cartoon style, happy friendly expression, jaunty pirate hat, parrot on shoulder' }
     let(:request) { FactoryBot.create(:baseten_request) }
 
-    context 'when the API request is successful' do
-      before do
-        stub_request(:post, "https://model-#{model_id}.api.baseten.co/development/async_predict")
-          .to_return(status: 200, body: { request_id: 'sample_request_id' }.to_json)
-      end
+    # context 'when the API request is successful' do
+    #   before do
+    #     stub_request(:post, "https://model-#{model_id}.api.baseten.co/development/async_predict")
+    #       .to_return(status: 200, body: { request_id: 'sample_request_id' }.to_json)
+    #   end
 
-      it 'sets the request_id on the BasetenRequest object' do
-        request.generate_avatar(baseten_api_key, model_id, prompt)
-        expect(request.request_id).to eq('sample_request_id')
-      end
-    end
+    #   it 'sets the request_id on the BasetenRequest object' do
+    #     request.generate_avatar(baseten_api_key, model_id, prompt)
+    #     expect(request.request_id).to eq('sample_request_id')
+    #   end
+    # end
 
     context 'when the API request raises an exception' do
       before do

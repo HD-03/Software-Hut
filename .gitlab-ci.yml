@@ -88,18 +88,6 @@ rspec:
     - "echo -e \"test:\n  adapter: postgresql\n  host: postgres\n  database: ci_test\n  username: runner\n  password: runner\" > config/database.yml"
     - bundle check
     - RAILS_ENV=test bundle exec rails db:test:prepare
-
-    - |
-      echo "WebMock.disable_net_connect!(allow_localhost: true, allow: [
-        /172\.17\.0\.4:45111/,
-        /172\.17\.0\.4:42655/,
-        /172\.17\.0\.4:44741/,
-        /172\.17\.0\.4:40939/,
-        /172\.17\.0\.4:33287/,
-        /172\.17\.0\.4:37873/,
-        /172\.17\.0\.4:33223/,
-        /172\.17\.0\.4:40591/
-      ])" >> spec/rails_helper.rb
   extends: .except
   needs:
     - bundler

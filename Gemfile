@@ -105,7 +105,6 @@ group :test do
   gem 'database_cleaner'
   gem 'launchy'
   gem 'simplecov'
-  gem 'webmock'
 end
 
 gem 'image_processing', '~> 1.2'

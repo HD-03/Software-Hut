@@ -60,11 +60,15 @@ Rails.application.routes.draw do
     post :search, on: :collection
   end
 
-  resources :instruments, only: [:new, :create]
-
 
   resources :instruments, only: [:new, :create]
 
+
+  resources :tasks do
+    member do
+      patch 'update_status_to_complete'
+    end
+  end
 
   resources :tasks do
     member do

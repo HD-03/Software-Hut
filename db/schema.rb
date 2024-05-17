@@ -87,7 +87,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_13_205320) do
     t.string "name", null: false
     t.text "description"
     t.datetime "time_set", null: false
-    t.text "student_text"
     t.datetime "deadline", null: false
     t.integer "reward_xp", null: false
     t.integer "status", default: 0, null: false
@@ -95,8 +94,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_13_205320) do
     t.boolean "recording_boolean", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "instrument_id", default: 1, null: false
-    t.index ["instrument_id"], name: "index_tasks_on_instrument_id"
+    t.text "student_text"
   end
 
   create_table "users", force: :cascade do |t|

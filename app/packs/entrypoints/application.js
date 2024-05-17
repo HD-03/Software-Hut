@@ -4,6 +4,7 @@ import 'popper.js';
 import "bootstrap";
 
 import '../scripts/task_show.js'
+import '../scripts/home_page.js'
 
 import { Application, defaultSchema } from 'stimulus';
 import VoiceController from "../controllers/voice_controller";

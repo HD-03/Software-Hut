@@ -1,4 +1,4 @@
-  class AdminController < ApplicationController
+class AdminController < ApplicationController
     include ActionView::Helpers::SanitizeHelper
 
     before_action :authenticate_user!, only: [:dashboard, :add_new_user, :edit_user, :delete_user]

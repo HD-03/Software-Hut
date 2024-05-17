@@ -14,8 +14,17 @@
 #  time_set          :datetime         not null
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
+#  instrument_id     :bigint           default(1), not null
 #  student_id        :integer          not null
 #  teacher_id        :integer          not null
+#
+# Indexes
+#
+#  index_tasks_on_instrument_id  (instrument_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (instrument_id => instruments.id)
 #
 require 'rails_helper'
 

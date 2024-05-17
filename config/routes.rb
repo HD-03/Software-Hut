@@ -63,15 +63,12 @@ Rails.application.routes.draw do
   resources :instruments, only: [:new, :create]
 
 
-  resources :tasks do
-    member do
-      patch 'update_status_to_pending'
-    end
-  end
+  resources :instruments, only: [:new, :create]
+
 
   resources :tasks do
     member do
-      patch 'update_status_to_complete'
+      patch 'update_status_to_pending'
     end
   end
 

@@ -57,24 +57,36 @@ describe 'Admin management' do
         end
     end
 
-    context "With multiple existing users" do
-        let!(:user_1) {FactoryBot.create(:user, full_name:'Test User1', role: 'student', email: 'testuser1@example.com')}
-        let!(:user_2) {FactoryBot.create(:user, full_name:'Test User2', role: 'student', email: 'testuser2@example.com')}
+    describe "POST #create" do
+    let!(:admin) {FactoryBot.create(:user, role:'admin')}
+    let!(:user) {FactoryBot.create(:user)}
 
-        before {visit admin_dashboard_path}
-
-        specify 'Admin can search for a user ' do
-            
+    before {sign_in admin}
+        context "with valid inputs" do
+            it "creates a new User" do
+                post :create, params: { user: { full_name: 'John Doe', email: 'john@example.com', username: 'johndoe', password: 'Secure123!', password_confirmation: 'Secure123!', role: 'student' } }
+                expect(response).to redirect_to(admin_dashboard_path)
+                expect(User.last.email).to eq('john@example.com')
+            end
         end
 
-        specify 'Admin can delete users' do
-
-            within(:css, "#user_#{user_1.id}") {click_on 'Delete'}
-            expect(page).to have_content 'Test User2'
-            expect(page).to_not have_content 'Test User1'
-    
+        context "with invalid inputs" do
+            it "does not create a user and re-renders the new template" do
+                post :create, params: { user: { full_name: '' } } 
+                expect(response).to have_http_status(:unprocessable_entity)
+            end
         end
-        
     end
-    
+
+    describe "DELETE #delete_user" do
+    let!(:admin) {FactoryBot.create(:user, role:'admin')}
+    let!(:user) {FactoryBot.create(:user)}
+
+    before {sign_in admin}
+        it "deletes the user and redirects to dashboard" do
+            delete :delete_user, params: {id: user.id}
+            expect(response).to redirect_to(admin_dashboard_path)
+            expect(User.exists?(user.id)).to be_falsey
+        end
+    end
 end

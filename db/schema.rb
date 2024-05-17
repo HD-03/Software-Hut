@@ -94,7 +94,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_13_205320) do
     t.boolean "recording_boolean", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "student_text"
+    t.bigint "instrument_id", default: 1, null: false
+    t.index ["instrument_id"], name: "index_tasks_on_instrument_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -127,4 +128,5 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_13_205320) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "baseten_requests", "users"
+  add_foreign_key "tasks", "instruments"
 end

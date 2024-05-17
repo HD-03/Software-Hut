@@ -24,29 +24,16 @@ class Task < ApplicationRecord
   belongs_to :instrument
 
   has_many_attached :files
+  has_many_attached :recordings
   
 
   enum status: { todo: 0, pending: 1, completed: 2 }
 
   # This validates that when a task is set, everything is filled out
   validates :student_id, :instrument_id, :name, :description, :reward_xp, :deadline, presence: true
-  validates :name, length: { minimum: 5 }
-  validates :description, length: { minimum: 10 }
+  validates :name, presence: true
+  validates :description, presence: true
   validate :at_least_one_student
-
-  # Returns the day of the week for the deadline if it falls within the current week,
-  # or nil if the deadline is not within the current week.
-  #
-  # @return [String, nil]
-  def deadline_day_this_week
-    current_week_start = Date.current.beginning_of_week(:monday) -  1.days
-    current_week_end = Date.current.beginning_of_week(:monday) + 6.days
-    if deadline.between?(current_week_start, current_week_end)
-      deadline.strftime('%A')
-    else
-      nil
-    end
-  end
 
   def deadline_readable
     day = deadline.strftime('%-d')

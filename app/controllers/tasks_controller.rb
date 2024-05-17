@@ -15,39 +15,30 @@ class TasksController < ApplicationController
   # GET /tasks/1
   def show
     @task = Task.find(params[:id])
-    @task = Task.find(params[:id])
   end
 
-  def update_status
-    puts "///////////////////   THIS IS RUNNING   ///////////////////////"
+  # PATCH
+  def update_status_to_pending
     @task = Task.find(params[:id])
 
-    #if params[:status] == 'completed' && @task.status != 'completed'
     User.give_student_xp_points(current_user, @task.reward_xp)
     current_user.save
-    #@task.update(student_text: params[:task][:student_text]) if params[:task][:student_text].present?
+    @task.update(student_text: params[:task][:student_text]) if params[:task][:student_text].present?
 
-    @task.update(status: 'pending')  
-    redirect_to tasks_path, notice: 'Task status updated to pending.'
+    # Attach audio files
+    if params[:task][:recordings].present?
+      @task.recordings.attach(params[:task][:recordings])
+    end
+
+    if @task.save
+      @task.update(status: 'pending')
+      redirect_to tasks_path, notice: 'Task status updated to pending.'
+    else
+      # Handle the case when saving the task fails
+      render :show, alert: 'Failed to update task status.'
+    end
   end
   
-  
-
-  def update_status
-    puts "///////////////////   THIS IS RUNNING   ///////////////////////"
-    @task = Task.find(params[:id])
-
-    #if params[:status] == 'completed' && @task.status != 'completed'
-    User.give_student_xp_points(current_user, @task.reward_xp)
-    current_user.save
-    #@task.update(student_text: params[:task][:student_text]) if params[:task][:student_text].present?
-
-    @task.update(status: 'pending')  
-    redirect_to tasks_path, notice: 'Task status updated to pending.'
-  end
-  
-  
-
   # GET /tasks/new
   def new
     @students = params[:student_ids] ? User.find(params[:student_ids]) : User.where(role: :student)
@@ -141,7 +132,7 @@ class TasksController < ApplicationController
     # Only allow a list of trusted parameters through.
     
     def task_params
-      params.require(:task).permit(:name, :instrument_id, :teacher_id, :description, :deadline, :recording_boolean, :reward_xp, :student_text, student_id: [], files: [])
+      params.require(:task).permit(:name, :instrument_id, :teacher_id, :description, :deadline, :recording_boolean, :reward_xp, :student_text, student_id: [], files: [], recordings: [])
       #sanitizing for XSS attacks
       #params.require(:task).permit(:name, :instrument_id, :teacher_id, :description, :deadline, :recording_boolean, :reward_xp, :student_text, student_id: [], files: []).transform_values { |v| sanitize(v) }
     end

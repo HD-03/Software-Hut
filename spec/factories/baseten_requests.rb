@@ -18,7 +18,7 @@
 #
 FactoryBot.define do
   factory :baseten_request do
-    request_id { "MyString" }
-    user { nil }
+    request_id { 'sample_request_id' }
+    user_id { association(:user, role: 0).id }
   end
 end

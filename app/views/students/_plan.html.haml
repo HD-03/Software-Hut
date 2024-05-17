@@ -1,59 +1,123 @@
 / STUDENT PLAN
 .col-md-7.p-4
   .mx-auto
-    %h2.pb-4.mb-0 Plan for #{Date.today.strftime("%b")}
-    - (Date.today.beginning_of_month..Date.today.end_of_month).each_slice(7).with_index do |week, index|
-    - start_date = week.first.strftime("%-d %b")
-    - end_date = week.last.strftime("%-d %b")
-      .pb-3.accordion
-        .accordion-item.rounded-3.border.border-0
-          %h3.accordion-header
-            %button.accordion-button.rounded-0.border-bottom{ class: 'collapsed', type: "button", data: { bs_toggle: "collapse", bs_target: "#collapse-week-#{index}", aria_expanded: 'false', aria_controls: "collapse-week-#{index}" } }
-              #{start_date} - #{end_date}
-          .accordion-collapse.collapse{ id: "collapse-week-#{index}" }
-            .accordion-body
-              - week.each do |day|
-                - today = day == Date.today
-                - day_id = day.strftime("%-d")
-                - day_name = day.strftime("%A %-d %B")
-                - tasks = @tasks.select { |task| task.deadline.strftime("%A %-d %B") == day_name }
-                .pb-3.accordion
-                  .accordion-item.rounded-3
-                    %h3.accordion-header
-                      %button.accordion-button.rounded-3{ class: today ? '' : 'collapsed', type: "button", data: { bs_toggle: "collapse", bs_target: "#collapse-#{day_id}", aria_expanded: today ? 'true' : 'false', aria_controls: "collapse-#{day_id}" } }
-                        = day_name
-                    .accordion-collapse.collapse{ class: today ? 'show' : '', id: "collapse-#{day_id}", data: { bs_parent: "#collapse-week-#{index}" } }
-                      .accordion-body
-                        - if tasks.empty?
-                          No tasks for this day
-                        - else
-                          .table-responsive
-                            %table.table
-                              %thead
-                                %tr
-                                  %th Task
-                                  %th Instrument
-                                  %th Reward XP
-                                  %th Teacher
-                                  %th Status
-                                  %th
-                              %tbody
-                                - tasks.each do |task|
-                                  %tr{ class: @status_class_mapping[task.status.to_s] }
-                                    %td.align-middle= task.name
-                                    %td.align-middle= task.instrument.name
-                                    %td.align-middle= task.reward_xp
-                                    %td.align-middle= task.teacher.full_name
-                                    %td.align-middle.fs-4
-                                      - if task.status.to_s == "completed"
-                                        %i.bi.bi-check2-all
-                                      - elsif task.status.to_s == "pending"
-                                        %i.bi.bi-check2
-                                      - else
-                                        %i.bi.bi-clock-history
-                                    %td.align-middle
-                                      .btn-toolbar.float-end
-                                        - if task.status.to_s == "todo"
-                                          = link_to 'Do', '#', class: 'btn btn-outline-secondary btn-sm'
+    -# %h2.pb-4.mb-0 Plan for #{Date.today.strftime("%b")}
+    -# %h2.pb-4.mb-0 Monthly Planner
+    -# - (Date.today.beginning_of_month..Date.today.end_of_month).each_slice(7).with_index do |week, index|
+    -# - start_date = week.first.strftime("%-d %b")
+    -# - end_date = week.last.strftime("%-d %b")
+    -#   .pb-3.accordion
+    -#     .accordion-item.rounded-3.border.border-0
+    -#       %h3.accordion-header
+    -#         %button.accordion-button.rounded-0.border-bottom{ class: 'collapsed', type: "button", data: { bs_toggle: "collapse", bs_target: "#collapse-week-#{index}", aria_expanded: 'false', aria_controls: "collapse-week-#{index}" } }
+    -#           #{start_date} - #{end_date}
+    -#       .accordion-collapse.collapse{ id: "collapse-week-#{index}" }
+    -#         .accordion-body
+    -#           - week.each do |day|
+    -#             - today = day == Date.today
+    -#             - day_id = day.strftime("%-d")
+    -#             - day_name = day.strftime("%A %-d %B")
+    -#             - tasks = @tasks.select { |task| task.deadline.strftime("%A %-d %B") == day_name }
+    -#             .pb-3.accordion
+    -#               .accordion-item.rounded-3
+    -#                 %h3.accordion-header
+    -#                   %button.accordion-button.rounded-3{ class: today ? '' : 'collapsed', type: "button", data: { bs_toggle: "collapse", bs_target: "#collapse-#{day_id}", aria_expanded: today ? 'true' : 'false', aria_controls: "collapse-#{day_id}" } }
+    -#                     = day_name
+    -#                 .accordion-collapse.collapse{ class: today ? 'show' : '', id: "collapse-#{day_id}", data: { bs_parent: "#collapse-week-#{index}" } }
+    -#                   .accordion-body
+    -#                     - if tasks.empty?
+    -#                       No tasks for this day
+    -#                     - else
+    -#                       .table-responsive
+    -#                         %table.table
+    -#                           %thead
+    -#                             %tr
+    -#                               %th Task
+    -#                               %th Instrument
+    -#                               %th Reward XP
+    -#                               %th Teacher
+    -#                               %th Status
+    -#                               %th
+    -#                           %tbody
+    -#                             - tasks.each do |task|
+    -#                               %tr{ class: @status_class_mapping[task.status.to_s] }
+    -#                                 %td.align-middle= task.name
+    -#                                 %td.align-middle= task.instrument.name
+    -#                                 %td.align-middle= task.reward_xp
+    -#                                 %td.align-middle= task.teacher.full_name
+    -#                                 %td.align-middle.fs-4
+    -#                                   - if task.status.to_s == "completed"
+    -#                                     %i.bi.bi-check2-all
+    -#                                   - elsif task.status.to_s == "pending"
+    -#                                     %i.bi.bi-check2
+    -#                                   - else
+    -#                                     %i.bi.bi-clock-history
+    -#                                 %td.align-middle
+    -#                                   .btn-toolbar.float-end
+    -#                                     - if task.status.to_s == "todo"
+    -#                                       = link_to 'Do', '#', class: 'btn btn-outline-secondary btn-sm'
+    -#                                     - else
+    -#                                       = link_to 'View', '#', class: 'btn btn-outline-secondary btn-sm'
+    
+    %h2.pb-4.mb-0 Monthly Planner
+    %ul.nav.nav-tabs{ role: "tablist" }
+      - (Date.today.beginning_of_month..Date.today.end_of_month).each_slice(7).with_index do |week, index|
+        - week_id = "week-#{index}"
+        - is_current_week = (Date.today >= week.first) && (Date.today <= week.last)
+        %li.nav-item{ role: "presentation" }
+          %button.nav-link{ class: (is_current_week ? 'active' : ''), id: "#{week_id}-tab", "data-bs-toggle" => "tab", "data-bs-target" => "##{week_id}", type: "button", role: "tab", "aria-controls" => "#{week_id}", "aria-selected" => (is_current_week ? 'true' : 'false') }
+            = "#{week.first.strftime("%-d %b")} - #{week.last.strftime("%-d %b")}"
+
+    .tab-content
+      - (Date.today.beginning_of_month..Date.today.end_of_month).each_slice(7).with_index do |week, index|
+        - week_id = "week-#{index}"
+        - is_current_week = (Date.today >= week.first) && (Date.today <= week.last) 
+        .tab-pane{ class: (is_current_week ? 'show active' : ''), id: "#{week_id}", role: "tabpanel", "aria-labelledby" => "#{week_id}-tab" }
+          .pb-3.accordion
+            .accordion-item.rounded-3.border.border-0
+              .accordion-body
+                - week.each do |day|
+                  - today = day == Date.today
+                  - day_id = day.strftime("%-d")
+                  - day_name = day.strftime("%A %-d %B")
+                  - tasks = @tasks.select { |task| task.deadline.strftime("%A %-d %B") == day_name }
+                  .pb-3.accordion
+                    .accordion-item.rounded-3
+                      %h3.accordion-header
+                        %button.accordion-button.rounded-3{ class: today ? '' : 'collapsed', type: "button", data: { bs_toggle: "collapse", bs_target: "#collapse-#{day_id}", aria_expanded: today ? 'true' : 'false', aria_controls: "collapse-#{day_id}" } }
+                          = day_name
+                      .accordion-collapse.collapse{ class: today ? 'show' : '', id: "collapse-#{day_id}", data: { bs_parent: "#collapse-week-#{index}" } }
+                        .accordion-body
+                          - if tasks.empty?
+                            No tasks for this day
+                          - else
+                            .table-responsive
+                              %table.table
+                                %thead
+                                  %tr
+                                    %th Task
+                                    %th Instrument
+                                    %th Reward XP
+                                    %th Teacher
+                                    %th Status
+                                    %th
+                                %tbody
+                                  - tasks.each do |task|
+                                    %tr{ class: @status_class_mapping[task.status.to_s] }
+                                      %td.align-middle= task.name
+                                      %td.align-middle= task.instrument.name
+                                      %td.align-middle= task.reward_xp
+                                      %td.align-middle= task.teacher.full_name
+                                      %td.align-middle.fs-4
+                                        - if task.status.to_s == "completed"
+                                          %i.bi.bi-check2-all
+                                        - elsif task.status.to_s == "pending"
+                                          %i.bi.bi-check2
                                         - else
-                                          = link_to 'View', '#', class: 'btn btn-outline-secondary btn-sm'
+                                          %i.bi.bi-clock-history
+                                      %td.align-middle
+                                        .btn-toolbar.float-end
+                                          - if task.status.to_s == "todo"
+                                            = link_to 'Do', task_details_path(task), class: 'btn btn-outline-secondary btn-sm'
+                                          - else
+                                            = link_to 'View', task_details_path(task), class: 'btn btn-outline-secondary btn-sm'

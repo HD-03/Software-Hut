@@ -44,8 +44,8 @@ Rails.application.routes.draw do
 
   resources :students, only: [:index] do
     # for testing level up modal (delete after development for this is finished)
-    post :give_student_xp, on: :collection
     get :avatars, on: :collection
+    post :update_avatar_id, on: :collection
   end
 
   resources :teachers do
@@ -65,7 +65,7 @@ Rails.application.routes.draw do
 
   resources :tasks do
     member do
-      patch 'update_status'
+      patch 'update_status_to_pending'
     end
   end
 

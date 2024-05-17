@@ -36,7 +36,7 @@ class BasetenRequest < ApplicationRecord
 
     begin
       response = HTTParty.post(
-        "https://model-#{model_id}.api.baseten.co/development/async_predict",
+        "https://model-#{model_id}.api.baseten.co/production/async_predict",
         headers: {
           "Authorization" => "Api-Key #{baseten_api_key}"
         },

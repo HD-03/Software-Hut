@@ -1,1 +1,16 @@
-.p Add instruments form should be here
+.card.border-0.bg-transparent
+  .card-body.bg-transparent.pt-0
+    .card-header.bg-transparent
+      %h3.text-center.m-3 Instruments
+      .table-responsive
+        %table.table.table-striped.m-0
+          %thead
+            %tr
+              %th Name
+          %tbody
+            - @instruments.each do |instrument|
+              %tr 
+                %td= instrument.name
+      = paginate @instruments, param_name: 'instruments_page'
+    .card-footer.d-flex.justify-content-center.bg-transparent.p-3 
+      = link_to 'Add Instrument', new_instrument_path, class: 'btn btn-primary border-0 rounded-5 shadow-lg py-2 px-3'

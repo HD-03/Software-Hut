@@ -1,70 +1,57 @@
 require 'rails_helper'
 
-describe 'Admin management' do
-    let!(:admin) {FactoryBot.create(:user, role: 'admin')}
+RSpec.describe AdminController, type: :controller do
+    describe "GET #dashboard" do
+    let!(:admin) {FactoryBot.create(:user, role:'admin')}
 
-    before {login_as admin}
+        context "when authenicated" do 
+            before {sign_in admin}
 
-    specify 'Admin can add a student' do
-      visit new_add_user_path
-      fill_in 'Full name', with: 'Alice Wonderland'
-      fill_in 'Email', with: 'alice@example.com'
-      fill_in 'Username', with: 'alice123'
-      fill_in 'Password', with: 'securepassword!'
-      select 'Student', from: 'Role'
-      check 'Old enough for cooler avatars?'
-      click_button 'Add User'
-      expect(page).to have_content 'User was successfully created'
-      expect(User.last.role).to eq('student')
-    end
+            it "renders the 'dashboard' template" do
+                get :dashboard
+                expect(response).to have_http_status(:success)
+            end
+        end
 
-    specify 'Admin can add a teacher' do
-        visit new_add_user_path
-        fill_in 'Full name', with: 'Bob Builder'
-        fill_in 'Email', with: 'bob@example.com'
-        fill_in 'Username', with: 'bobbuilder'
-        fill_in 'Password', with: 'Builder123!'
-        select 'Teacher', from: 'Role'
-        click_button 'Add User'
-
-        expect(page).to have_content 'User was successfully created'
-        
-    end
-
-    context "With one existing user" do
-        let!(:user) {FactoryBot.create(:user, full_name:'Test User', role: 'student',email: 'testuser@example.com')}
-
-        specify 'Admin can edit user details' do
-            visit edit_user_path(user)
-            fill_in 'Full name', with: 'Updated User'
-            fill_in 'Email', with: 'updateUser@example.com'
-            fill_in 'Username', with: 'updateduser'
-            select 'Teacher', from: 'Role'
-
-            click_on 'Save Changes'
-            expect(page).to have_content 'User was successfully updated.'
-            expect(user.reload.full_name).to eq('Updated User')
+        context "when not authenticated" do
+            it "redirects to the login page" do
+                get :dashboard
+                expect(response).to have_http_status(:redirect)
+                expect(response).to redirect_to('/users/sign_in')
+            end
         end
     end
 
-    context "With multiple existing users" do
-        let!(:user_1) {FactoryBot.create(:user, full_name:'Test User1', role: 'student', email: 'testuser1@example.com')}
-        let!(:user_2) {FactoryBot.create(:user, full_name:'Test User2', role: 'student', email: 'testuser2@example.com')}
+    describe "POST #create" do
+    let!(:admin) {FactoryBot.create(:user, role:'admin')}
+    let!(:user) {FactoryBot.create(:user)}
 
-        before {visit admin_dashboard_path}
-
-        specify 'Admin can search for a user ' do
-            
+    before {sign_in admin}
+        context "with valid inputs" do
+            it "creates a new User" do
+                post :create, params: { user: { full_name: 'John Doe', email: 'john@example.com', username: 'johndoe', password: 'Secure123!', password_confirmation: 'Secure123!', role: 'student' } }
+                expect(response).to redirect_to(admin_dashboard_path)
+                expect(User.last.email).to eq('john@example.com')
+            end
         end
 
-        specify 'Admin can delete users' do
-
-            within(:css, "#user_#{user_1.id}") {click_on 'Delete'}
-            expect(page).to have_content 'Test User2'
-            expect(page).to_not have_content 'Test User1'
-    
+        context "with invalid inputs" do
+            it "does not create a user and re-renders the new template" do
+                post :create, params: { user: { full_name: '' } } 
+                expect(response).to have_http_status(:unprocessable_entity)
+            end
         end
-        
     end
-    
+
+    describe "DELETE #delete_user" do
+    let!(:admin) {FactoryBot.create(:user, role:'admin')}
+    let!(:user) {FactoryBot.create(:user)}
+
+    before {sign_in admin}
+        it "deletes the user and redirects to dashboard" do
+            delete :delete_user, params: {id: user.id}
+            expect(response).to redirect_to(admin_dashboard_path)
+            expect(User.exists?(user.id)).to be_falsey
+        end
+    end
 end

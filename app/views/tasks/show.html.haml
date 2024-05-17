@@ -21,6 +21,7 @@
           %h5.mb-3 Recordings
           - @task.recordings.each_with_index do |recording, index|
             %p Recording #{index + 1}
+            %p.warning-bg-
             %audio.playback{controls: true}
               %source{src: url_for(recording), type: recording.content_type}
       

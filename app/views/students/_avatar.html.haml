@@ -7,7 +7,7 @@
           - selected_avatar = current_user.avatar.find_by(id: current_user.avatar_id)
           = image_tag selected_avatar, class: 'p-0 rounded-circle img-fluid resize-image-dashboard', style: 'border: 4px solid #000;', data: { avatar_id: current_user.avatar_id }
         - else
-          = image_tag 'https://via.placeholder.com/300x300', alt: 'placeholder', class: 'p-0 rounded-circle img-fluid', style: 'border: 3px solid #000;'
+          = image_pack_tag 'images/placeholder.png', alt: 'placeholder', class: 'p-0 rounded-circle img-fluid', style: 'border: 3px solid #000;', width: 300, height: 300
       .h3
         Level
         = current_user.level

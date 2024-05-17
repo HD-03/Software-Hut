@@ -45,8 +45,10 @@ RSpec.feature 'Tasks management', type: :feature, js: true do
       find(".accordion-button").click  # Simulate clicking the accordion to show task details
       expect(page).to have_content("Unique sample description1")
 
-      click_link 'Delete'
       page.execute_script('window.confirm = function() { return true; }')
+
+      click_link 'Delete'
+      page.execute_script('window.confirm = function(message) { return confirm(message); }')
 
   end
 

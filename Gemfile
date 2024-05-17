@@ -76,7 +76,6 @@ gem 'sentry-rails'
 
 gem 'haml', '~> 5.2'
 
-gem 'google-cloud-speech'
 
 group :development do
   gem 'letter_opener'
@@ -106,6 +105,10 @@ group :test do
   gem 'database_cleaner'
   gem 'launchy'
   gem 'simplecov'
+  gem 'webmock'
 end
 
 gem 'image_processing', '~> 1.2'
+gem 'httparty'
+
+gem 'stimulus-rails'

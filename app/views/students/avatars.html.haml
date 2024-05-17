@@ -1,0 +1,71 @@
+.row.mx-auto
+  .col-sm-3.mx-auto.justify-content-center
+    .row
+      - if current_user.avatar.attached?
+        - selected_avatar = current_user.avatar.find_by(id: current_user.avatar_id)
+        = image_tag selected_avatar, id: 'current_avatar', class: 'p-0 rounded-circle img-fluid bg-transparent', style: 'border: 8px solid #000;', data: { avatar_id: current_user.avatar_id }
+      - else
+        = image_tag 'https://via.placeholder.com/300x300', alt: 'placeholder', class: 'p-0 rounded-circle img-fluid', style: 'border: 3px solid #000;'
+    .row.mx-auto
+      - if current_user.generate_tokens
+        %button.btn.btn-primary.border-0.rounded-5.shadow-lg.py-2.px-3.mt-4.mb-2{ type: "button", "data-bs-toggle" => "modal", "data-bs-target" => "#generateAvatarModal" }
+          Generate Avatar
+        .row.justify-content-center.mx-auto
+          You have 
+          = current_user.generate_tokens
+          generate tokens
+      .h2.text-center.mt-5
+        My Avatars
+  .row.mx-auto
+    - current_user.avatar.each_slice(4) do |avatar_row|
+      .row.my-3
+        - avatar_row.each do |avatar|
+          .col-sm-3.text-center
+            = image_tag avatar, class: 'p-0 rounded-circle img-fluid scaled-avatar-image', data: { avatar_id: avatar.id }
+    
+    = form_tag(update_avatar_id_students_path(current_user), method: :post, id: 'avatar-form') do
+      = hidden_field_tag(:avatar_id, current_user.avatar_id)
+
+
+  = render 'students/generate_avatar_modal'
+
+:javascript
+  const avatars = document.querySelectorAll('.scaled-avatar-image');
+
+  // Find the avatar with matching ID and apply the class
+  const currentAvatarId = document.querySelector("#current_avatar").dataset.avatarId; // Assuming you can access this value from Ruby
+  //console.log(currentAvatarId)
+  //const avatarElement = document.querySelector(`[data-avatar-id="${currentAvatarId}"]`);
+  const avatarElement = document.querySelector(`[data-avatar-id="${currentAvatarId}"]:not([id="current_avatar"])`);
+
+  document.addEventListener('DOMContentLoaded', () => {
+    if (avatarElement) {
+      // Add the "selected-avatar" class
+      console.log(currentAvatarId);
+      console.log(avatarElement.classList);
+      avatarElement.classList.add('selected-avatar');
+      console.log(avatarElement.classList);
+    } else {
+      console.error(`Avatar with ID ${currentAvatarId} not found.`);
+    }
+  });
+
+  avatars.forEach((avatar) => {
+    if (screen.width < 576) {
+      const width = avatarElement.offsetWidth; // Get the current width
+      avatar.style.height = `${width}px`; // Set the height to match the width
+    }
+
+    avatar.addEventListener('click', async () => {
+      const avatarId = avatar.dataset.avatarId;
+      document.querySelector('#avatar_id').value = avatarId; // Update the hidden field
+
+      // Submit the form
+      await document.querySelector('#avatar-form').submit();
+
+      // Reload the page after a short delay (e.g., 500 milliseconds)
+      setTimeout(() => {
+        window.location.reload();
+      }, 50);
+    });
+  });

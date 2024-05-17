@@ -14,8 +14,47 @@ class TasksController < ApplicationController
 
   # GET /tasks/1
   def show
+    @task = Task.find(params[:id])
   end
 
+  # PATCH
+  def update_status_to_pending
+    @task = Task.find(params[:id])
+
+    User.give_student_xp_points(current_user, @task.reward_xp / 2)
+    current_user.save
+    @task.update(student_text: params[:task][:student_text]) if params[:task][:student_text].present?
+
+    # Attach audio files
+    if params[:task][:recordings].present?
+      @task.recordings.attach(params[:task][:recordings])
+    end
+
+    if @task.save
+      @task.update(status: 'pending')
+      redirect_to tasks_path, notice: 'Task status updated to pending.'
+    else
+      # Handle the case when saving the task fails
+      render :show, alert: 'Failed to update task status.'
+    end
+  end
+
+  def update_status_to_complete
+    @task = Task.find(params[:id])
+
+    User.give_student_xp_points(current_user, @task.reward_xp / 2)
+    current_user.save
+    
+
+    if @task.save
+      @task.update(status: 'completed')
+      redirect_to tasks_path, notice: 'Task status updated to completed.'
+    else
+      # Handle the case when saving the task fails
+      render :show, alert: 'Failed to update task status.'
+    end
+  end
+  
   # GET /tasks/new
   def new
     @students = params[:student_ids] ? User.find(params[:student_ids]) : User.where(role: :student)
@@ -49,6 +88,7 @@ class TasksController < ApplicationController
     end
   end
 
+  
   # PATCH
   def create_from_tamplate
     
@@ -95,18 +135,22 @@ class TasksController < ApplicationController
 
   private
 
-    def set_role
-      @user_is_student = current_user.role == 'student'
-      @user_is_teacher = current_user.role == 'teacher'
-    end
+  def set_role
+    @user_is_student = current_user.role == 'student'
+    @user_is_teacher = current_user.role == 'teacher'
+  end
 
-    # Use callbacks to share common setup or constraints between actions.
-    def set_task
-      @task = params[:task_id] ? Task.find(params[:task_id]) : Task.new
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_task
+    @task = params[:task_id] ? Task.find(params[:task_id]) : Task.new
+  end
 
     # Only allow a list of trusted parameters through.
+    
     def task_params
-      params.require(:task).permit(:name, :instrument_id, :teacher_id, :description, :deadline, :recording_boolean, :reward_xp, student_id: [], files: [])
+      params.require(:task).permit(:name, :instrument_id, :teacher_id, :description, :deadline, :recording_boolean, :reward_xp, :student_text, student_id: [], files: [], recordings: [])
+      #sanitizing for XSS attacks
+      #params.require(:task).permit(:name, :instrument_id, :teacher_id, :description, :deadline, :recording_boolean, :reward_xp, :student_text, student_id: [], files: []).transform_values { |v| sanitize(v) }
     end
+    
 end

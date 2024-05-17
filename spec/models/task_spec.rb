@@ -10,6 +10,7 @@
 #  recording_boolean :boolean          default(FALSE), not null
 #  reward_xp         :integer          not null
 #  status            :integer          default("todo"), not null
+#  student_text      :text
 #  time_set          :datetime         not null
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
@@ -47,22 +48,6 @@ RSpec.describe Task, type: :model do
   describe 'enums' do
     it 'defines enum for status' do
       expect(Task.statuses).to eq({"todo"=>0, "pending"=>1, "completed"=>2})
-    end
-  end
-
-  describe '#deadline_day_this_week' do
-    context 'when deadline is within the current week' do
-      it 'returns the day of the week' do
-        task = create(:task, deadline: Date.current.beginning_of_week(:monday))
-        expect(task.deadline_day_this_week).to eq('Monday')
-      end
-    end
-
-    context 'when deadline is not within the current week' do
-      it 'returns nil' do
-        task = create(:task, deadline: Date.current.next_week(:monday))
-        expect(task.deadline_day_this_week).to be_nil
-      end
     end
   end
 

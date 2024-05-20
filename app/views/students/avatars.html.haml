@@ -1,11 +1,18 @@
 .row.mx-auto
   .col-sm-3.mx-auto.justify-content-center
     .row
-      - if current_user.avatar.attached?
-        - selected_avatar = current_user.avatar.find_by(id: current_user.avatar_id)
-        = image_tag selected_avatar, id: 'current_avatar', class: 'p-0 rounded-circle img-fluid bg-transparent', style: 'border: 8px solid #000;', data: { avatar_id: current_user.avatar_id }
-      - else
-        = image_pack_tag 'images/placeholder.png', alt: 'placeholder', class: 'p-0 rounded-circle img-fluid', style: 'border: 3px solid #000;', width: 300, height: 300
+      - begin
+        - if current_user.avatar.attached? && !(current_user.avatar_id.nil?)
+          - selected_avatar = current_user.avatar.find_by(id: current_user.avatar_id)
+          = image_tag selected_avatar, id: 'current_avatar', class: 'p-0 rounded-circle img-fluid bg-transparent', style: 'border: 4px solid #000;', data: { avatar_id: current_user.avatar_id }
+        - else
+          = image_pack_tag 'images/placeholder.png', alt: 'placeholder', id: 'current_avatar', class: 'p-0 rounded-circle img-fluid', style: 'border: 4px solid #000;', width: 300, height: 300
+      - rescue
+        - if current_user.avatar.attached? && current_user.avatar_id != 1
+          - selected_avatar = current_user.avatar.find_by(id: current_user.avatar_id)
+          = image_tag selected_avatar, id: 'current_avatar', class: 'p-0 rounded-circle img-fluid bg-transparent', style: 'border: 4px solid #000;', data: { avatar_id: current_user.avatar_id }
+        - else
+          = image_pack_tag 'images/placeholder.png', alt: 'placeholder', id: 'current_avatar', class: 'p-0 rounded-circle img-fluid', style: 'border: 4px solid #000;', width: 300, height: 300
     .row.mx-auto
       - if current_user.generate_tokens
         %button.btn.btn-primary.border-0.rounded-5.shadow-lg.py-2.px-3.mt-4.mb-2{ type: "button", "data-bs-toggle" => "modal", "data-bs-target" => "#generateAvatarModal" }
@@ -30,15 +37,20 @@
   = render 'students/generate_avatar_modal'
 
 :javascript
-  const avatars = document.querySelectorAll('.scaled-avatar-image');
+  //const avatars = document.querySelectorAll('.scaled-avatar-image');
 
   // Find the avatar with matching ID and apply the class
-  const currentAvatarId = document.querySelector("#current_avatar").dataset.avatarId; // Assuming you can access this value from Ruby
+  //const currentAvatarId = document.querySelector("#current_avatar").dataset.avatarId; // Assuming you can access this value from Ruby
   //console.log(currentAvatarId)
   //const avatarElement = document.querySelector(`[data-avatar-id="${currentAvatarId}"]`);
-  const avatarElement = document.querySelector(`[data-avatar-id="${currentAvatarId}"]:not([id="current_avatar"])`);
+  //const avatarElement = document.querySelector(`[data-avatar-id="${currentAvatarId}"]:not([id="current_avatar"])`);
 
   document.addEventListener('DOMContentLoaded', () => {
+    // Find the avatar with matching ID and apply the class
+    const avatars = document.querySelectorAll('.scaled-avatar-image');
+    const currentAvatarId = document.querySelector("#current_avatar").dataset.avatarId; // Assuming you can access this value from Ruby
+    const avatarElement = document.querySelector(`[data-avatar-id="${currentAvatarId}"]:not([id="current_avatar"])`);
+
     if (avatarElement) {
       // Add the "selected-avatar" class
       console.log(currentAvatarId);
@@ -48,24 +60,24 @@
     } else {
       console.error(`Avatar with ID ${currentAvatarId} not found.`);
     }
-  });
 
-  avatars.forEach((avatar) => {
-    if (screen.width < 576) {
-      const width = avatarElement.offsetWidth; // Get the current width
-      avatar.style.height = `${width}px`; // Set the height to match the width
-    }
+    avatars.forEach((avatar) => {
+      if (screen.width < 576) {
+        const width = avatarElement.offsetWidth; // Get the current width
+        avatar.style.height = `${width}px`; // Set the height to match the width
+      }
 
-    avatar.addEventListener('click', async () => {
-      const avatarId = avatar.dataset.avatarId;
-      document.querySelector('#avatar_id').value = avatarId; // Update the hidden field
+      avatar.addEventListener('click', async () => {
+        const avatarId = avatar.dataset.avatarId;
+        document.querySelector('#avatar_id').value = avatarId; // Update the hidden field
 
-      // Submit the form
-      await document.querySelector('#avatar-form').submit();
+        // Submit the form
+        await document.querySelector('#avatar-form').submit();
 
-      // Reload the page after a short delay (e.g., 500 milliseconds)
-      setTimeout(() => {
-        window.location.reload();
-      }, 50);
+        // Reload the page after a short delay (e.g., 500 milliseconds)
+        setTimeout(() => {
+          window.location.reload();
+        }, 50);
+      });
     });
   });
